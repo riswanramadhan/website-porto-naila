@@ -62,6 +62,18 @@ body.menu-open {
   overflow: hidden;
 }
 
+body.menu-open::before {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  content: "";
+  background: color-mix(in srgb, var(--canvas) 42%, transparent);
+  backdrop-filter: blur(10px);
+  opacity: 1;
+  transition: opacity 200ms ease;
+  pointer-events: none;
+}
+
 a {
   color: inherit;
   cursor: none;
@@ -762,7 +774,7 @@ h3 {
 
 .timeline-trigger[aria-expanded="true"] + .timeline-content {
   max-height: 260px;
-  padding-bottom: 24px;
+  padding: 12px 24px 24px;
 }
 
 .proof-section {
@@ -978,6 +990,12 @@ h3 {
   transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
 }
 
+.contact-links a[href^="https://wa.me"] svg {
+  width: 17px;
+  height: 17px;
+  transform: translateY(0.5px);
+}
+
 .contact-links a:hover {
   transform: translateY(-2px);
 }
@@ -1033,7 +1051,8 @@ h3 {
 }
 
 .footer-inner {
-  justify-content: space-between;
+  justify-content: center;
+  text-align: center;
   gap: 18px;
   font-size: 14px;
 }
@@ -1140,6 +1159,7 @@ h3 {
     box-shadow: var(--shadow-float);
     padding: 16px;
     backdrop-filter: blur(22px);
+    z-index: 60;
   }
 
   .nav-menu.is-open a {
@@ -1252,7 +1272,7 @@ h3 {
   }
 
   .footer-inner {
-    align-items: flex-start;
+    align-items: center;
     flex-direction: column;
   }
 }
