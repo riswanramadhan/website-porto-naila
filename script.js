@@ -17,6 +17,7 @@ const translations = {
     navExperience: "Experience",
     navProof: "Proof",
     navProjects: "Projects",
+    navNews: "News",
     navSkills: "Skills",
     navContact: "Contact",
     navCta: "Let's Talk",
@@ -27,17 +28,23 @@ const translations = {
     heroEyebrow: "Psychology / HR / Leadership",
     heroTitle: "Helping people grow through psychology, leadership, and talent development.",
     heroLead:
-      "Psychology student with hands-on experience in recruitment, organizational development, and youth leadership initiatives.",
+      "Aspiring HR professional with experience in recruitment, talent management, and project leadership.",
     viewResume: "View Resume",
     contactMe: "Contact Me",
-    statCandidates: "Candidates Screened",
-    statTeam: "Team Members Managed",
-    statImpact: "Beneficiaries Impacted",
-    statGrowth: "Performance Growth",
+    statCandidates: "Talent Applications Evaluated Through Structured Recruitment & Selection",
+    statTeam: "Team Members Led Across Multiple Organizational Projects",
+    statImpact: "Beneficiaries Impacted Through Community Programs",
+    statGrowth: "Performance Improvement Achieved Through Training & Development Programs",
     aboutEyebrow: "About",
-    aboutTitle: "Psychology as a practical lens for healthier organizations.",
+    aboutTitle: "Building people, teams, and meaningful organizational impact.",
     aboutBody:
-      "Naila Azahra is a Psychology student at Hasanuddin University with a passion for HR development, recruitment, organizational growth, and leadership. Her work connects human behavior, team systems, and measurable people outcomes.",
+      "Naila Azahra is a Psychology student at Hasanuddin University passionate about Human Resources Development, talent growth, and organizational effectiveness. Experienced in recruitment, performance monitoring, and team leadership, she combines psychology insights with data-driven approaches to support people and organizational development.",
+    eduHasanuddin:
+      "Psychology student with a strong interest in Human Resources Development, organizational behavior, talent management, and people development.",
+    eduIons:
+      "Strengthened professional English communication, public speaking confidence, and cross-cultural collaboration skills through international learning experiences.",
+    eduAlabidin:
+      "Built strong foundations in bilingual communication, discipline, leadership, and academic English through Cambridge international education.",
     experienceEyebrow: "Experience",
     experienceTitle: "People operations, youth leadership, and impact programs.",
     experienceBody:
@@ -50,6 +57,20 @@ const translations = {
     projectsTitle: "Case studies with a people-first operating model.",
     projectsBody:
       "Programs shaped around clear problems, practical solutions, and impact that can be communicated simply.",
+    newsEyebrow: "News",
+    newsTitle: "Media coverage of leadership, education, and community impact.",
+    newsBody:
+      "Selected articles covering Naila's achievements, Growmates initiatives, education programs, and social collaboration projects.",
+    newsPhoto: "News Photo",
+    newsOne:
+      "A profile story about Naila's confidence in English communication and the achievements she built through learning experiences.",
+    newsTwo:
+      "Coverage of Growmates as a community focused on quality education, gender equality, and wider social impact in Makassar.",
+    newsThree:
+      "A report on Hope & Help, a Growmates program encouraging children's learning motivation through education and community support.",
+    newsFour:
+      "Coverage of a Ramadan collaboration inviting public participation in sharing Lebaran parcels through a community-driven program.",
+    readArticle: "Read article",
     skillsEyebrow: "Skills",
     skillsTitle: "A balanced toolkit for talent, analysis, and creative communication.",
     achievementsEyebrow: "Achievements",
@@ -71,6 +92,7 @@ const translations = {
     navExperience: "Pengalaman",
     navProof: "Bukti",
     navProjects: "Proyek",
+    navNews: "Berita",
     navSkills: "Keahlian",
     navContact: "Kontak",
     navCta: "Hubungi",
@@ -81,17 +103,23 @@ const translations = {
     heroEyebrow: "Psikologi / HR / Kepemimpinan",
     heroTitle: "Membantu manusia bertumbuh melalui psikologi, kepemimpinan, dan pengembangan talenta.",
     heroLead:
-      "Mahasiswa psikologi dengan pengalaman langsung dalam rekrutmen, pengembangan organisasi, dan inisiatif kepemimpinan muda.",
+      "Calon profesional HR dengan pengalaman dalam rekrutmen, manajemen talenta, dan kepemimpinan proyek.",
     viewResume: "Lihat Resume",
     contactMe: "Hubungi Saya",
-    statCandidates: "Kandidat Disaring",
-    statTeam: "Anggota Tim Dikelola",
-    statImpact: "Penerima Manfaat",
-    statGrowth: "Pertumbuhan Performa",
+    statCandidates: "Lamaran Talenta Dievaluasi Melalui Rekrutmen & Seleksi Terstruktur",
+    statTeam: "Anggota Tim Dipimpin dalam Berbagai Proyek Organisasi",
+    statImpact: "Penerima Manfaat Terdampak Melalui Program Komunitas",
+    statGrowth: "Peningkatan Performa Dicapai Melalui Program Pelatihan & Pengembangan",
     aboutEyebrow: "Tentang",
-    aboutTitle: "Psikologi sebagai lensa praktis untuk organisasi yang lebih sehat.",
+    aboutTitle: "Membangun manusia, tim, dan dampak organisasi yang bermakna.",
     aboutBody:
-      "Naila Azahra adalah mahasiswa Psikologi Universitas Hasanuddin dengan minat pada pengembangan HR, rekrutmen, pertumbuhan organisasi, dan kepemimpinan. Karyanya menghubungkan perilaku manusia, sistem tim, dan hasil people yang terukur.",
+      "Naila Azahra adalah mahasiswa Psikologi Universitas Hasanuddin yang memiliki ketertarikan pada Human Resources Development, pertumbuhan talenta, dan efektivitas organisasi. Berpengalaman dalam rekrutmen, pemantauan performa, dan kepemimpinan tim, ia memadukan wawasan psikologi dengan pendekatan berbasis data untuk mendukung pengembangan manusia dan organisasi.",
+    eduHasanuddin:
+      "Mahasiswa Psikologi dengan minat kuat pada Human Resources Development, perilaku organisasi, manajemen talenta, dan pengembangan manusia.",
+    eduIons:
+      "Menguatkan komunikasi bahasa Inggris profesional, kepercayaan diri berbicara di depan publik, dan kolaborasi lintas budaya melalui pengalaman belajar internasional.",
+    eduAlabidin:
+      "Membangun fondasi kuat dalam komunikasi bilingual, disiplin, kepemimpinan, dan bahasa Inggris akademik melalui pendidikan internasional Cambridge.",
     experienceEyebrow: "Pengalaman",
     experienceTitle: "People operations, kepemimpinan muda, dan program berdampak.",
     experienceBody:
@@ -104,6 +132,20 @@ const translations = {
     projectsTitle: "Studi kasus dengan model kerja yang people-first.",
     projectsBody:
       "Program yang dibentuk dari masalah jelas, solusi praktis, dan dampak yang mudah dipahami.",
+    newsEyebrow: "Berita",
+    newsTitle: "Liputan media tentang kepemimpinan, pendidikan, dan dampak komunitas.",
+    newsBody:
+      "Artikel pilihan yang meliput prestasi Naila, inisiatif Growmates, program pendidikan, dan proyek kolaborasi sosial.",
+    newsPhoto: "Foto Berita",
+    newsOne:
+      "Profil tentang kepercayaan diri Naila dalam komunikasi bahasa Inggris dan berbagai prestasi yang dibangun melalui pengalaman belajar.",
+    newsTwo:
+      "Liputan tentang Growmates sebagai komunitas yang berfokus pada pendidikan berkualitas, kesetaraan gender, dan dampak sosial di Makassar.",
+    newsThree:
+      "Laporan tentang Hope & Help, program Growmates yang mendorong minat belajar anak melalui edukasi dan dukungan komunitas.",
+    newsFour:
+      "Liputan kolaborasi Ramadan yang mengajak masyarakat berbagi parsel Lebaran melalui program berbasis komunitas.",
+    readArticle: "Baca artikel",
     skillsEyebrow: "Keahlian",
     skillsTitle: "Toolkit seimbang untuk talenta, analisis, dan komunikasi kreatif.",
     achievementsEyebrow: "Pencapaian",
@@ -131,8 +173,9 @@ const setTheme = (theme) => {
   localStorage.setItem("theme", theme);
 
   themeToggles.forEach((toggle) => {
-      toggle.setAttribute("aria-label", theme === "dark" ? "Switch to light mode" : "Switch to dark mode");
-    });
+    toggle.setAttribute("aria-label", theme === "dark" ? "Switch to light mode" : "Switch to dark mode");
+    toggle.setAttribute("aria-checked", String(theme === "dark"));
+  });
 
   updateThemeLabels();
 };
@@ -149,6 +192,7 @@ const updateThemeLabels = () => {
 const setLanguage = (language) => {
   currentLanguage = language;
   document.documentElement.lang = language === "id" ? "id" : "en";
+  document.documentElement.dataset.language = language;
   localStorage.setItem("language", language);
 
   document.querySelectorAll("[data-i18n]").forEach((element) => {
@@ -159,8 +203,9 @@ const setLanguage = (language) => {
   });
 
   languageToggles.forEach((toggle) => {
-    const mono = toggle.querySelector(".mono");
-    if (mono) mono.textContent = language === "id" ? "EN" : "ID";
+    const nextLanguage = language === "en" ? "Indonesian" : "English";
+    toggle.setAttribute("aria-label", `Switch language to ${nextLanguage}`);
+    toggle.setAttribute("aria-checked", String(language === "en"));
   });
 
   updateThemeLabels();

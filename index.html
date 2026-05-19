@@ -44,32 +44,91 @@
           <a href="#experience" data-i18n="navExperience">Experience</a>
           <a href="#proof" data-i18n="navProof">Proof</a>
           <a href="#projects" data-i18n="navProjects">Projects</a>
+          <a href="#news" data-i18n="navNews">News</a>
           <a href="#skills" data-i18n="navSkills">Skills</a>
           <a href="#contact" data-i18n="navContact">Contact</a>
           <div class="nav-mobile-controls">
-            <button class="control-button theme-toggle" type="button" aria-label="Switch to dark mode">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 3a9 9 0 1 0 9 9c0-.45-.04-.89-.1-1.32A6.5 6.5 0 0 1 12.32 3.1C12.21 3.04 12.1 3 12 3Zm-1.08 2.36A8.5 8.5 0 0 0 18.64 13.08 7 7 0 1 1 10.92 5.36Z" />
-              </svg>
-              <span data-i18n="themeLabel">Night</span>
+            <button class="control-button toggle-switch theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Switch to dark mode">
+              <span class="sr-only" data-i18n="themeLabel">Night</span>
+              <span class="toggle-track" aria-hidden="true">
+                <span class="toggle-icon toggle-icon-sun">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 4.5a1 1 0 0 1 1 1V7a1 1 0 0 1-2 0V5.5a1 1 0 0 1 1-1Zm0 11.5a1 1 0 0 1 1 1V18.5a1 1 0 0 1-2 0V17a1 1 0 0 1 1-1Zm7.5-4.5a1 1 0 0 1-1 1H17a1 1 0 0 1 0-2h1.5a1 1 0 0 1 1 1Zm-11 0a1 1 0 0 1-1 1H5.5a1 1 0 0 1 0-2H7a1 1 0 0 1 1 1Zm7.78-5.28a1 1 0 0 1 0 1.41L15.55 8a1 1 0 1 1-1.41-1.41l.73-.72a1 1 0 0 1 1.41 0Zm-7.07 7.07a1 1 0 0 1 0 1.41l-.72.73a1 1 0 1 1-1.41-1.41l.72-.73a1 1 0 0 1 1.41 0Zm0-7.07-.72-.72a1 1 0 1 1 1.41-1.41l.72.72a1 1 0 1 1-1.41 1.41ZM16.26 14.8a1 1 0 0 1 1.41 0l.72.72a1 1 0 1 1-1.41 1.41l-.72-.72a1 1 0 0 1 0-1.41ZM12 8.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7Z" />
+                  </svg>
+                </span>
+                <span class="toggle-icon toggle-icon-moon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 3a9 9 0 1 0 9 9c0-.45-.04-.89-.1-1.32A6.5 6.5 0 0 1 12.32 3.1C12.21 3.04 12.1 3 12 3Zm-1.08 2.36A8.5 8.5 0 0 0 18.64 13.08 7 7 0 1 1 10.92 5.36Z" />
+                  </svg>
+                </span>
+                <span class="toggle-thumb"></span>
+              </span>
             </button>
-            <button class="control-button language-toggle" type="button" aria-label="Switch language">
-              <span class="mono">ID</span>
-              <span data-i18n="languageLabel">Indonesia</span>
+            <button class="control-button toggle-switch language-toggle" type="button" role="switch" aria-checked="false" aria-label="Switch language">
+              <span class="sr-only" data-i18n="languageLabel">Indonesia</span>
+              <span class="toggle-track" aria-hidden="true">
+                <span class="toggle-flag toggle-flag-id" aria-hidden="true">
+                  <svg viewBox="0 0 18 12" aria-hidden="true">
+                    <rect width="18" height="6" fill="#e11d48" />
+                    <rect y="6" width="18" height="6" fill="#ffffff" />
+                  </svg>
+                </span>
+                <span class="toggle-flag toggle-flag-uk" aria-hidden="true">
+                  <svg viewBox="0 0 18 12" aria-hidden="true">
+                    <rect width="18" height="12" fill="#0a3d91" />
+                    <path d="M0 0l7 4.5V0h4v4.5L18 0v2L12 6l6 4v2l-7-4.5V12H7V7.5L0 12V10l6-4-6-4V0z" fill="#ffffff" />
+                    <path d="M0 0l8 5V0h2v5l8-5v1.4L11 6l7 4.6V12l-8-5v5H8V7L0 12v-1.4L7 6 0 1.4V0z" fill="#d22c32" />
+                    <rect x="7" width="4" height="12" fill="#ffffff" />
+                    <rect y="4" width="18" height="4" fill="#ffffff" />
+                    <rect x="7.7" width="2.6" height="12" fill="#d22c32" />
+                    <rect y="4.7" width="18" height="2.6" fill="#d22c32" />
+                  </svg>
+                </span>
+                <span class="toggle-thumb"></span>
+              </span>
             </button>
           </div>
         </div>
 
         <div class="nav-actions">
-          <button class="control-button theme-toggle" type="button" aria-label="Switch to dark mode">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 3a9 9 0 1 0 9 9c0-.45-.04-.89-.1-1.32A6.5 6.5 0 0 1 12.32 3.1C12.21 3.04 12.1 3 12 3Zm-1.08 2.36A8.5 8.5 0 0 0 18.64 13.08 7 7 0 1 1 10.92 5.36Z" />
-            </svg>
-            <span data-i18n="themeLabel">Night</span>
+          <button class="control-button toggle-switch theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Switch to dark mode">
+            <span class="sr-only" data-i18n="themeLabel">Night</span>
+            <span class="toggle-track" aria-hidden="true">
+              <span class="toggle-icon toggle-icon-sun">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 4.5a1 1 0 0 1 1 1V7a1 1 0 0 1-2 0V5.5a1 1 0 0 1 1-1Zm0 11.5a1 1 0 0 1 1 1V18.5a1 1 0 0 1-2 0V17a1 1 0 0 1 1-1Zm7.5-4.5a1 1 0 0 1-1 1H17a1 1 0 0 1 0-2h1.5a1 1 0 0 1 1 1Zm-11 0a1 1 0 0 1-1 1H5.5a1 1 0 0 1 0-2H7a1 1 0 0 1 1 1Zm7.78-5.28a1 1 0 0 1 0 1.41L15.55 8a1 1 0 1 1-1.41-1.41l.73-.72a1 1 0 0 1 1.41 0Zm-7.07 7.07a1 1 0 0 1 0 1.41l-.72.73a1 1 0 1 1-1.41-1.41l.72-.73a1 1 0 0 1 1.41 0Zm0-7.07-.72-.72a1 1 0 1 1 1.41-1.41l.72.72a1 1 0 1 1-1.41 1.41ZM16.26 14.8a1 1 0 0 1 1.41 0l.72.72a1 1 0 1 1-1.41 1.41l-.72-.72a1 1 0 0 1 0-1.41ZM12 8.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7Z" />
+                </svg>
+              </span>
+              <span class="toggle-icon toggle-icon-moon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3a9 9 0 1 0 9 9c0-.45-.04-.89-.1-1.32A6.5 6.5 0 0 1 12.32 3.1C12.21 3.04 12.1 3 12 3Zm-1.08 2.36A8.5 8.5 0 0 0 18.64 13.08 7 7 0 1 1 10.92 5.36Z" />
+                </svg>
+              </span>
+              <span class="toggle-thumb"></span>
+            </span>
           </button>
-          <button class="control-button language-toggle" type="button" aria-label="Switch language">
-            <span class="mono">ID</span>
-            <span data-i18n="languageLabel">Indonesia</span>
+          <button class="control-button toggle-switch language-toggle" type="button" role="switch" aria-checked="false" aria-label="Switch language">
+            <span class="sr-only" data-i18n="languageLabel">Indonesia</span>
+            <span class="toggle-track" aria-hidden="true">
+              <span class="toggle-flag toggle-flag-id" aria-hidden="true">
+                <svg viewBox="0 0 18 12" aria-hidden="true">
+                  <rect width="18" height="6" fill="#e11d48" />
+                  <rect y="6" width="18" height="6" fill="#ffffff" />
+                </svg>
+              </span>
+              <span class="toggle-flag toggle-flag-uk" aria-hidden="true">
+                <svg viewBox="0 0 18 12" aria-hidden="true">
+                  <rect width="18" height="12" fill="#0a3d91" />
+                  <path d="M0 0l7 4.5V0h4v4.5L18 0v2L12 6l6 4v2l-7-4.5V12H7V7.5L0 12V10l6-4-6-4V0z" fill="#ffffff" />
+                  <path d="M0 0l8 5V0h2v5l8-5v1.4L11 6l7 4.6V12l-8-5v5H8V7L0 12v-1.4L7 6 0 1.4V0z" fill="#d22c32" />
+                  <rect x="7" width="4" height="12" fill="#ffffff" />
+                  <rect y="4" width="18" height="4" fill="#ffffff" />
+                  <rect x="7.7" width="2.6" height="12" fill="#d22c32" />
+                  <rect y="4.7" width="18" height="2.6" fill="#d22c32" />
+                </svg>
+              </span>
+              <span class="toggle-thumb"></span>
+            </span>
           </button>
           <a class="nav-cta" href="#contact" data-i18n="navCta">Let&apos;s Talk</a>
         </div>
@@ -81,11 +140,11 @@
         <div class="hero-glow" aria-hidden="true"></div>
         <div class="container hero-grid">
           <div class="hero-copy reveal">
-            <p class="eyebrow" data-i18n="heroEyebrow">Psychology / HR / Leadership</p>
+            <p class="eyebrow hero-eyebrow" data-i18n="heroEyebrow">Psychology / HR / Leadership</p>
             <h1 data-i18n="heroTitle">Helping people grow through psychology, leadership, and talent development.</h1>
             <p class="hero-lead" data-i18n="heroLead">
-              Psychology student with hands-on experience in recruitment, organizational
-              development, and youth leadership initiatives.
+              Aspiring HR professional with experience in recruitment, talent management,
+              and project leadership.
             </p>
             <div class="hero-actions" aria-label="Primary actions">
               <a class="button button-primary" href="#" aria-label="View Naila Azahra resume">
@@ -111,7 +170,7 @@
                 </svg>
               </span>
               <strong>87+</strong>
-              <span data-i18n="statCandidates">Candidates Screened</span>
+              <span data-i18n="statCandidates">Talent Applications Evaluated Through Structured Recruitment &amp; Selection</span>
             </article>
             <article class="stat-card">
               <span class="stat-icon">
@@ -119,8 +178,8 @@
                   <path d="M12 2 3 6.5v11L12 22l9-4.5v-11L12 2Zm0 2.2 5.76 2.88L12 9.96 6.24 7.08 12 4.2Zm-7 4.5 6 3v7.8l-6-3V8.7Zm8 10.8v-7.8l6-3v7.8l-6 3Z" />
                 </svg>
               </span>
-              <strong>23</strong>
-              <span data-i18n="statTeam">Team Members Managed</span>
+              <strong>23+</strong>
+              <span data-i18n="statTeam">Team Members Led Across Multiple Organizational Projects</span>
             </article>
             <article class="stat-card">
               <span class="stat-icon">
@@ -129,7 +188,7 @@
                 </svg>
               </span>
               <strong>150+</strong>
-              <span data-i18n="statImpact">Beneficiaries Impacted</span>
+              <span data-i18n="statImpact">Beneficiaries Impacted Through Community Programs</span>
             </article>
             <article class="stat-card stat-card-wide">
               <span class="stat-icon">
@@ -138,7 +197,7 @@
                 </svg>
               </span>
               <strong>78%</strong>
-              <span data-i18n="statGrowth">Performance Growth</span>
+              <span data-i18n="statGrowth">Performance Improvement Achieved Through Training &amp; Development Programs</span>
             </article>
           </div>
         </div>
@@ -148,42 +207,37 @@
         <div class="container">
           <div class="section-heading reveal">
             <p class="eyebrow" data-i18n="aboutEyebrow">About</p>
-            <h2 data-i18n="aboutTitle">Psychology as a practical lens for healthier organizations.</h2>
+            <h2 data-i18n="aboutTitle">Building people, teams, and meaningful organizational impact.</h2>
             <p data-i18n="aboutBody">
-              Naila Azahra is a Psychology student at Hasanuddin University with a
-              passion for HR development, recruitment, organizational growth, and
-              leadership. Her work connects human behavior, team systems, and measurable
-              people outcomes.
+              Naila Azahra is a Psychology student at Hasanuddin University passionate
+              about Human Resources Development, talent growth, and organizational
+              effectiveness. Experienced in recruitment, performance monitoring, and
+              team leadership, she combines psychology insights with data-driven
+              approaches to support people and organizational development.
             </p>
           </div>
 
           <div class="education-grid">
             <article class="card reveal">
-              <span class="card-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 3 1 8l11 5 9-4.09V16h2V8L12 3Zm0 7.8L5.9 8 12 5.2 18.1 8 12 10.8ZM6 12.2V17c0 1.55 3.14 3 6 3s6-1.45 6-3v-4.8l-6 2.73-6-2.73Z" />
-                </svg>
+              <span class="edu-logo">
+                <img src="https://placehold.co/96x96/f5f5f5/171717?text=HU" alt="Hasanuddin University logo placeholder" />
               </span>
               <h3>Hasanuddin University</h3>
-              <p>Psychology student focused on organizational behavior, human development, and applied HR practice.</p>
+              <p data-i18n="eduHasanuddin">Psychology student with a strong interest in Human Resources Development, organizational behavior, talent management, and people development.</p>
             </article>
             <article class="card reveal">
-              <span class="card-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M4 4h16v14H7l-3 3V4Zm2 2v10.17L6.17 16H18V6H6Zm3 3h6v1.5H9V9Zm0 3h8v1.5H9V12Z" />
-                </svg>
+              <span class="edu-logo">
+                <img src="https://placehold.co/96x96/f5f5f5/171717?text=IONs" alt="IONs International Education logo placeholder" />
               </span>
               <h3>IONs International Education</h3>
-              <p>Built global learning exposure through communication, confidence, and cross-cultural development.</p>
+              <p data-i18n="eduIons">Strengthened professional English communication, public speaking confidence, and cross-cultural collaboration skills through international learning experiences.</p>
             </article>
             <article class="card reveal">
-              <span class="card-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M5 4h14v16H5V4Zm2 2v12h10V6H7Zm2 2h6v1.5H9V8Zm0 3h6v1.5H9V11Zm0 3h4v1.5H9V14Z" />
-                </svg>
+              <span class="edu-logo">
+                <img src="https://placehold.co/96x96/f5f5f5/171717?text=AB" alt="Al-Abidin Bilingual Boarding School logo placeholder" />
               </span>
               <h3>Al-Abidin Bilingual Boarding School</h3>
-              <p>Developed early foundations in discipline, bilingual communication, and community-centered leadership.</p>
+              <p data-i18n="eduAlabidin">Built strong foundations in bilingual communication, discipline, leadership, and academic English through Cambridge international education.</p>
             </article>
           </div>
         </div>
@@ -400,6 +454,66 @@
         </div>
       </section>
 
+      <section class="section news-section" id="news">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="eyebrow" data-i18n="newsEyebrow">News</p>
+            <h2 data-i18n="newsTitle">Media coverage of leadership, education, and community impact.</h2>
+            <p data-i18n="newsBody">Selected articles covering Naila&apos;s achievements, Growmates initiatives, education programs, and social collaboration projects.</p>
+          </div>
+
+          <div class="news-grid">
+            <a class="news-card reveal" href="https://greatedunesia.id/aktivitas/naila-azahra-raih-berbagai-prestasi-lewat-kepercayaan-diri-berbahasa-inggris/2026/" target="_blank" rel="noreferrer">
+              <div class="news-photo news-photo-one" aria-hidden="true">
+                <span data-i18n="newsPhoto">News Photo</span>
+              </div>
+              <div class="news-copy">
+                <span class="news-source">Great Edu Indonesia</span>
+                <h3>Naila Azahra Raih Berbagai Prestasi Lewat Kepercayaan Diri Berbahasa Inggris</h3>
+                <p data-i18n="newsOne">A profile story about Naila&apos;s confidence in English communication and the achievements she built through learning experiences.</p>
+                <strong data-i18n="readArticle">Read article</strong>
+              </div>
+            </a>
+
+            <a class="news-card reveal" href="https://identitasunhas.com/growmates-bergerak-untuk-pendidikan-dan-kesetaraan-gender/" target="_blank" rel="noreferrer">
+              <div class="news-photo news-photo-two" aria-hidden="true">
+                <span data-i18n="newsPhoto">News Photo</span>
+              </div>
+              <div class="news-copy">
+                <span class="news-source">Identitas Unhas / 5 July 2024</span>
+                <h3>Growmates, Bergerak untuk Pendidikan dan Kesetaraan Gender</h3>
+                <p data-i18n="newsTwo">Coverage of Growmates as a community focused on quality education, gender equality, and wider social impact in Makassar.</p>
+                <strong data-i18n="readArticle">Read article</strong>
+              </div>
+            </a>
+
+            <a class="news-card reveal" href="https://identitasunhas.com/komunitas-growmates-galakkan-semangat-belajar-anak-anak-di-tpa-antang/" target="_blank" rel="noreferrer">
+              <div class="news-photo news-photo-three" aria-hidden="true">
+                <span data-i18n="newsPhoto">News Photo</span>
+              </div>
+              <div class="news-copy">
+                <span class="news-source">Identitas Unhas / 9 September 2024</span>
+                <h3>Komunitas Growmates Galakkan Semangat Belajar Anak-anak di TPA Antang</h3>
+                <p data-i18n="newsThree">A report on Hope &amp; Help, a Growmates program encouraging children&apos;s learning motivation through education and community support.</p>
+                <strong data-i18n="readArticle">Read article</strong>
+              </div>
+            </a>
+
+            <a class="news-card reveal" href="https://identitasunhas.com/gandeng-growmates-empathic-id-ajak-masyarakat-berbagi-parsel-lebaran-lewat-program-era/" target="_blank" rel="noreferrer">
+              <div class="news-photo news-photo-four" aria-hidden="true">
+                <span data-i18n="newsPhoto">News Photo</span>
+              </div>
+              <div class="news-copy">
+                <span class="news-source">Identitas Unhas</span>
+                <h3>Gandeng Growmates, Empathic.id Ajak Masyarakat Berbagi Parsel Lebaran Lewat Program ERA</h3>
+                <p data-i18n="newsFour">Coverage of a Ramadan collaboration inviting public participation in sharing Lebaran parcels through a community-driven program.</p>
+                <strong data-i18n="readArticle">Read article</strong>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
       <section class="section skills-section" id="skills">
         <div class="container">
           <div class="section-heading reveal">
@@ -473,26 +587,26 @@
           </div>
 
           <div class="achievement-grid">
-            <article class="award-card reveal">
+            <a class="award-card reveal" href="achievements/beasiswa-aktivis-nusantara.html" aria-label="View Beasiswa Aktivis Nusantara achievement">
               <span>01</span>
               <h3>Beasiswa Aktivis Nusantara</h3>
               <p>Recognized for leadership potential and community impact.</p>
-            </article>
-            <article class="award-card reveal">
+            </a>
+            <a class="award-card reveal" href="achievements/pkm-funding-award.html" aria-label="View PKM Funding Award achievement">
               <span>02</span>
               <h3>PKM Funding Award</h3>
               <p>Secured funding support for student innovation and research initiative.</p>
-            </article>
-            <article class="award-card reveal">
+            </a>
+            <a class="award-card reveal" href="achievements/national-poster-competition.html" aria-label="View National Poster Competition achievement">
               <span>03</span>
               <h3>National Poster Competition Wins</h3>
               <p>Awarded for translating ideas into clear, persuasive visual communication.</p>
-            </article>
-            <article class="award-card reveal">
+            </a>
+            <a class="award-card reveal" href="achievements/best-speaker-award.html" aria-label="View Best Speaker Award achievement">
               <span>04</span>
               <h3>Best Speaker Award</h3>
               <p>Recognized for confident public communication and argument structure.</p>
-            </article>
+            </a>
           </div>
         </div>
       </section>
@@ -524,12 +638,6 @@
                   <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.25-2.7a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4Z" />
                 </svg>
                 Instagram
-              </a>
-              <a href="https://wa.me/6285700217072" target="_blank" rel="noreferrer">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 3a8.6 8.6 0 0 0-7.36 13.08L3.7 21l5.04-1.2A8.6 8.6 0 1 0 12 3Zm0 2a6.6 6.6 0 0 1 0 13.2 6.5 6.5 0 0 1-3.05-.75l-.34-.18-2.35.56.44-2.3-.22-.36A6.6 6.6 0 0 1 12 5Zm-2.4 3.37c-.16 0-.42.06-.64.31-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.66 2.66 4.1 3.62 2.02.8 2.43.64 2.87.6.44-.04 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.42-1.34-1.66-.14-.24-.02-.37.1-.49.1-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.18-.43-.37-.43-.54-.44h-.44Z" />
-                </svg>
-                WhatsApp
               </a>
             </div>
           </div>
