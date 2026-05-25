@@ -7,6 +7,7 @@ import { fetchPortfolio } from "@/lib/portfolio";
 
 const resumeHref = "https://drive.google.com/file/d/1-aVSbUSbd0Av9BdEgq4_A1mqF72xQeaU/view?usp=sharing";
 const imageLogoBrands = new Set(["spss", "rstudio", "figma", "photoshop", "canva"]);
+const heroImageSrc = "/naila-hero.png";
 
 function SkillLogo({ brand }) {
   const imageLogos = {
@@ -116,7 +117,7 @@ export default async function Home() {
               <p className="eyebrow hero-eyebrow" data-i18n="heroEyebrow">
                 Psychology / HR / Leadership
               </p>
-              <h1 data-i18n="heroTitle">
+              <h1 className="hero-title" data-i18n="heroTitle">
                 Helping people grow through psychology, leadership, and talent development.
               </h1>
               <p className="hero-lead" data-i18n="heroLead">
@@ -145,47 +146,57 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="stats-panel reveal" aria-label="Portfolio impact statistics">
-              <article className="stat-card stat-card-large">
-                <span className="stat-icon">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3ZM8 11c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3Zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13Zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5C23 14.17 18.33 13 16 13Z" />
-                  </svg>
-                </span>
-                <strong>87+</strong>
-                <span data-i18n="statCandidates">
-                  Talent Applications Evaluated Through Structured Recruitment & Selection
-                </span>
-              </article>
-              <article className="stat-card">
-                <span className="stat-icon">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 2 3 6.5v11L12 22l9-4.5v-11L12 2Zm0 2.2 5.76 2.88L12 9.96 6.24 7.08 12 4.2Zm-7 4.5 6 3v7.8l-6-3V8.7Zm8 10.8v-7.8l6-3v7.8l-6 3Z" />
-                  </svg>
-                </span>
-                <strong>23+</strong>
-                <span data-i18n="statTeam">Team Members Led Across Multiple Organizational Projects</span>
-              </article>
-              <article className="stat-card">
-                <span className="stat-icon">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10Zm0-2.45c2.05-1.43 5-4.35 5-7.55a2 2 0 0 0-3.55-1.26L12 11.52l-1.45-1.78A2 2 0 0 0 7 11c0 3.2 2.95 6.12 5 7.55Z" />
-                  </svg>
-                </span>
-                <strong>150+</strong>
-                <span data-i18n="statImpact">Beneficiaries Impacted Through Community Programs</span>
-              </article>
-              <article className="stat-card stat-card-wide">
-                <span className="stat-icon">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M4 18h16v2H4v-2Zm1-3.5 4.5-4.5 3 3L19 6.5V11h2V3h-8v2h4.5l-5 5-3-3L3.6 12.9 5 14.5Z" />
-                  </svg>
-                </span>
-                <strong>78%</strong>
-                <span data-i18n="statGrowth">
-                  Performance Improvement Achieved Through Training & Development Programs
-                </span>
-              </article>
+            <div className="hero-visual reveal" aria-label="Portrait and impact metrics">
+              <div className="hero-image-frame">
+                <img
+                  className="hero-image"
+                  src={heroImageSrc}
+                  alt="Naila Azahra portrait"
+                  loading="eager"
+                />
+              </div>
+              <div className="hero-metrics" aria-label="Portfolio impact statistics">
+                <article className="stat-card hero-stat hero-stat-1">
+                  <span className="stat-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3ZM8 11c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3Zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13Zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5C23 14.17 18.33 13 16 13Z" />
+                    </svg>
+                  </span>
+                  <strong>87+</strong>
+                  <span data-i18n="statCandidates">
+                    Talent Applications Evaluated Through Structured Recruitment & Selection
+                  </span>
+                </article>
+                <article className="stat-card hero-stat hero-stat-2">
+                  <span className="stat-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 2 3 6.5v11L12 22l9-4.5v-11L12 2Zm0 2.2 5.76 2.88L12 9.96 6.24 7.08 12 4.2Zm-7 4.5 6 3v7.8l-6-3V8.7Zm8 10.8v-7.8l6-3v7.8l-6 3Z" />
+                    </svg>
+                  </span>
+                  <strong>23+</strong>
+                  <span data-i18n="statTeam">Team Members Led Across Multiple Organizational Projects</span>
+                </article>
+                <article className="stat-card hero-stat hero-stat-3">
+                  <span className="stat-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10Zm0-2.45c2.05-1.43 5-4.35 5-7.55a2 2 0 0 0-3.55-1.26L12 11.52l-1.45-1.78A2 2 0 0 0 7 11c0 3.2 2.95 6.12 5 7.55Z" />
+                    </svg>
+                  </span>
+                  <strong>150+</strong>
+                  <span data-i18n="statImpact">Beneficiaries Impacted Through Community Programs</span>
+                </article>
+                <article className="stat-card hero-stat hero-stat-4">
+                  <span className="stat-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M4 18h16v2H4v-2Zm1-3.5 4.5-4.5 3 3L19 6.5V11h2V3h-8v2h4.5l-5 5-3-3L3.6 12.9 5 14.5Z" />
+                    </svg>
+                  </span>
+                  <strong>78%</strong>
+                  <span data-i18n="statGrowth">
+                    Performance Improvement Achieved Through Training & Development Programs
+                  </span>
+                </article>
+              </div>
             </div>
           </div>
         </section>
