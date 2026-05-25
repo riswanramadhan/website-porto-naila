@@ -20,10 +20,10 @@ export default async function AdminLoginPage() {
       <main className="admin-login-page">
         <div className="admin-login-shell">
           <aside className="admin-login-showcase" aria-label="Portfolio admin">
-            <span className="admin-login-brand">NA</span>
+            <span className="admin-login-brand">NR</span>
             <div>
               <p className="eyebrow">Portfolio workspace</p>
-              <h2>Satu ruang untuk menjaga cerita terbaik Anda tetap rapi.</h2>
+              <h2>Shining, Shimmering, Splendid.</h2>
             </div>
             <div className="admin-login-features">
               <p>Kelola pencapaian dan sertifikat</p>

@@ -16,28 +16,28 @@ export default function LoginForm() {
         <span className="admin-login-lock" aria-hidden="true">
           <ShieldCheck />
         </span>
-        <p className="eyebrow">Admin access</p>
-        <h1>Selamat datang, Naila.</h1>
-        <p>Masuk untuk mengelola portfolio, dokumentasi, dan pencapaian Anda.</p>
+        <p className="eyebrow">has been secured by Riswan</p>
+        <h1>Selamat datang, Alay.</h1>
+        <p>Tolong itu password diingat baik baik nah, nd bisa diubah soalnya. ribet.</p>
       </div>
 
       <label className="admin-login-field">
-        <span>Username</span>
+        <span>Username yang alay</span>
         <div className="admin-login-input">
           <UserRound aria-hidden="true" />
-          <input name="username" autoComplete="username" placeholder="Masukkan username" required autoFocus />
+          <input name="username" autoComplete="username" placeholder="Ketikmi usernameta" required autoFocus />
         </div>
       </label>
 
       <label className="admin-login-field">
-        <span>Password</span>
+        <span>Password Muingatji?</span>
         <div className="admin-login-input">
           <LockKeyhole aria-hidden="true" />
           <input
             name="password"
             type={showPassword ? "text" : "password"}
             autoComplete="current-password"
-            placeholder="Masukkan password"
+            placeholder="Ketikmi passwordnya dek"
             required
           />
           <button

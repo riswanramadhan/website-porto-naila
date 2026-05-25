@@ -10,10 +10,34 @@ import { ChevronDown, ChevronRight, ChevronUp, LogOut, PencilLine, Trash2 } from
 const initialState = { status: "idle", message: "" };
 const sectionOrder = ["experiences", "projects", "news", "achievements"];
 const encouragementMessages = [
-  "Pastikan judul singkat dan gambar terlihat jelas sebelum menyimpan.",
-  "Konten yang rapi membuat portfolio lebih mudah dipercaya pembaca.",
-  "Gunakan deskripsi yang padat agar pencapaian cepat dipahami.",
-  "Periksa kembali ejaan, tautan, dan gambar sebelum publikasi.",
+  "berpura pura bodoh tu asik banget, bisa liat orang orang yang sok pinter ngomomg",
+  "dan bila hari ini kamu belum bersinar, mungkin Tuhan sedang menyiapkan kilau terbaikmu untuk bersinar lebih indah di hari esok.",
+  "gpp kl km gapilih ak, emg ga semua org seleranya sebagus ak.",
+  "dia ya dia, aku ya aku. jangan pilih dia sambil kangen aku.",
+  "kl km nolongin orang jangan diinget, tp kl km ditologin orang itu harus diinget.",
+  "belum sempat buka hati, eh yang sebelah udh gonta ganti",
+  "jangan terlalu terang, nanti banyak yg ga senang",
+  "gamau berlebihan lagi ah, kecuali DUIT",
+  "'semua cowo sama aja', makanya jangan dicobain satu satu.",
+  "gamau posting ulang, takut asrama ku bubar.",
+  "im not naturally smart but i try hard",
+  "study hard, love will find you later",
+  "study hard girl, remember being a smart student is way more interesting than just being the prettiest one",
+  "the goal is to be pretty with brain, not just pretty",
+  "kita tu ga akan bisa menang, kalau kita ga percaya bahwa kita bisa",
+  "lo pinter bukan karena terlahir pinter. tapi karena lo belajar mati matian",
+  "secukupnya, semampunya, sebisanya",
+  "always remember, studying doesn't suck as much failing",
+  "ayo belajar, bukan untuk jadi hebat. tapi agar ga mudah dibodohi oleh dunia",
+  "ada pohon yang ditakdirkan tidak memiliki bunga yang indah, tapi ia tumbuh diberi akar yang kuat agar tidak tumbang",
+  "harus ada sesuatu yang bikin kamu excited untuk hidup",
+  "awal dari kebijaksanaan adalah menyadari betapa bodohnya dirimu sendiri",
+  "Tuhan tidak menunda, tapi menata",
+  "loving yourself is giving yourself what you want someone else to",
+  "be a kind person even if nothing comes back in return",
+  "be happy, be healty, be confident, be the best version and be proud of your self",
+  "you cannot escape the difficult days, you can only learn to live through them",
+  "magis minoris, felicior. (semakin diremehkan. semaking senang)",
 ];
 
 const sectionConfig = {
@@ -986,7 +1010,7 @@ export default function AdminForm({
             </section>
 
             <section className="admin-encouragement" aria-live="polite">
-              <strong>Catatan sebelum menyimpan</strong>
+              <strong>pesan ini dibaca baik-baik dekkk</strong>
               <p>{encouragement}</p>
             </section>
 
