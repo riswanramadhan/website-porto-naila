@@ -46,11 +46,15 @@ const translations = {
     proofBody:
       "Dummy images are used for now, ready to be replaced with event photos, certificates, dashboard screenshots, or program documentation.",
     projectsEyebrow: "Projects",
-    projectsTitle: "Case studies with a people-first operating model.",
+    projectsTitle: "Projects Driven by People, Purpose, and Social Impact.",
     projectsBody:
-      "Programs shaped around clear problems, practical solutions, and impact that can be communicated simply.",
+      "A showcase of initiatives designed to create meaningful change through collaboration, community-centered solutions, and measurable impact.",
+    projectProblem: "Problem",
+    projectSolution: "Solution",
+    projectImpact: "Impact",
+    projectReadMore: "Read more about this project",
     newsEyebrow: "News",
-    newsTitle: "Media coverage of leadership, education, and community impact.",
+    newsTitle: "Featured News & Media Coverage of leadership, education, and community impact.",
     newsBody:
       "Selected articles covering Naila's achievements, Growmates initiatives, education programs, and social collaboration projects.",
     newsPhoto: "News Photo",
@@ -72,12 +76,21 @@ const translations = {
     skillsHrTools: "HR Tools",
     achievementsEyebrow: "Achievements & Activities",
     achievementsTitle: "Recognition across leadership, research, and communication.",
+    achievementEyebrow: "Achievement",
+    achievementReadMore: "Read more",
+    achievementDocs: "Documentation",
+    achievementCertificate: "Certificate",
+    backToAchievements: "Back to achievements",
     contactEyebrow: "Contact",
     contactTitle: "Let's build people-centered growth systems.",
     contactBody:
       "Reach out for HR collaboration, youth leadership programs, organizational development work, or psychology-informed people projects.",
     formName: "Name",
+    formNamePlaceholder: "Your name",
+    formEmail: "Email",
+    formEmailPlaceholder: "you@example.com",
     formMessage: "Message",
+    formMessagePlaceholder: "Tell me about your project",
     sendMessage: "Send Message",
     backTop: "Back to top",
     open: "Open",
@@ -126,11 +139,15 @@ const translations = {
     proofBody:
       "Saat ini memakai dummy image dan siap diganti dengan foto kegiatan, sertifikat, screenshot dashboard, atau dokumentasi program.",
     projectsEyebrow: "Proyek",
-    projectsTitle: "Studi kasus dengan model kerja yang people-first.",
+    projectsTitle: "Proyek digerakkan oleh manusia, tujuan, dan dampak sosial.",
     projectsBody:
-      "Program yang dibentuk dari masalah jelas, solusi praktis, dan dampak yang mudah dipahami.",
+      "Rangkaian inisiatif yang dirancang untuk menciptakan perubahan melalui kolaborasi, solusi berbasis komunitas, dan dampak terukur.",
+    projectProblem: "Masalah",
+    projectSolution: "Solusi",
+    projectImpact: "Dampak",
+    projectReadMore: "Baca lebih lanjut tentang proyek ini",
     newsEyebrow: "Berita",
-    newsTitle: "Liputan media tentang kepemimpinan, pendidikan, dan dampak komunitas.",
+    newsTitle: "Berita dan liputan media tentang kepemimpinan, pendidikan, dan dampak komunitas.",
     newsBody:
       "Artikel pilihan yang meliput prestasi Naila, inisiatif Growmates, program pendidikan, dan proyek kolaborasi sosial.",
     newsPhoto: "Foto Berita",
@@ -146,18 +163,27 @@ const translations = {
     skillsEyebrow: "Keahlian",
     skillsTitle: "Toolkit seimbang untuk talenta, analisis, dan komunikasi kreatif.",
     skillsSoftSkills: "Soft Skills",
-    skillsAnalytics: "Analytics",
-    skillsCreative: "Creative",
-    skillsLanguage: "Language",
-    skillsHrTools: "HR Tools",
+    skillsAnalytics: "Analitik",
+    skillsCreative: "Kreatif",
+    skillsLanguage: "Bahasa",
+    skillsHrTools: "Perangkat HR",
     achievementsEyebrow: "Pencapaian & Aktivitas",
     achievementsTitle: "Pengakuan dalam kepemimpinan, riset, dan komunikasi.",
+    achievementEyebrow: "Pencapaian",
+    achievementReadMore: "Selengkapnya",
+    achievementDocs: "Dokumentasi",
+    achievementCertificate: "Sertifikat",
+    backToAchievements: "Kembali ke pencapaian",
     contactEyebrow: "Kontak",
     contactTitle: "Mari bangun sistem pertumbuhan yang berpusat pada manusia.",
     contactBody:
       "Hubungi untuk kolaborasi HR, program kepemimpinan muda, pengembangan organisasi, atau proyek people berbasis psikologi.",
     formName: "Nama",
+    formNamePlaceholder: "Nama Anda",
+    formEmail: "Email",
+    formEmailPlaceholder: "you@example.com",
     formMessage: "Pesan",
+    formMessagePlaceholder: "Ceritakan tentang proyek Anda",
     sendMessage: "Kirim Pesan",
     backTop: "Kembali ke atas",
     open: "Buka",
@@ -232,6 +258,13 @@ export default function ClientInteractions() {
         const key = element.dataset.i18n;
         if (translations[language][key]) {
           element.textContent = translations[language][key];
+        }
+      });
+
+      document.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
+        const key = element.dataset.i18nPlaceholder;
+        if (translations[language][key]) {
+          element.setAttribute("placeholder", translations[language][key]);
         }
       });
 

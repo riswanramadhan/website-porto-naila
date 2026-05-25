@@ -6,48 +6,19 @@ import ContactForm from "@/components/ContactForm";
 import { fetchPortfolio } from "@/lib/portfolio";
 
 const resumeHref = "https://drive.google.com/file/d/1-aVSbUSbd0Av9BdEgq4_A1mqF72xQeaU/view?usp=sharing";
+const imageLogoBrands = new Set(["spss", "rstudio", "figma", "photoshop", "canva"]);
 
 function SkillLogo({ brand }) {
-  if (brand === "spss") {
-    return (
-      <svg viewBox="0 0 64 64" aria-hidden="true">
-        <rect x="8" y="8" width="48" height="48" rx="16" fill="#2f6de1" />
-        <path d="M18 22h10v4H18zM18 30h28v4H18zM18 38h20v4H18z" fill="#ffffff" />
-        <circle cx="44" cy="24" r="4" fill="#dbeafe" />
-      </svg>
-    );
-  }
-
-  if (brand === "rstudio") {
-    return (
-      <svg viewBox="0 0 64 64" aria-hidden="true">
-        <rect x="8" y="8" width="48" height="48" rx="18" fill="#1f77b4" />
-        <circle cx="32" cy="32" r="14" fill="#ffffff" opacity="0.95" />
-        <path d="M28 24h6.2c4.1 0 6.8 1.9 6.8 5.3 0 2.7-1.7 4.5-4.1 5.2L42 40h-4.4l-4.5-5h-1.1v5H28V24Zm4 3.2v4.8h1.9c2.2 0 3.3-.8 3.3-2.4 0-1.7-1.1-2.4-3.3-2.4H32Z" fill="#1f77b4" />
-      </svg>
-    );
-  }
-
-  if (brand === "figma") {
-    return (
-      <svg viewBox="0 0 64 64" aria-hidden="true">
-        <rect x="8" y="8" width="48" height="48" rx="16" fill="#ffffff" />
-        <path d="M24 14h8a8 8 0 0 1 0 16h-8a8 8 0 0 1 0-16Z" fill="#f24e1e" />
-        <path d="M24 30h8a8 8 0 0 1 0 16h-8a8 8 0 0 1 0-16Z" fill="#ff7262" />
-        <path d="M24 46h8a8 8 0 0 1 0 4a8 8 0 0 1-8-8v4Z" fill="#a259ff" />
-        <path d="M32 14h8a8 8 0 0 1 0 16h-8V14Z" fill="#1abcfe" />
-        <circle cx="40" cy="38" r="8" fill="#0acf83" />
-      </svg>
-    );
-  }
-
-  if (brand === "canva") {
-    return (
-      <svg viewBox="0 0 64 64" aria-hidden="true">
-        <circle cx="32" cy="32" r="24" fill="#00c4cc" />
-        <path d="M34.5 20.5c-6.2 0-11.3 4.9-11.3 11.4 0 5.7 4.4 11.1 10.9 11.1 4.3 0 7.2-1.8 9.3-5.1l-4.1-2.2c-1.2 1.8-2.8 2.8-5 2.8-3.4 0-6-2.7-6-6.5 0-3.8 2.6-6.5 6-6.5 2 0 3.7.8 4.9 2.4l4.1-2.4c-2-3.2-5-5-8.8-5Z" fill="#ffffff" />
-      </svg>
-    );
+  const imageLogos = {
+    spss: "/logo-spss.png",
+    rstudio: "/logo-r studio.png",
+    figma: "/logo-figma.png",
+    photoshop: "/logo-photoshop.png",
+    canva: "/logo-canva.png",
+  };
+  const imageSrc = imageLogos[brand];
+  if (imageSrc) {
+    return <img className="skill-logo-image" src={imageSrc} alt={`${brand} logo`} loading="lazy" />;
   }
 
   return (
@@ -165,7 +136,7 @@ export default async function Home() {
                   </svg>
                   <span data-i18n="viewResume">View Resume</span>
                 </a>
-                <a className="button button-secondary" href="/#contact">
+                <a className="button button-secondary" href="#contact">
                   <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M4 6h16v12H4V6Zm2.2 2 5.8 4.35L17.8 8H6.2Zm11.8 8V9.9l-6 4.5-6-4.5V16h12Z" />
                   </svg>
@@ -357,13 +328,19 @@ export default async function Home() {
                     ) : null}
                   </div>
                   <dl>
-                    <dt>Problem</dt>
+                    <dt data-i18n="projectProblem">Problem</dt>
                     <dd>{project.problem}</dd>
-                    <dt>Solution</dt>
+                    <dt data-i18n="projectSolution">Solution</dt>
                     <dd>{project.solution}</dd>
-                    <dt>Impact</dt>
+                    <dt data-i18n="projectImpact">Impact</dt>
                     <dd>{project.impact}</dd>
                   </dl>
+                  <a
+                    className="project-readmore"
+                    href={project.href && project.href.trim() ? project.href : "#contact"}
+                  >
+                    <span data-i18n="projectReadMore">Read more about this project</span>
+                  </a>
                 </article>
               ))}
             </div>
@@ -376,7 +353,9 @@ export default async function Home() {
               <p className="eyebrow" data-i18n="newsEyebrow">
                 News
               </p>
-              <h2 data-i18n="newsTitle">Featured News & Media Coverage of leadership, education, and community impact.</h2>
+              <h2 data-i18n="newsTitle">
+                Featured News & Media Coverage of leadership, education, and community impact.
+              </h2>
               <p data-i18n="newsBody">
                 Selected articles covering Naila's achievements, Growmates initiatives, education
                 programs, and social collaboration projects.
@@ -429,7 +408,10 @@ export default async function Home() {
                     <div className="skill-tool-grid">
                       {card.items.map((tool) => (
                         <div className="skill-tool" key={tool.name}>
-                          <span className="skill-tool-mark" aria-hidden="true">
+                          <span
+                            className={`skill-tool-mark ${imageLogoBrands.has(tool.brand) ? "is-image" : ""}`.trim()}
+                            aria-hidden="true"
+                          >
                             <SkillLogo brand={tool.brand} />
                           </span>
                           <span className="skill-tool-name">{tool.name}</span>
@@ -491,7 +473,7 @@ export default async function Home() {
                     <h3>{achievement.title}</h3>
                     <p>{achievement.summary}</p>
                     <span className="award-readmore">
-                      Read more
+                      <span data-i18n="achievementReadMore">Read more</span>
                       <svg viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M13.5 5.5 20 12l-6.5 6.5-1.4-1.4 4-4H4v-2h12.1l-4-4 1.4-1.6Z" />
                       </svg>
@@ -545,7 +527,7 @@ export default async function Home() {
         </section>
       </main>
 
-      <SiteFooter backTopHref="/#home" />
+      <SiteFooter backTopHref="#home" />
       <ClientInteractions />
     </>
   );

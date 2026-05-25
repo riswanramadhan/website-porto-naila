@@ -62,6 +62,7 @@ export const projects = [
   {
     id: 1,
     title: "Hope & Help",
+    href: "#contact",
     image: {
       src: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=75",
       alt: "Youth learning and community education program",
@@ -76,6 +77,7 @@ export const projects = [
   {
     id: 2,
     title: "Journey for Self",
+    href: "#contact",
     image: {
       src: "https://images.unsplash.com/photo-1499728603263-13726abce5fd?auto=format&fit=crop&w=900&q=75",
       alt: "Reflective journaling and self development workshop",
@@ -90,6 +92,7 @@ export const projects = [
   {
     id: 3,
     title: "Schoolaship",
+    href: "#contact",
     image: {
       src: "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=900&q=75",
       alt: "Scholarship preparation and student mentoring",

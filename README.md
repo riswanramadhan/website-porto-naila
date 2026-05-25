@@ -109,6 +109,7 @@ Project:
 {
   "title": "Hope & Help",
   "image": { "src": "https://example.com/image.jpg", "alt": "Program photo" },
+  "href": "https://example.com/project",
   "problem": "Young people needed approachable mental health support.",
   "solution": "Built a structured outreach concept.",
   "impact": "Strengthened community mental health literacy.",

@@ -8,7 +8,7 @@ export default async function SiteHeader() {
   return (
     <header className="site-header">
       <nav className="nav container" aria-label="Primary navigation">
-        <Link className="brand" href="/#home" aria-label="Naila Azahra home">
+        <Link className="brand" href="#home" aria-label="Naila Azahra home">
           <span className={`brand-mark ${profileImage ? "has-image" : ""}`.trim()}>
             {profileImage ? <img src={profileImage} alt={profile.image.alt || "Naila Azahra profile"} /> : "NA"}
           </span>
@@ -22,22 +22,22 @@ export default async function SiteHeader() {
         </button>
 
         <div className="nav-menu" id="nav-menu">
-          <Link href="/#about" data-i18n="navAbout">
+          <Link href="#about" data-i18n="navAbout">
             About
           </Link>
-          <Link href="/#experience" data-i18n="navExperience">
+          <Link href="#experience" data-i18n="navExperience">
             Experience
           </Link>
-          <Link href="/#projects" data-i18n="navProjects">
+          <Link href="#projects" data-i18n="navProjects">
             Projects
           </Link>
-          <Link href="/#news" data-i18n="navNews">
+          <Link href="#news" data-i18n="navNews">
             News
           </Link>
-          <Link href="/#skills" data-i18n="navSkills">
+          <Link href="#skills" data-i18n="navSkills">
             Skills
           </Link>
-          <Link href="/#contact" data-i18n="navContact">
+          <Link href="#contact" data-i18n="navContact">
             Contact
           </Link>
           <div className="nav-mobile-controls">
@@ -53,8 +53,17 @@ export default async function SiteHeader() {
               </span>
               <span className="toggle-track" aria-hidden="true">
                 <span className="toggle-icon toggle-icon-sun">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 4.5a1 1 0 0 1 1 1V7a1 1 0 0 1-2 0V5.5a1 1 0 0 1 1-1Zm0 11.5a1 1 0 0 1 1 1V18.5a1 1 0 0 1-2 0V17a1 1 0 0 1 1-1Zm7.5-4.5a1 1 0 0 1-1 1H17a1 1 0 0 1 0-2h1.5a1 1 0 0 1 1 1Zm-11 0a1 1 0 0 1-1 1H5.5a1 1 0 0 1 0-2H7a1 1 0 0 1 1 1Zm7.78-5.28a1 1 0 0 1 0 1.41L15.55 8a1 1 0 1 1-1.41-1.41l.73-.72a1 1 0 0 1 1.41 0Zm-7.07 7.07a1 1 0 0 1 0 1.41l-.72.73a1 1 0 1 1-1.41-1.41l.72-.73a1 1 0 0 1 1.41 0Zm0-7.07-.72-.72a1 1 0 1 1 1.41-1.41l.72.72a1 1 0 1 1-1.41 1.41ZM16.26 14.8a1 1 0 0 1 1.41 0l.72.72a1 1 0 1 1-1.41 1.41l-.72-.72a1 1 0 0 1 0-1.41ZM12 8.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7Z" />
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="4" />
+                    <path d="M12 2.5v2.5M12 19v2.5M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2.5 12h2.5M19 12h2.5M4.2 19.8l1.8-1.8M18 6l1.8-1.8" />
                   </svg>
                 </span>
                 <span className="toggle-icon toggle-icon-moon">
@@ -118,8 +127,17 @@ export default async function SiteHeader() {
             </span>
             <span className="toggle-track" aria-hidden="true">
               <span className="toggle-icon toggle-icon-sun">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 4.5a1 1 0 0 1 1 1V7a1 1 0 0 1-2 0V5.5a1 1 0 0 1 1-1Zm0 11.5a1 1 0 0 1 1 1V18.5a1 1 0 0 1-2 0V17a1 1 0 0 1 1-1Zm7.5-4.5a1 1 0 0 1-1 1H17a1 1 0 0 1 0-2h1.5a1 1 0 0 1 1 1Zm-11 0a1 1 0 0 1-1 1H5.5a1 1 0 0 1 0-2H7a1 1 0 0 1 1 1Zm7.78-5.28a1 1 0 0 1 0 1.41L15.55 8a1 1 0 1 1-1.41-1.41l.73-.72a1 1 0 0 1 1.41 0Zm-7.07 7.07a1 1 0 0 1 0 1.41l-.72.73a1 1 0 1 1-1.41-1.41l.72-.73a1 1 0 0 1 1.41 0Zm0-7.07-.72-.72a1 1 0 1 1 1.41-1.41l.72.72a1 1 0 1 1-1.41 1.41ZM16.26 14.8a1 1 0 0 1 1.41 0l.72.72a1 1 0 1 1-1.41 1.41l-.72-.72a1 1 0 0 1 0-1.41ZM12 8.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7Z" />
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 2.5v2.5M12 19v2.5M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2.5 12h2.5M19 12h2.5M4.2 19.8l1.8-1.8M18 6l1.8-1.8" />
                 </svg>
               </span>
               <span className="toggle-icon toggle-icon-moon">
@@ -167,7 +185,7 @@ export default async function SiteHeader() {
               <span className="toggle-thumb"></span>
             </span>
           </button>
-          <Link className="nav-cta" href="/#contact" data-i18n="navCta">
+          <Link className="nav-cta" href="#contact" data-i18n="navCta">
             Let's Talk
           </Link>
         </div>

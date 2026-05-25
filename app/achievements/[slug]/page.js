@@ -46,7 +46,9 @@ export default async function AchievementPage({ params }) {
         <section className="section achievement-hero" id="achievement">
           <div className="container achievement-hero-grid">
             <div className="achievement-header reveal">
-              <p className="eyebrow">Achievement</p>
+              <p className="eyebrow" data-i18n="achievementEyebrow">
+                Achievement
+              </p>
               <h1>{achievement.title}</h1>
               <p className="achievement-lead">{achievement.lead}</p>
               <div className="achievement-meta">
@@ -55,7 +57,7 @@ export default async function AchievementPage({ params }) {
                 ))}
               </div>
               <div className="hero-actions" aria-label="Achievement actions">
-                <a className="button button-secondary" href="/#achievements">
+                <a className="button button-secondary" href="/#achievements" data-i18n="backToAchievements">
                   Back to achievements
                 </a>
                 <a className="button button-primary" href="/#contact" data-i18n="contactMe">
@@ -72,7 +74,7 @@ export default async function AchievementPage({ params }) {
         <section className="section achievement-details">
           <div className="container achievement-detail-grid">
             <article className="achievement-media-section reveal">
-              <h2>Documentation</h2>
+              <h2 data-i18n="achievementDocs">Documentation</h2>
               <div className="achievement-copy-block">
                 <p>{achievement.documentationBody}</p>
                 <AchievementMediaGallery items={documentationItems} />
@@ -80,7 +82,7 @@ export default async function AchievementPage({ params }) {
             </article>
 
             <article className="achievement-media-section reveal">
-              <h2>Certificate</h2>
+              <h2 data-i18n="achievementCertificate">Certificate</h2>
               <div className="achievement-copy-block">
                 <p>{achievement.certificateBody}</p>
                 <AchievementMediaGallery items={certificateItems} className="certificate-grid" />

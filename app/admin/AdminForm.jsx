@@ -5,7 +5,7 @@ import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { updatePortfolio } from "./actions";
 import { logoutAdmin } from "./login/actions";
-import { ChevronDown, ChevronUp, EllipsisVertical, PencilLine, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronRight, ChevronUp, LogOut, PencilLine, Trash2 } from "lucide-react";
 
 const initialState = { status: "idle", message: "" };
 const sectionOrder = ["experiences", "projects", "news", "achievements"];
@@ -81,6 +81,7 @@ const createEmptyExperience = (orderIndex = 1) => ({
 const createEmptyProject = (orderIndex = 1) => ({
   id: createId(),
   title: "",
+  href: "",
   isActive: true,
   image: { src: "", alt: "" },
   problem: "",
@@ -356,7 +357,7 @@ export default function AdminForm({
   const [activeSection, setActiveSection] = useState(sectionOrder[0]);
   const [utilityPanel, setUtilityPanel] = useState(null);
   const [isDark, setIsDark] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarCollapsed] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [manageOpen, setManageOpen] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -371,6 +372,8 @@ export default function AdminForm({
   const [focusIndex, setFocusIndex] = useState(null);
   const [encouragement, setEncouragement] = useState("");
   const editorRef = useRef(null);
+  const profileImage = profile?.image?.src;
+  const profileImageAlt = profile?.image?.alt || "Naila Azahra profile";
   const statusLabel =
     supabaseMode === "service" ? "Siap disimpan" : supabaseReady ? "Hanya lihat" : "Belum siap";
   const statusClass =
@@ -663,7 +666,9 @@ export default function AdminForm({
         <aside className="admin-sidebar" aria-label="Sidebar navigation">
           <div className="admin-sidebar-header">
             <div className="admin-logo">
-              <span className="admin-logo-mark">NA</span>
+              <span className={`admin-logo-mark ${profileImage ? "has-image" : ""}`.trim()}>
+                {profileImage ? <img src={profileImage} alt={profileImageAlt} /> : "NA"}
+              </span>
               <div>
                 <strong>Admin Panel</strong>
                 <small>Portfolio Suite</small>
@@ -679,117 +684,107 @@ export default function AdminForm({
                 <path d="M6 6l12 12M18 6l-12 12" />
               </svg>
             </button>
-            <button
-              className="admin-icon-button"
-              type="button"
-              onClick={() => setSidebarCollapsed((current) => !current)}
-              aria-label={sidebarCollapsed ? "Perluas menu" : "Ringkas menjadi ikon"}
-            >
-              <EllipsisVertical aria-hidden="true" />
-            </button>
           </div>
 
-          <div className="admin-nav-section">
-            <p className="admin-nav-label">Dashboard</p>
-            <button
-              type="button"
-              className={`admin-nav-item ${!utilityPanel && activeSection === "experiences" ? "is-active" : ""}`}
-              onClick={() => {
-                setUtilityPanel(null);
-                setActiveSection("experiences");
-              }}
-            >
-              <span className="admin-nav-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M4 4h6v6H4V4Zm10 0h6v4h-6V4ZM4 14h6v6H4v-6Zm10-2h6v8h-6v-8Z" />
-                </svg>
-              </span>
-              <span className="admin-nav-text">Overview</span>
-            </button>
-          </div>
+          <div className="admin-sidebar-content" aria-label="Sidebar content">
+            <div className="admin-nav-section">
+              <p className="admin-nav-label">Dashboard</p>
+              <button
+                type="button"
+                className={`admin-nav-item ${!utilityPanel && activeSection === "experiences" ? "is-active" : ""}`}
+                onClick={() => {
+                  setUtilityPanel(null);
+                  setActiveSection("experiences");
+                }}
+              >
+                <span className="admin-nav-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 4h6v6H4V4Zm10 0h6v4h-6V4ZM4 14h6v6H4v-6Zm10-2h6v8h-6v-8Z" />
+                  </svg>
+                </span>
+                <span className="admin-nav-text">Overview</span>
+              </button>
+            </div>
 
-          <div className="admin-nav-section">
-            <button
-              type="button"
-              className="admin-nav-group-toggle"
-              onClick={() => setManageOpen((current) => !current)}
-              aria-expanded={manageOpen}
-            >
-              <span className="admin-nav-text">Konten</span>
-              <ChevronDown className="admin-nav-group-icon" aria-hidden="true" />
-            </button>
-            {manageOpen || sidebarCollapsed ? (
-              <div className="admin-nav-group">
-                {sectionOrder.map((sectionKey) => (
-                  <button
-                    key={sectionKey}
-                    type="button"
-                    className={`admin-nav-item ${activeSection === sectionKey ? "is-active" : ""}`}
-                    onClick={() => {
-                      setUtilityPanel(null);
-                      setActiveSection(sectionKey);
-                    }}
-                  >
-                    <span className="admin-nav-icon">
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d={navIcons[sectionKey]} />
-                      </svg>
-                    </span>
-                    <span className="admin-nav-text">{sectionConfig[sectionKey].title}</span>
-                    <span className="admin-nav-count">{draft[sectionKey].length}</span>
-                  </button>
-                ))}
-              </div>
-            ) : null}
-          </div>
+            <div className="admin-nav-section">
+              <button
+                type="button"
+                className="admin-nav-group-toggle"
+                onClick={() => setManageOpen((current) => !current)}
+                aria-expanded={manageOpen}
+              >
+                <span className="admin-nav-text">Konten</span>
+                {manageOpen ? (
+                  <ChevronDown className="admin-nav-group-icon" aria-hidden="true" />
+                ) : (
+                  <ChevronRight className="admin-nav-group-icon" aria-hidden="true" />
+                )}
+              </button>
+              {manageOpen || sidebarCollapsed ? (
+                <div className="admin-nav-group">
+                  {sectionOrder.map((sectionKey) => (
+                    <button
+                      key={sectionKey}
+                      type="button"
+                      className={`admin-nav-item ${activeSection === sectionKey ? "is-active" : ""}`}
+                      onClick={() => {
+                        setUtilityPanel(null);
+                        setActiveSection(sectionKey);
+                      }}
+                    >
+                      <span className="admin-nav-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path d={navIcons[sectionKey]} />
+                        </svg>
+                      </span>
+                      <span className="admin-nav-text">{sectionConfig[sectionKey].title}</span>
+                      <span className="admin-nav-count">{draft[sectionKey].length}</span>
+                    </button>
+                  ))}
+                </div>
+              ) : null}
+            </div>
 
-          <div className="admin-nav-section">
-            <p className="admin-nav-label">Tools</p>
-            <button
-              type="button"
-              className={`admin-nav-item ${utilityPanel === "profile" ? "is-active" : ""}`}
-              onClick={() => setUtilityPanel("profile")}
-            >
-              <span className="admin-nav-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-4 0-7 2-7 4.5V20h14v-1.5C19 16 16 14 12 14Z" />
-                </svg>
-              </span>
-              <span className="admin-nav-text">Foto Navbar</span>
-            </button>
-            <button
-              type="button"
-              className={`admin-nav-item ${utilityPanel === "messages" ? "is-active" : ""}`}
-              onClick={() => setUtilityPanel("messages")}
-            >
-              <span className="admin-nav-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M3 5h18v14H3V5Zm2 2v1l7 5 7-5V7H5Zm14 10v-6.55l-7 5-7-5V17h14Z" />
-                </svg>
-              </span>
-              <span className="admin-nav-text">Pesan Masuk</span>
-              <span className="admin-nav-count">{initialMessages.length}</span>
-            </button>
+            <div className="admin-nav-section">
+              <p className="admin-nav-label">Tools</p>
+              <button
+                type="button"
+                className={`admin-nav-item ${utilityPanel === "profile" ? "is-active" : ""}`}
+                onClick={() => setUtilityPanel("profile")}
+              >
+                <span className="admin-nav-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-4 0-7 2-7 4.5V20h14v-1.5C19 16 16 14 12 14Z" />
+                  </svg>
+                </span>
+                <span className="admin-nav-text">Foto Navbar</span>
+              </button>
+              <button
+                type="button"
+                className={`admin-nav-item ${utilityPanel === "messages" ? "is-active" : ""}`}
+                onClick={() => setUtilityPanel("messages")}
+              >
+                <span className="admin-nav-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 5h18v14H3V5Zm2 2v1l7 5 7-5V7H5Zm14 10v-6.55l-7 5-7-5V17h14Z" />
+                  </svg>
+                </span>
+                <span className="admin-nav-text">Pesan Masuk</span>
+                <span className="admin-nav-count">{initialMessages.length}</span>
+              </button>
+            </div>
           </div>
 
           <div className="admin-sidebar-footer">
             <div className="admin-user-card">
-              <div className="admin-avatar">NA</div>
+              <div className={`admin-avatar ${profileImage ? "has-image" : ""}`.trim()}>
+                {profileImage ? <img src={profileImage} alt={profileImageAlt} /> : "NA"}
+              </div>
               <div>
                 <strong>Naila Azahra</strong>
-                <small>Owner</small>
+                <small>Owner website</small>
               </div>
             </div>
-            <button
-              className="admin-icon-button"
-              type="button"
-              onClick={() => setSidebarOpen((current) => !current)}
-              aria-label="Toggle sidebar on mobile"
-            >
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M4 12h16M4 6h16M4 18h16" />
-              </svg>
-            </button>
           </div>
         </aside>
 
@@ -852,14 +847,17 @@ export default function AdminForm({
                     aria-haspopup="true"
                     aria-expanded={userMenuOpen}
                   >
-                    <span className="admin-avatar">NA</span>
+                    <span className={`admin-avatar ${profileImage ? "has-image" : ""}`.trim()}>
+                      {profileImage ? <img src={profileImage} alt={profileImageAlt} /> : "NA"}
+                    </span>
                     <span className="admin-user-name">Naila</span>
                   </button>
                   {userMenuOpen ? (
                     <div className="admin-dropdown" role="menu">
-                      <button type="button">Profil</button>
-                      <button type="button">Pengaturan</button>
-                      <button type="submit" formAction={logoutAdmin}>Keluar</button>
+                      <button type="submit" formAction={logoutAdmin} className="admin-dropdown-logout">
+                        <LogOut size={16} aria-hidden="true" />
+                        <span>Keluar</span>
+                      </button>
                     </div>
                   ) : null}
                 </div>
@@ -1344,6 +1342,20 @@ export default function AdminForm({
                             previewLabel="Project image preview"
                             statusText={uploadStatus[imageStatusKey]}
                           />
+                          <Field label="Tautan proyek" help="Tambahkan link untuk tombol read more pada kartu proyek.">
+                            <input
+                              type="url"
+                              value={item.href ?? ""}
+                              onChange={(event) =>
+                                updateSectionItem(sectionKey, index, (currentItem) => ({
+                                  ...currentItem,
+                                  href: event.target.value,
+                                }))
+                              }
+                              placeholder="https://..."
+                              disabled={!supabaseReady}
+                            />
+                          </Field>
                           <Field label="Masalah">
                             <textarea
                               rows={3}
@@ -1976,6 +1988,17 @@ export default function AdminForm({
               </div>
           </div>
         </div>
+
+        <footer className="admin-footer" role="contentinfo">
+          <span className="admin-footer-heart">
+            <span>made with</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10Z" />
+            </svg>
+          </span>
+          <span className="admin-footer-dot" aria-hidden="true"></span>
+          <span className="admin-footer-powered">Powered by Riswan Cakep</span>
+        </footer>
       </div>
 
       {deleteTarget ? (

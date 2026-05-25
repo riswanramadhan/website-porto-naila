@@ -34,15 +34,38 @@ export default function ContactForm() {
       <label htmlFor="name" data-i18n="formName">
         Name
       </label>
-      <input id="name" name="name" type="text" placeholder="Your name" required />
+      <input
+        id="name"
+        name="name"
+        type="text"
+        placeholder="Your name"
+        data-i18n-placeholder="formNamePlaceholder"
+        required
+      />
 
-      <label htmlFor="email">Email</label>
-      <input id="email" name="email" type="email" placeholder="you@example.com" required />
+      <label htmlFor="email" data-i18n="formEmail">
+        Email
+      </label>
+      <input
+        id="email"
+        name="email"
+        type="email"
+        placeholder="you@example.com"
+        data-i18n-placeholder="formEmailPlaceholder"
+        required
+      />
 
       <label htmlFor="message" data-i18n="formMessage">
         Message
       </label>
-      <textarea id="message" name="message" rows="5" placeholder="Tell me about your project" required></textarea>
+      <textarea
+        id="message"
+        name="message"
+        rows="5"
+        placeholder="Tell me about your project"
+        data-i18n-placeholder="formMessagePlaceholder"
+        required
+      ></textarea>
 
       <ContactSubmitButton />
       <p className={`form-note contact-feedback is-${state.status}`} aria-live="polite">

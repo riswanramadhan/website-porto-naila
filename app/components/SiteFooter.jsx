@@ -1,14 +1,17 @@
 import Link from "next/link";
 
-export default function SiteFooter({ backTopHref = "/#home" }) {
+export default function SiteFooter({ backTopHref = "#home" }) {
   const isHashLink = backTopHref.startsWith("#");
   const label = "Back to top";
+  const currentYear = new Date().getFullYear();
 
   return (
     <>
       <footer className="footer">
         <div className="container footer-inner">
-          <p>Naila Azahra (c) 2026</p>
+          <p>
+            Naila Azahra {"\u00A9"} {currentYear}
+          </p>
         </div>
       </footer>
       {isHashLink ? (

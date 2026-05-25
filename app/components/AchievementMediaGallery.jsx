@@ -17,7 +17,7 @@ export default function AchievementMediaGallery({ items = [], className = "" }) 
             <Lightbox src={item?.src} alt={item?.alt || caption} caption={caption}>
               <img src={item?.src} alt={item?.alt || "Achievement media"} loading="lazy" />
             </Lightbox>
-            {caption ? <figcaption>{caption}</figcaption> : null}
+            {caption ? <figcaption className="achievement-media-caption">{caption}</figcaption> : null}
           </figure>
         );
       })}

@@ -10,6 +10,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" data-theme="light" data-language="en">
       <head>
+        <meta name="google-site-verification" content="RnssxGQ8CbQhVWsYIQjzn6znRvUMUhq7svJ54Gu4bTc" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
