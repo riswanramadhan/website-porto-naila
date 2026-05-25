@@ -2311,10 +2311,10 @@ h3 {
   .hero-image-frame {
     position: absolute;
     top: -88%;
-    right: -12%;
-    width: clamp(220px, 58vw, 360px);
-    height: clamp(320px, 70vh, 520px);
-    opacity: 0.45;
+    right: -30%;
+    width: clamp(600, 75vw, 600px);
+    height: clamp(450, 85vh, 600px);
+    opacity: 0.3;
     z-index: 0;
     pointer-events: none;
   }
