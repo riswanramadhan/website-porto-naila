@@ -5,9 +5,33 @@ import SiteHeader from "@/components/SiteHeader";
 import ContactForm from "@/components/ContactForm";
 import { fetchPortfolio } from "@/lib/portfolio";
 
-const resumeHref = "https://drive.google.com/file/d/1-aVSbUSbd0Av9BdEgq4_A1mqF72xQeaU/view?usp=sharing";
-const imageLogoBrands = new Set(["spss", "rstudio", "figma", "photoshop", "canva"]);
+const resumeHref =
+  "https://drive.google.com/file/d/1-aVSbUSbd0Av9BdEgq4_A1mqF72xQeaU/view?usp=sharing";
+const imageLogoBrands = new Set([
+  "spss",
+  "rstudio",
+  "figma",
+  "photoshop",
+  "canva",
+]);
 const heroImageSrc = "/naila-hero.png";
+
+const getMediaStyle = (image = {}) => {
+  const focus = image.focus ?? {};
+  const parsePercent = (value, fallback) => {
+    const numeric = Number(value);
+    if (!Number.isFinite(numeric)) return fallback;
+    return Math.min(100, Math.max(0, numeric));
+  };
+  const x = parsePercent(focus.x, 50);
+  const y = parsePercent(focus.y, 50);
+  return {
+    "--media-focus-x": `${x}%`,
+    "--media-focus-y": `${y}%`,
+  };
+};
+
+const getCardImageSrc = (image = {}) => image.cardSrc || image.src;
 
 function SkillLogo({ brand }) {
   const imageLogos = {
@@ -19,23 +43,37 @@ function SkillLogo({ brand }) {
   };
   const imageSrc = imageLogos[brand];
   if (imageSrc) {
-    return <img className="skill-logo-image" src={imageSrc} alt={`${brand} logo`} loading="lazy" />;
+    return (
+      <img
+        className="skill-logo-image"
+        src={imageSrc}
+        alt={`${brand} logo`}
+        loading="lazy"
+      />
+    );
   }
 
   return (
     <svg viewBox="0 0 64 64" aria-hidden="true">
       <rect x="8" y="8" width="48" height="48" rx="16" fill="#001e36" />
-      <path d="M22 43V21h9.1c4.1 0 6.9 2.7 6.9 6.6 0 4-2.8 6.7-6.9 6.7H27v8h-5Zm5-12h3.4c1.9 0 3-1 3-2.7 0-1.6-1.1-2.6-3-2.6H27v5.3Zm16 12V28h4.3v3.1h.1c.8-2.2 2.5-3.5 4.9-3.5.5 0 .9 0 1.2.1v4.3c-.4-.1-1.1-.2-1.8-.2-2.6 0-4.4 1.5-4.4 4.2V43h-4.3Z" fill="#31a8ff" />
+      <path
+        d="M22 43V21h9.1c4.1 0 6.9 2.7 6.9 6.6 0 4-2.8 6.7-6.9 6.7H27v8h-5Zm5-12h3.4c1.9 0 3-1 3-2.7 0-1.6-1.1-2.6-3-2.6H27v5.3Zm16 12V28h4.3v3.1h.1c.8-2.2 2.5-3.5 4.9-3.5.5 0 .9 0 1.2.1v4.3c-.4-.1-1.1-.2-1.8-.2-2.6 0-4.4 1.5-4.4 4.2V43h-4.3Z"
+        fill="#31a8ff"
+      />
     </svg>
   );
 }
 
 export default async function Home() {
   const { achievements, experiences, news, projects } = await fetchPortfolio();
-  const activeExperiences = experiences.filter((item) => item.isActive !== false);
+  const activeExperiences = experiences.filter(
+    (item) => item.isActive !== false,
+  );
   const activeProjects = projects.filter((item) => item.isActive !== false);
   const activeNews = news.filter((item) => item.isActive !== false);
-  const activeAchievements = achievements.filter((item) => item.isActive !== false);
+  const activeAchievements = achievements.filter(
+    (item) => item.isActive !== false,
+  );
   const skillCards = [
     {
       title: "Soft Skills",
@@ -114,15 +152,21 @@ export default async function Home() {
           <div className="hero-glow" aria-hidden="true"></div>
           <div className="container hero-grid">
             <div className="hero-copy reveal">
-              <p className="eyebrow hero-eyebrow" data-i18n="heroEyebrow">
-                Psychology / HR / Leadership
+              <p className="eyebrow hero-eyebrow typing" data-typing="hero">
+                <span className="sr-only" data-i18n="heroEyebrow">
+                  Psychology / HR / Leadership
+                </span>
+                <span className="typing-text" aria-hidden="true">
+                  Psychology / HR / Leadership
+                </span>
               </p>
               <h1 className="hero-title" data-i18n="heroTitle">
-                Helping people grow through psychology, leadership, and talent development.
+                Helping people grow through psychology, leadership, and talent
+                development.
               </h1>
               <p className="hero-lead" data-i18n="heroLead">
-                Aspiring HR professional with experience in recruitment, talent management, and
-                project leadership.
+                Aspiring HR professional with experience in recruitment, talent
+                management, and project leadership.
               </p>
               <div className="hero-actions" aria-label="Primary actions">
                 <a
@@ -146,7 +190,10 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="hero-visual reveal" aria-label="Portrait and impact metrics">
+            <div
+              className="hero-visual reveal"
+              aria-label="Portrait and impact metrics"
+            >
               <div className="hero-image-frame">
                 <img
                   className="hero-image"
@@ -155,16 +202,22 @@ export default async function Home() {
                   loading="eager"
                 />
               </div>
-              <div className="hero-metrics" aria-label="Portfolio impact statistics">
+              <div
+                className="hero-metrics"
+                aria-label="Portfolio impact statistics"
+              >
                 <article className="stat-card hero-stat hero-stat-1">
                   <span className="stat-icon">
                     <svg viewBox="0 0 24 24" aria-hidden="true">
                       <path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3ZM8 11c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3Zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13Zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5C23 14.17 18.33 13 16 13Z" />
                     </svg>
                   </span>
-                  <strong>87+</strong>
+                  <strong data-count="87" data-count-suffix="+">
+                    87+
+                  </strong>
                   <span data-i18n="statCandidates">
-                    Talent Applications Evaluated Through Structured Recruitment & Selection
+                    Talent Applications Evaluated Through Structured Recruitment
+                    & Selection
                   </span>
                 </article>
                 <article className="stat-card hero-stat hero-stat-2">
@@ -173,8 +226,12 @@ export default async function Home() {
                       <path d="M12 2 3 6.5v11L12 22l9-4.5v-11L12 2Zm0 2.2 5.76 2.88L12 9.96 6.24 7.08 12 4.2Zm-7 4.5 6 3v7.8l-6-3V8.7Zm8 10.8v-7.8l6-3v7.8l-6 3Z" />
                     </svg>
                   </span>
-                  <strong>23+</strong>
-                  <span data-i18n="statTeam">Team Members Led Across Multiple Organizational Projects</span>
+                  <strong data-count="23" data-count-suffix="+">
+                    23+
+                  </strong>
+                  <span data-i18n="statTeam">
+                    Team Members Led Across Multiple Organizational Projects
+                  </span>
                 </article>
                 <article className="stat-card hero-stat hero-stat-3">
                   <span className="stat-icon">
@@ -182,8 +239,12 @@ export default async function Home() {
                       <path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10Zm0-2.45c2.05-1.43 5-4.35 5-7.55a2 2 0 0 0-3.55-1.26L12 11.52l-1.45-1.78A2 2 0 0 0 7 11c0 3.2 2.95 6.12 5 7.55Z" />
                     </svg>
                   </span>
-                  <strong>150+</strong>
-                  <span data-i18n="statImpact">Beneficiaries Impacted Through Community Programs</span>
+                  <strong data-count="150" data-count-suffix="+">
+                    150+
+                  </strong>
+                  <span data-i18n="statImpact">
+                    Beneficiaries Impacted Through Community Programs
+                  </span>
                 </article>
                 <article className="stat-card hero-stat hero-stat-4">
                   <span className="stat-icon">
@@ -191,74 +252,15 @@ export default async function Home() {
                       <path d="M4 18h16v2H4v-2Zm1-3.5 4.5-4.5 3 3L19 6.5V11h2V3h-8v2h4.5l-5 5-3-3L3.6 12.9 5 14.5Z" />
                     </svg>
                   </span>
-                  <strong>78%</strong>
+                  <strong data-count="78" data-count-suffix="%">
+                    78%
+                  </strong>
                   <span data-i18n="statGrowth">
-                    Performance Improvement Achieved Through Training & Development Programs
+                    Performance Improvement Achieved Through Training &
+                    Development Programs
                   </span>
                 </article>
               </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="section" id="about">
-          <div className="container">
-            <div className="section-heading reveal">
-              <p className="eyebrow" data-i18n="aboutEyebrow">
-                About
-              </p>
-              <h2 data-i18n="aboutTitle">
-                Building people, teams, and meaningful organizational impact.
-              </h2>
-              <p data-i18n="aboutBody">
-                Naila Azahra is a Psychology student at Hasanuddin University passionate about
-                Human Resources Development, talent growth, and organizational effectiveness.
-                Experienced in recruitment, performance monitoring, and team leadership, she
-                combines psychology insights with data-driven approaches to support people and
-                organizational development.
-              </p>
-            </div>
-
-            <div className="education-grid">
-              <article className="card reveal">
-                <span className="edu-logo">
-                  <img
-                    src="/logo-unhas.png"
-                    alt="Hasanuddin University logo"
-                  />
-                </span>
-                <h3>Hasanuddin University</h3>
-                <p data-i18n="eduHasanuddin">
-                  Psychology student with a strong interest in Human Resources Development,
-                  organizational behavior, talent management, and people development.
-                </p>
-              </article>
-              <article className="card reveal">
-                <span className="edu-logo">
-                  <img
-                    src="/logo-ions.png"
-                    alt="IONs International Education logo"
-                  />
-                </span>
-                <h3>IONs International Education</h3>
-                <p data-i18n="eduIons">
-                  Strengthened professional English communication, public speaking confidence, and
-                  cross-cultural collaboration skills through international learning experiences.
-                </p>
-              </article>
-              <article className="card reveal">
-                <span className="edu-logo edu-logo-wide">
-                  <img
-                    src="/logo al abidin.png"
-                    alt="Al-Abidin Bilingual Boarding School logo"
-                  />
-                </span>
-                <h3>Al-Abidin Bilingual Boarding School</h3>
-                <p data-i18n="eduAlabidin">
-                  Built strong foundations in bilingual communication, discipline, leadership, and
-                  academic English through Cambridge international education.
-                </p>
-              </article>
             </div>
           </div>
         </section>
@@ -273,14 +275,17 @@ export default async function Home() {
                 People operations, youth leadership, and impact programs.
               </h2>
               <p data-i18n="experienceBody">
-                Selected roles where Naila has led teams, managed talent workflows, and translated
-                ideas into community outcomes.
+                Selected roles where Naila has led teams, managed talent
+                workflows, and translated ideas into community outcomes.
               </p>
             </div>
 
             <div className="timeline">
               {activeExperiences.map((experience, index) => (
-                <article className="timeline-card reveal" key={experience.id ?? experience.role}>
+                <article
+                  className="timeline-card reveal"
+                  key={experience.id ?? experience.role}
+                >
                   <button
                     className="timeline-trigger"
                     type="button"
@@ -289,7 +294,10 @@ export default async function Home() {
                     <span className="timeline-title">
                       {experience.logo?.src ? (
                         <span className="timeline-logo">
-                          <img src={experience.logo.src} alt={experience.logo.alt || experience.role} />
+                          <img
+                            src={experience.logo.src}
+                            alt={experience.logo.alt || experience.role}
+                          />
                         </span>
                       ) : null}
                       <span className="timeline-title-text">
@@ -317,25 +325,100 @@ export default async function Home() {
           </div>
         </section>
 
+        <section className="section" id="about">
+          <div className="container">
+            <div className="section-heading reveal">
+              <p className="eyebrow" data-i18n="aboutEyebrow">
+                About
+              </p>
+              <h2 data-i18n="aboutTitle">
+                Building people, teams, and meaningful organizational impact.
+              </h2>
+              <p data-i18n="aboutBody">
+                Naila Azahra is a Psychology student at Hasanuddin University
+                passionate about Human Resources Development, talent growth, and
+                organizational effectiveness. Experienced in recruitment,
+                performance monitoring, and team leadership, she combines
+                psychology insights with data-driven approaches to support
+                people and organizational development.
+              </p>
+            </div>
+
+            <div className="education-grid">
+              <article className="card reveal">
+                <span className="edu-logo">
+                  <img src="/logo-unhas.png" alt="Hasanuddin University logo" />
+                </span>
+                <h3>Hasanuddin University</h3>
+                <p data-i18n="eduHasanuddin">
+                  Psychology student with a strong interest in Human Resources
+                  Development, organizational behavior, talent management, and
+                  people development.
+                </p>
+              </article>
+              <article className="card reveal">
+                <span className="edu-logo">
+                  <img
+                    src="/logo-ions.png"
+                    alt="IONs International Education logo"
+                  />
+                </span>
+                <h3>IONs International Education</h3>
+                <p data-i18n="eduIons">
+                  Strengthened professional English communication, public
+                  speaking confidence, and cross-cultural collaboration skills
+                  through international learning experiences.
+                </p>
+              </article>
+              <article className="card reveal">
+                <span className="edu-logo edu-logo-wide">
+                  <img
+                    src="/logo al abidin.png"
+                    alt="Al-Abidin Bilingual Boarding School logo"
+                  />
+                </span>
+                <h3>Al-Abidin Bilingual Boarding School</h3>
+                <p data-i18n="eduAlabidin">
+                  Built strong foundations in bilingual communication,
+                  discipline, leadership, and academic English through Cambridge
+                  international education.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+
         <section className="section" id="projects">
           <div className="container">
             <div className="section-heading reveal">
               <p className="eyebrow" data-i18n="projectsEyebrow">
                 Projects
               </p>
-              <h2 data-i18n="projectsTitle">Projects Driven by People, Purpose, and Social Impact.</h2>
+              <h2 data-i18n="projectsTitle">
+                Projects Driven by People, Purpose, and Social Impact.
+              </h2>
               <p data-i18n="projectsBody">
-                A showcase of initiatives designed to create meaningful change through collaboration, community-centered solutions, and measurable impact.
+                A showcase of initiatives designed to create meaningful change
+                through collaboration, community-centered solutions, and
+                measurable impact.
               </p>
             </div>
 
             <div className="project-grid">
               {activeProjects.map((project) => (
-                <article className="case-card reveal" key={project.id ?? project.title}>
+                <article
+                  className="case-card reveal"
+                  key={project.id ?? project.title}
+                >
                   <div className="case-topline">
                     <h3>{project.title}</h3>
                     {project.image ? (
-                      <img className="case-image" src={project.image.src} alt={project.image.alt} />
+                      <img
+                        className="case-image"
+                        src={getCardImageSrc(project.image)}
+                        alt={project.image.alt}
+                        style={getMediaStyle(project.image)}
+                      />
                     ) : null}
                   </div>
                   <dl>
@@ -348,9 +431,15 @@ export default async function Home() {
                   </dl>
                   <a
                     className="project-readmore"
-                    href={project.href && project.href.trim() ? project.href : "#contact"}
+                    href={
+                      project.href && project.href.trim()
+                        ? project.href
+                        : "#contact"
+                    }
                   >
-                    <span data-i18n="projectReadMore">Read more about this project</span>
+                    <span data-i18n="projectReadMore">
+                      Read more about this project
+                    </span>
                   </a>
                 </article>
               ))}
@@ -365,11 +454,13 @@ export default async function Home() {
                 News
               </p>
               <h2 data-i18n="newsTitle">
-                Featured News & Media Coverage of leadership, education, and community impact.
+                Featured News & Media Coverage of leadership, education, and
+                community impact.
               </h2>
               <p data-i18n="newsBody">
-                Selected articles covering Naila's achievements, Growmates initiatives, education
-                programs, and social collaboration projects.
+                Selected articles covering Naila's achievements, Growmates
+                initiatives, education programs, and social collaboration
+                projects.
               </p>
             </div>
 
@@ -384,7 +475,11 @@ export default async function Home() {
                 >
                   {article.image ? (
                     <div className="news-photo">
-                      <img src={article.image.src} alt={article.image.alt} />
+                      <img
+                        src={getCardImageSrc(article.image)}
+                        alt={article.image.alt}
+                        style={getMediaStyle(article.image)}
+                      />
                     </div>
                   ) : null}
                   <div className="news-copy">
@@ -406,14 +501,17 @@ export default async function Home() {
                 Skills
               </p>
               <h2 data-i18n="skillsTitle">
-                A balanced toolkit for talent, analysis, and creative communication.
+                A balanced toolkit for talent, analysis, and creative
+                communication.
               </h2>
             </div>
 
             <div className="skills-grid">
               {skillCards.map((card) => (
                 <article className="skill-card reveal" key={card.title}>
-                  {card.icon ? <span className="card-icon">{card.icon}</span> : null}
+                  {card.icon ? (
+                    <span className="card-icon">{card.icon}</span>
+                  ) : null}
                   <h3 data-i18n={card.titleKey}>{card.title}</h3>
                   {card.type === "logos" ? (
                     <div className="skill-tool-grid">
@@ -432,7 +530,10 @@ export default async function Home() {
                   ) : card.type === "languages" ? (
                     <div className="skill-language-list">
                       {card.items.map((language) => (
-                        <div className="skill-language-item" key={language.label}>
+                        <div
+                          className="skill-language-item"
+                          key={language.label}
+                        >
                           <strong>{language.label}</strong>
                           <span>{language.detail}</span>
                         </div>
@@ -472,7 +573,12 @@ export default async function Home() {
                 >
                   <div className="award-media">
                     {achievement.image ? (
-                      <img className="award-image" src={achievement.image.src} alt={achievement.image.alt} />
+                      <img
+                        className="award-image"
+                        src={getCardImageSrc(achievement.image)}
+                        alt={achievement.image.alt}
+                        style={getMediaStyle(achievement.image)}
+                      />
                     ) : null}
                   </div>
                   <div className="award-copy">
@@ -502,10 +608,13 @@ export default async function Home() {
               <p className="eyebrow" data-i18n="contactEyebrow">
                 Contact
               </p>
-              <h2 data-i18n="contactTitle">Let's build people-centered growth systems.</h2>
+              <h2 data-i18n="contactTitle">
+                Let's build people-centered growth systems.
+              </h2>
               <p data-i18n="contactBody">
-                Reach out for HR collaboration, youth leadership programs, organizational
-                development work, or psychology-informed people projects.
+                Reach out for HR collaboration, youth leadership programs,
+                organizational development work, or psychology-informed people
+                projects.
               </p>
               <div className="contact-links">
                 <a
@@ -524,7 +633,11 @@ export default async function Home() {
                   </svg>
                   Email
                 </a>
-                <a href="https://www.instagram.com/nailaazahrra" target="_blank" rel="noreferrer">
+                <a
+                  href="https://www.instagram.com/nailaazahrra"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.25-2.7a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4Z" />
                   </svg>

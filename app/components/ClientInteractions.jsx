@@ -192,6 +192,11 @@ const translations = {
   },
 };
 
+const typingSequences = {
+  en: ["Psychology", "HR", "Leadership"],
+  id: ["Psikologi", "HR", "Kepemimpinan"],
+};
+
 export default function ClientInteractions() {
   const pathname = usePathname();
 
@@ -206,6 +211,11 @@ export default function ClientInteractions() {
     const cursorDot = document.querySelector(".cursor-dot");
     const cursorRing = document.querySelector(".cursor-ring");
     const ambientItems = Array.from(document.querySelectorAll(".ambient-orb, .magic-line"));
+    const typingTarget = document.querySelector("[data-typing='hero'] .typing-text");
+    const statCounters = Array.from(document.querySelectorAll("[data-count]"));
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     let currentLanguage = localStorage.getItem("language") || "en";
     let currentTheme = localStorage.getItem("theme") || "light";
@@ -248,6 +258,97 @@ export default function ClientInteractions() {
       });
     };
 
+    const syncTimelineHeights = () => {
+      timelineTriggers.forEach((trigger) => {
+        const content = trigger.nextElementSibling;
+        if (!(content instanceof HTMLElement)) return;
+        if (trigger.getAttribute("aria-expanded") === "true") {
+          content.style.maxHeight = `${content.scrollHeight}px`;
+        } else {
+          content.style.maxHeight = "0px";
+        }
+      });
+    };
+
+    let typingTimer;
+    const getTypingWords = (language) => typingSequences[language] ?? typingSequences.en;
+    const stopTyping = () => {
+      if (typingTimer) {
+        globalThis.clearTimeout(typingTimer);
+        typingTimer = null;
+      }
+    };
+    const setTypingStatic = () => {
+      if (!typingTarget) return;
+      const words = getTypingWords(currentLanguage);
+      typingTarget.textContent = words.join(" / ");
+    };
+    const startTyping = () => {
+      if (!typingTarget) return;
+      const words = getTypingWords(currentLanguage);
+      let wordIndex = 0;
+      let charIndex = 0;
+      let isDeleting = false;
+
+      const step = () => {
+        const currentWord = words[wordIndex] ?? "";
+        charIndex = isDeleting ? charIndex - 1 : charIndex + 1;
+        typingTarget.textContent = currentWord.slice(0, charIndex);
+
+        let delay = isDeleting ? 38 : 70 + Math.random() * 60;
+        if (!isDeleting && charIndex >= currentWord.length) {
+          delay = 900;
+          isDeleting = true;
+        } else if (isDeleting && charIndex <= 0) {
+          isDeleting = false;
+          wordIndex = (wordIndex + 1) % words.length;
+          delay = 280;
+        }
+
+        typingTimer = globalThis.setTimeout(step, delay);
+      };
+
+      typingTimer = globalThis.setTimeout(step, 260);
+    };
+    const initTyping = () => {
+      stopTyping();
+      if (!typingTarget) return;
+      if (prefersReducedMotion) {
+        setTypingStatic();
+        return;
+      }
+      startTyping();
+    };
+
+    const countAnimations = new Map();
+    const formatCount = (value, suffix) => `${value}${suffix}`;
+    const animateCount = (element) => {
+      if (!element || element.dataset.counted === "true") return;
+      const raw = Number(element.dataset.count);
+      const target = Number.isFinite(raw) ? raw : 0;
+      const suffix = element.dataset.countSuffix || "";
+      const duration = Number(element.dataset.countDuration) || 1200;
+      const start = performance.now();
+      const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+
+      const step = (now) => {
+        const progress = Math.min((now - start) / duration, 1);
+        const current = Math.round(target * easeOut(progress));
+        element.textContent = formatCount(current, suffix);
+        if (progress < 1) {
+          const frameId = requestAnimationFrame(step);
+          countAnimations.set(element, frameId);
+        } else {
+          element.dataset.counted = "true";
+          countAnimations.delete(element);
+        }
+      };
+
+      element.textContent = formatCount(0, suffix);
+      const frameId = requestAnimationFrame(step);
+      countAnimations.set(element, frameId);
+    };
+
     const setLanguage = (language) => {
       currentLanguage = language;
       document.documentElement.lang = language === "id" ? "id" : "en";
@@ -276,6 +377,8 @@ export default function ClientInteractions() {
 
       updateThemeLabels();
       updateTimelineCues();
+      initTyping();
+      syncTimelineHeights();
     };
 
     const closeMobileMenu = () => {
@@ -310,6 +413,7 @@ export default function ClientInteractions() {
       timelineTriggers.forEach((item) => item.setAttribute("aria-expanded", "false"));
       trigger.setAttribute("aria-expanded", String(!isExpanded));
       updateTimelineCues();
+      syncTimelineHeights();
     };
 
     navToggle?.addEventListener("click", handleNavToggle);
@@ -359,6 +463,29 @@ export default function ClientInteractions() {
       sectionObserver.observe(section);
     });
 
+    const countObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          animateCount(entry.target);
+          countObserver.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.4 }
+    );
+
+    statCounters.forEach((element) => {
+      if (prefersReducedMotion) {
+        const raw = Number(element.dataset.count);
+        const target = Number.isFinite(raw) ? raw : 0;
+        const suffix = element.dataset.countSuffix || "";
+        element.textContent = formatCount(target, suffix);
+        element.dataset.counted = "true";
+        return;
+      }
+      countObserver.observe(element);
+    });
+
     const animateAmbient = () => {
       const scrollRatio =
         window.scrollY / Math.max(document.body.scrollHeight - window.innerHeight, 1);
@@ -404,10 +531,12 @@ export default function ClientInteractions() {
 
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("scroll", animateAmbient, { passive: true });
+    window.addEventListener("resize", syncTimelineHeights);
 
     setTheme(currentTheme);
     setLanguage(currentLanguage);
     updateTimelineCues();
+    syncTimelineHeights();
     animateAmbient();
     moveCursor();
 
@@ -421,8 +550,11 @@ export default function ClientInteractions() {
       });
       revealObserver.disconnect();
       sectionObserver.disconnect();
+      countObserver.disconnect();
+      countAnimations.forEach((frameId) => cancelAnimationFrame(frameId));
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("scroll", animateAmbient);
+      window.removeEventListener("resize", syncTimelineHeights);
       hoverTargets.forEach((element) => {
         element.removeEventListener("mouseenter", handleHover);
         element.removeEventListener("mouseleave", handleLeave);
@@ -430,6 +562,7 @@ export default function ClientInteractions() {
       if (cursorFrame) {
         cancelAnimationFrame(cursorFrame);
       }
+      stopTyping();
     };
   }, [pathname]);
 

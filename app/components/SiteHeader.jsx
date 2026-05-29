@@ -9,23 +9,37 @@ export default async function SiteHeader() {
     <header className="site-header">
       <nav className="nav container" aria-label="Primary navigation">
         <Link className="brand" href="#home" aria-label="Naila Azahra home">
-          <span className={`brand-mark ${profileImage ? "has-image" : ""}`.trim()}>
-            {profileImage ? <img src={profileImage} alt={profile.image.alt || "Naila Azahra profile"} /> : "NA"}
+          <span
+            className={`brand-mark ${profileImage ? "has-image" : ""}`.trim()}
+          >
+            {profileImage ? (
+              <img
+                src={profileImage}
+                alt={profile.image.alt || "Naila Azahra profile"}
+              />
+            ) : (
+              "NA"
+            )}
           </span>
           <span>Naila Azahra</span>
         </Link>
 
-        <button className="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+        <button
+          className="nav-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="nav-menu"
+        >
           <span className="sr-only">Open menu</span>
           <span></span>
           <span></span>
         </button>
 
         <div className="nav-menu" id="nav-menu">
-          <Link href="#about" data-i18n="navAbout">
+          <Link href="#experience" data-i18n="navExperience">
             About
           </Link>
-          <Link href="#experience" data-i18n="navExperience">
+          <Link href="#about" data-i18n="navAbout">
             Experience
           </Link>
           <Link href="#projects" data-i18n="navProjects">

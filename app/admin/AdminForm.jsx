@@ -6,6 +6,7 @@ import { useFormStatus } from "react-dom";
 import { updatePortfolio } from "./actions";
 import { logoutAdmin } from "./login/actions";
 import { ChevronDown, ChevronRight, ChevronUp, LogOut, PencilLine, Trash2 } from "lucide-react";
+import CropModal from "./CropModal";
 
 const initialState = { status: "idle", message: "" };
 const sectionOrder = ["experiences", "projects", "news", "achievements"];
@@ -107,7 +108,7 @@ const createEmptyProject = (orderIndex = 1) => ({
   title: "",
   href: "",
   isActive: true,
-  image: { src: "", alt: "" },
+  image: { src: "", alt: "", focus: { x: 50, y: 50 }, cardSrc: "", detailSrc: "" },
   problem: "",
   solution: "",
   impact: "",
@@ -121,7 +122,7 @@ const createEmptyNews = (orderIndex = 1) => ({
   summary: "",
   href: "",
   isActive: true,
-  image: { src: "", alt: "" },
+  image: { src: "", alt: "", focus: { x: 50, y: 50 }, cardSrc: "", detailSrc: "" },
   orderIndex,
 });
 
@@ -131,7 +132,7 @@ const createEmptyAchievement = (orderIndex = 1) => ({
   title: "",
   summary: "",
   isActive: true,
-  image: { src: "", alt: "" },
+  image: { src: "", alt: "", focus: { x: 50, y: 50 }, cardSrc: "", detailSrc: "" },
   lead: "",
   meta: [],
   documentationBody: "",
@@ -212,19 +213,97 @@ function ImageField({
   onClear,
   onAltChange,
   onUpload,
+  focusValue,
+  onFocusChange,
   disabled,
   statusText,
   previewLabel,
   previewClassName = "",
+  cropOptions = [],
+  cropPreviews = [],
+  onCropRequest,
 }) {
   const handleClear = () => onClear?.();
+  const previewRef = useRef(null);
+  const draggingRef = useRef(false);
+  const isDraggable = Boolean(focusValue && onFocusChange && isUrlValue(value));
+  const hasCropSource = isUrlValue(value);
+  const cropActions = Array.isArray(cropOptions) ? cropOptions : [];
+  const cropPreviewItems = Array.isArray(cropPreviews) ? cropPreviews : [];
+  const previewStyle = focusValue
+    ? {
+        "--media-focus-x": `${focusValue.x ?? 50}%`,
+        "--media-focus-y": `${focusValue.y ?? 50}%`,
+      }
+    : undefined;
+  const focusIndicatorStyle = focusValue
+    ? {
+        left: `${focusValue.x ?? 50}%`,
+        top: `${focusValue.y ?? 50}%`,
+      }
+    : undefined;
+
+  const clampPercent = (value) => Math.min(100, Math.max(0, value));
+  const updateFocusFromEvent = (event) => {
+    if (!previewRef.current || !onFocusChange) return;
+    const rect = previewRef.current.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    const x = clampPercent(((event.clientX - rect.left) / rect.width) * 100);
+    const y = clampPercent(((event.clientY - rect.top) / rect.height) * 100);
+    onFocusChange({ x, y });
+  };
+  const handlePointerDown = (event) => {
+    if (!isDraggable) return;
+    draggingRef.current = true;
+    event.preventDefault();
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+    updateFocusFromEvent(event);
+  };
+  const handlePointerMove = (event) => {
+    if (!draggingRef.current || !isDraggable) return;
+    event.preventDefault();
+    updateFocusFromEvent(event);
+  };
+  const handlePointerUp = (event) => {
+    if (!draggingRef.current) return;
+    draggingRef.current = false;
+    event.currentTarget.releasePointerCapture?.(event.pointerId);
+  };
+  const handlePointerLeave = () => {
+    draggingRef.current = false;
+  };
+  const handleFocusReset = () => {
+    onFocusChange?.({ x: 50, y: 50 });
+  };
 
   return (
     <div className="admin-image-field">
       <Field label={label} help={help}>
         <div className="admin-image-grid">
-          <div className={`admin-image-preview ${previewClassName}`.trim()} aria-label={previewLabel}>
-            {isUrlValue(value) ? <img src={value} alt={altValue || label} /> : <span>Belum ada gambar</span>}
+          <div
+            ref={previewRef}
+            className={`admin-image-preview ${previewClassName} ${isDraggable ? "is-draggable" : ""}`.trim()}
+            aria-label={previewLabel}
+            style={previewStyle}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerCancel={handlePointerUp}
+            onPointerLeave={handlePointerLeave}
+          >
+            {isUrlValue(value) ? (
+              <img src={value} alt={altValue || label} draggable={false} />
+            ) : (
+              <span>Belum ada gambar</span>
+            )}
+            {isDraggable ? (
+              <>
+                <span className="admin-focus-indicator" style={focusIndicatorStyle} aria-hidden="true" />
+                <span className="admin-image-hint" aria-hidden="true">
+                  Geser gambar untuk mengatur fokus crop
+                </span>
+              </>
+            ) : null}
           </div>
           <div className="admin-image-controls">
             <input
@@ -267,6 +346,43 @@ function ImageField({
               </label>
             </div>
             <UploadStatus text={statusText} />
+            {cropActions.length ? (
+              <div className="admin-crop-actions">
+                {cropActions.map((option) => (
+                  <button
+                    key={option.label}
+                    className="button button-secondary"
+                    type="button"
+                    onClick={() => onCropRequest?.(option)}
+                    disabled={disabled || !hasCropSource}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+            {cropPreviewItems.length
+              ? cropPreviewItems.map((preview) => (
+                  <CropPreview
+                    key={preview.label}
+                    label={preview.label}
+                    value={preview.value}
+                    statusText={preview.statusText}
+                    onClear={preview.onClear}
+                    disabled={disabled}
+                  />
+                ))
+              : null}
+            {focusValue && onFocusChange ? (
+              <button
+                className="button button-secondary"
+                type="button"
+                onClick={handleFocusReset}
+                disabled={disabled}
+              >
+                Reset fokus
+              </button>
+            ) : null}
           </div>
         </div>
       </Field>
@@ -304,6 +420,27 @@ function ItemToolbar({ onRemove, sectionLabel, disabled, isActive, onStatusChang
 function UploadStatus({ text }) {
   if (!text) return null;
   return <p className="admin-upload-status">{text}</p>;
+}
+
+function CropPreview({ label, value, statusText, onClear, disabled }) {
+  if (!value) return null;
+  return (
+    <div className="admin-crop-preview">
+      <div className="admin-crop-preview-header">
+        <span>{label}</span>
+        {onClear ? (
+          <button type="button" className="button button-secondary" onClick={onClear} disabled={disabled}>
+            Hapus crop
+          </button>
+        ) : null}
+      </div>
+      <div className="admin-crop-preview-media">
+        <img src={value} alt={label} />
+      </div>
+      <input type="text" value={value} readOnly aria-readonly="true" />
+      <UploadStatus text={statusText} />
+    </div>
+  );
 }
 
 function ListQuickAdd({ value, onChange, placeholder, disabled }) {
@@ -395,6 +532,7 @@ export default function AdminForm({
   const [isReady, setIsReady] = useState(false);
   const [focusIndex, setFocusIndex] = useState(null);
   const [encouragement, setEncouragement] = useState("");
+  const [cropConfig, setCropConfig] = useState(null);
   const editorRef = useRef(null);
   const profileImage = profile?.image?.src;
   const profileImageAlt = profile?.image?.alt || "Naila Azahra profile";
@@ -523,6 +661,11 @@ export default function AdminForm({
     }));
   };
 
+  const openCropper = (config) => {
+    if (!config?.imageSrc) return;
+    setCropConfig(config);
+  };
+
   const addItem = (sectionKey) => {
     setDraft((currentDraft) => {
       const nextItems = currentDraft[sectionKey];
@@ -578,6 +721,28 @@ export default function AdminForm({
             image: {
               ...(item.image ?? {}),
               src: result.url,
+              cardSrc: "",
+              detailSrc: "",
+            },
+          };
+        }
+
+        if (target === "image-card") {
+          return {
+            ...item,
+            image: {
+              ...(item.image ?? {}),
+              cardSrc: result.url,
+            },
+          };
+        }
+
+        if (target === "image-detail") {
+          return {
+            ...item,
+            image: {
+              ...(item.image ?? {}),
+              detailSrc: result.url,
             },
           };
         }
@@ -666,6 +831,24 @@ export default function AdminForm({
         [statusKey]: error instanceof Error ? error.message : "Gagal mengunggah gambar.",
       }));
     }
+  };
+
+  const handleCropSave = async (croppedBlob) => {
+    if (!cropConfig || !croppedBlob) return;
+    const fileName = `crop-${cropConfig.variant}-${Date.now()}.jpg`;
+    const file = new File([croppedBlob], fileName, {
+      type: croppedBlob.type || "image/jpeg",
+    });
+
+    await uploadImage({
+      file,
+      sectionKey: cropConfig.sectionKey,
+      itemIndex: cropConfig.itemIndex,
+      target: cropConfig.target,
+      prefix: cropConfig.prefix,
+    });
+
+    setCropConfig(null);
   };
 
   const hiddenPayload = {
@@ -1292,6 +1475,10 @@ export default function AdminForm({
 
                     if (sectionKey === "projects") {
                       const image = item.image ?? {};
+                      const focus = {
+                        x: Number.isFinite(image.focus?.x) ? image.focus.x : 50,
+                        y: Number.isFinite(image.focus?.y) ? image.focus.y : 50,
+                      };
                       return (
                         <article className="admin-item-card" key={item.id ?? index}>
                           <ItemToolbar
@@ -1339,6 +1526,8 @@ export default function AdminForm({
                                 image: {
                                   ...(currentItem.image ?? {}),
                                   src: "",
+                                  cardSrc: "",
+                                  detailSrc: "",
                                 },
                               }))
                             }
@@ -1360,6 +1549,48 @@ export default function AdminForm({
                                 prefix: "cover",
                               }).finally(() => {
                                 event.target.value = "";
+                              })
+                            }
+                            focusValue={focus}
+                            onFocusChange={(nextFocus) =>
+                              updateSectionItem(sectionKey, index, (currentItem) => ({
+                                ...currentItem,
+                                image: {
+                                  ...(currentItem.image ?? {}),
+                                  focus: nextFocus,
+                                },
+                              }))
+                            }
+                            cropOptions={[
+                              {
+                                label: "Crop untuk card (16:10)",
+                                variant: "card",
+                                aspect: 16 / 10,
+                                target: "image-card",
+                                prefix: "card",
+                              },
+                            ]}
+                            cropPreviews={[
+                              {
+                                label: "Hasil crop card",
+                                value: image.cardSrc ?? "",
+                                statusText: uploadStatus[`${sectionKey}-${index}-image-card`],
+                                onClear: () =>
+                                  updateSectionItem(sectionKey, index, (currentItem) => ({
+                                    ...currentItem,
+                                    image: {
+                                      ...(currentItem.image ?? {}),
+                                      cardSrc: "",
+                                    },
+                                  })),
+                              },
+                            ]}
+                            onCropRequest={(option) =>
+                              openCropper({
+                                ...option,
+                                sectionKey,
+                                itemIndex: index,
+                                imageSrc: image.src,
                               })
                             }
                             disabled={!supabaseReady}
@@ -1425,6 +1656,10 @@ export default function AdminForm({
 
                     if (sectionKey === "news") {
                       const image = item.image ?? {};
+                      const focus = {
+                        x: Number.isFinite(image.focus?.x) ? image.focus.x : 50,
+                        y: Number.isFinite(image.focus?.y) ? image.focus.y : 50,
+                      };
                       return (
                         <article className="admin-item-card" key={item.id ?? index}>
                           <ItemToolbar
@@ -1513,6 +1748,8 @@ export default function AdminForm({
                                 image: {
                                   ...(currentItem.image ?? {}),
                                   src: "",
+                                  cardSrc: "",
+                                  detailSrc: "",
                                 },
                               }))
                             }
@@ -1536,6 +1773,48 @@ export default function AdminForm({
                                 event.target.value = "";
                               })
                             }
+                            focusValue={focus}
+                            onFocusChange={(nextFocus) =>
+                              updateSectionItem(sectionKey, index, (currentItem) => ({
+                                ...currentItem,
+                                image: {
+                                  ...(currentItem.image ?? {}),
+                                  focus: nextFocus,
+                                },
+                              }))
+                            }
+                            cropOptions={[
+                              {
+                                label: "Crop untuk card (1:1)",
+                                variant: "card",
+                                aspect: 1,
+                                target: "image-card",
+                                prefix: "card",
+                              },
+                            ]}
+                            cropPreviews={[
+                              {
+                                label: "Hasil crop card",
+                                value: image.cardSrc ?? "",
+                                statusText: uploadStatus[`${sectionKey}-${index}-image-card`],
+                                onClear: () =>
+                                  updateSectionItem(sectionKey, index, (currentItem) => ({
+                                    ...currentItem,
+                                    image: {
+                                      ...(currentItem.image ?? {}),
+                                      cardSrc: "",
+                                    },
+                                  })),
+                              },
+                            ]}
+                            onCropRequest={(option) =>
+                              openCropper({
+                                ...option,
+                                sectionKey,
+                                itemIndex: index,
+                                imageSrc: image.src,
+                              })
+                            }
                             disabled={!supabaseReady}
                             previewLabel="News image preview"
                             previewClassName="is-square"
@@ -1546,6 +1825,10 @@ export default function AdminForm({
                     }
 
                     const image = item.image ?? {};
+                    const focus = {
+                      x: Number.isFinite(image.focus?.x) ? image.focus.x : 50,
+                      y: Number.isFinite(image.focus?.y) ? image.focus.y : 50,
+                    };
                     const documentation = Array.isArray(item.documentation) ? item.documentation : [];
                     const certificates = Array.isArray(item.certificate)
                       ? item.certificate
@@ -1690,6 +1973,8 @@ export default function AdminForm({
                               image: {
                                 ...(currentItem.image ?? {}),
                                 src: "",
+                                cardSrc: "",
+                                detailSrc: "",
                               },
                             }))
                           }
@@ -1711,6 +1996,68 @@ export default function AdminForm({
                               prefix: "hero",
                             }).finally(() => {
                               event.target.value = "";
+                            })
+                          }
+                          focusValue={focus}
+                          onFocusChange={(nextFocus) =>
+                            updateSectionItem(sectionKey, index, (currentItem) => ({
+                              ...currentItem,
+                              image: {
+                                ...(currentItem.image ?? {}),
+                                focus: nextFocus,
+                              },
+                            }))
+                          }
+                          cropOptions={[
+                            {
+                              label: "Crop untuk card (16:9)",
+                              variant: "card",
+                              aspect: 16 / 9,
+                              target: "image-card",
+                              prefix: "card",
+                            },
+                            {
+                              label: "Crop untuk detail (4:3)",
+                              variant: "detail",
+                              aspect: 4 / 3,
+                              target: "image-detail",
+                              prefix: "detail",
+                            },
+                          ]}
+                          cropPreviews={[
+                            {
+                              label: "Hasil crop card",
+                              value: image.cardSrc ?? "",
+                              statusText: uploadStatus[`${sectionKey}-${index}-image-card`],
+                              onClear: () =>
+                                updateSectionItem(sectionKey, index, (currentItem) => ({
+                                  ...currentItem,
+                                  image: {
+                                    ...(currentItem.image ?? {}),
+                                    cardSrc: "",
+                                  },
+                                })),
+                            },
+                            {
+                              label: "Hasil crop detail",
+                              value: image.detailSrc ?? "",
+                              statusText: uploadStatus[`${sectionKey}-${index}-image-detail`],
+                              onClear: () =>
+                                updateSectionItem(sectionKey, index, (currentItem) => ({
+                                  ...currentItem,
+                                  image: {
+                                    ...(currentItem.image ?? {}),
+                                    detailSrc: "",
+                                  },
+                                })),
+                            },
+                          ]}
+                          onCropRequest={(option) =>
+                            openCropper({
+                              ...option,
+                              sectionKey,
+                              itemIndex: index,
+                              imageSrc: image.src,
                             })
                           }
                           disabled={!supabaseReady}
@@ -2057,6 +2404,17 @@ export default function AdminForm({
         <div className={`admin-toast ${toastStatus === "success" ? "is-success" : "is-error"}`}>
           {toastMessage}
         </div>
+      ) : null}
+
+      {cropConfig ? (
+        <CropModal
+          imageSrc={cropConfig.imageSrc}
+          aspect={cropConfig.aspect}
+          title={cropConfig.label}
+          subtitle="Geser dan zoom sampai pas, lalu simpan hasil crop."
+          onSave={handleCropSave}
+          onCancel={() => setCropConfig(null)}
+        />
       ) : null}
     </form>
   );

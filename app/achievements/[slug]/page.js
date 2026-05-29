@@ -66,7 +66,12 @@ export default async function AchievementPage({ params }) {
               </div>
             </div>
             <div className="achievement-hero-media reveal">
-              {achievement.image ? <img src={achievement.image.src} alt={achievement.image.alt} /> : null}
+              {achievement.image ? (
+                <img
+                  src={achievement.image.detailSrc ?? achievement.image.src}
+                  alt={achievement.image.alt}
+                />
+              ) : null}
             </div>
           </div>
         </section>
