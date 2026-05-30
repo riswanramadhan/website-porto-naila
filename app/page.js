@@ -152,14 +152,16 @@ export default async function Home() {
           <div className="hero-glow" aria-hidden="true"></div>
           <div className="container hero-grid">
             <div className="hero-copy reveal">
-              <p className="eyebrow hero-eyebrow typing" data-typing="hero">
-                <span className="sr-only" data-i18n="heroEyebrow">
-                  Psychology / HR / Leadership
-                </span>
-                <span className="typing-text" aria-hidden="true">
-                  Psychology / HR / Leadership
-                </span>
-              </p>
+              <div className="hero-typing">
+                <p className="eyebrow hero-eyebrow typing" data-typing="hero">
+                  <span className="sr-only" data-i18n="heroEyebrow">
+                    Psychology / HR / Leadership
+                  </span>
+                  <span className="typing-text" aria-hidden="true">
+                    Psychology / HR / Leadership
+                  </span>
+                </p>
+              </div>
               <h1 className="hero-title" data-i18n="heroTitle">
                 Helping people grow through psychology, leadership, and talent
                 development.
@@ -265,66 +267,6 @@ export default async function Home() {
           </div>
         </section>
 
-        <section className="section timeline-section" id="experience">
-          <div className="container">
-            <div className="section-heading reveal">
-              <p className="eyebrow" data-i18n="experienceEyebrow">
-                Experience
-              </p>
-              <h2 data-i18n="experienceTitle">
-                People operations, youth leadership, and impact programs.
-              </h2>
-              <p data-i18n="experienceBody">
-                Selected roles where Naila has led teams, managed talent
-                workflows, and translated ideas into community outcomes.
-              </p>
-            </div>
-
-            <div className="timeline">
-              {activeExperiences.map((experience, index) => (
-                <article
-                  className="timeline-card reveal"
-                  key={experience.id ?? experience.role}
-                >
-                  <button
-                    className="timeline-trigger"
-                    type="button"
-                    aria-expanded={index === 0 ? "true" : "false"}
-                  >
-                    <span className="timeline-title">
-                      {experience.logo?.src ? (
-                        <span className="timeline-logo">
-                          <img
-                            src={experience.logo.src}
-                            alt={experience.logo.alt || experience.role}
-                          />
-                        </span>
-                      ) : null}
-                      <span className="timeline-title-text">
-                        <strong>{experience.role}</strong>
-                        <small>{experience.organization}</small>
-                      </span>
-                    </span>
-                    <span className="click-cue">Open</span>
-                  </button>
-                  <div className="timeline-content">
-                    <div className="metric-row">
-                      {(experience.metrics ?? []).map((metric) => (
-                        <span key={metric}>{metric}</span>
-                      ))}
-                    </div>
-                    <ul>
-                      {(experience.bullets ?? []).map((bullet) => (
-                        <li key={bullet}>{bullet}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
         <section className="section" id="about">
           <div className="container">
             <div className="section-heading reveal">
@@ -384,6 +326,124 @@ export default async function Home() {
                   international education.
                 </p>
               </article>
+            </div>
+          </div>
+        </section>
+
+        <section className="section skills-section" id="skills">
+          <div className="container">
+            <div className="section-heading reveal">
+              <p className="eyebrow" data-i18n="skillsEyebrow">
+                Skills
+              </p>
+              <h2 data-i18n="skillsTitle">
+                A balanced toolkit for talent, analysis, and creative
+                communication.
+              </h2>
+            </div>
+
+            <div className="skills-grid">
+              {skillCards.map((card) => (
+                <article className="skill-card reveal" key={card.title}>
+                  {card.icon ? (
+                    <span className="card-icon">{card.icon}</span>
+                  ) : null}
+                  <h3 data-i18n={card.titleKey}>{card.title}</h3>
+                  {card.type === "logos" ? (
+                    <div className="skill-tool-grid">
+                      {card.items.map((tool) => (
+                        <div className="skill-tool" key={tool.name}>
+                          <span
+                            className={`skill-tool-mark ${imageLogoBrands.has(tool.brand) ? "is-image" : ""}`.trim()}
+                            aria-hidden="true"
+                          >
+                            <SkillLogo brand={tool.brand} />
+                          </span>
+                          <span className="skill-tool-name">{tool.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : card.type === "languages" ? (
+                    <div className="skill-language-list">
+                      {card.items.map((language) => (
+                        <div
+                          className="skill-language-item"
+                          key={language.label}
+                        >
+                          <strong>{language.label}</strong>
+                          <span>{language.detail}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="chip-list">
+                      {card.items.map((item) => (
+                        <span key={item}>{item}</span>
+                      ))}
+                    </div>
+                  )}
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="section timeline-section" id="experience">
+          <div className="container">
+            <div className="section-heading reveal">
+              <p className="eyebrow" data-i18n="experienceEyebrow">
+                Experience
+              </p>
+              <h2 data-i18n="experienceTitle">
+                People operations, youth leadership, and impact programs.
+              </h2>
+              <p data-i18n="experienceBody">
+                Selected roles where Naila has led teams, managed talent
+                workflows, and translated ideas into community outcomes.
+              </p>
+            </div>
+
+            <div className="timeline">
+              {activeExperiences.map((experience, index) => (
+                <article
+                  className="timeline-card reveal"
+                  key={experience.id ?? experience.role}
+                >
+                  <button
+                    className="timeline-trigger"
+                    type="button"
+                    aria-expanded={index === 0 ? "true" : "false"}
+                  >
+                    <span className="timeline-title">
+                      {experience.logo?.src ? (
+                        <span className="timeline-logo">
+                          <img
+                            src={experience.logo.src}
+                            alt={experience.logo.alt || experience.role}
+                          />
+                        </span>
+                      ) : null}
+                      <span className="timeline-title-text">
+                        <strong>{experience.role}</strong>
+                        <small>{experience.organization}</small>
+                      </span>
+                    </span>
+                    <span className="click-cue">Open</span>
+                  </button>
+                  <div className="timeline-content">
+                    <div className="metric-row">
+                      {(experience.metrics ?? []).map((metric) => (
+                        <span key={metric}>{metric}</span>
+                      ))}
+                    </div>
+                    <ul>
+                      {(experience.bullets ?? []).map((bullet) => (
+                        <li key={bullet}>{bullet}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </article>
+              ))}
             </div>
           </div>
         </section>
@@ -489,64 +549,6 @@ export default async function Home() {
                     <strong data-i18n="readArticle">Read article</strong>
                   </div>
                 </a>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="section skills-section" id="skills">
-          <div className="container">
-            <div className="section-heading reveal">
-              <p className="eyebrow" data-i18n="skillsEyebrow">
-                Skills
-              </p>
-              <h2 data-i18n="skillsTitle">
-                A balanced toolkit for talent, analysis, and creative
-                communication.
-              </h2>
-            </div>
-
-            <div className="skills-grid">
-              {skillCards.map((card) => (
-                <article className="skill-card reveal" key={card.title}>
-                  {card.icon ? (
-                    <span className="card-icon">{card.icon}</span>
-                  ) : null}
-                  <h3 data-i18n={card.titleKey}>{card.title}</h3>
-                  {card.type === "logos" ? (
-                    <div className="skill-tool-grid">
-                      {card.items.map((tool) => (
-                        <div className="skill-tool" key={tool.name}>
-                          <span
-                            className={`skill-tool-mark ${imageLogoBrands.has(tool.brand) ? "is-image" : ""}`.trim()}
-                            aria-hidden="true"
-                          >
-                            <SkillLogo brand={tool.brand} />
-                          </span>
-                          <span className="skill-tool-name">{tool.name}</span>
-                        </div>
-                      ))}
-                    </div>
-                  ) : card.type === "languages" ? (
-                    <div className="skill-language-list">
-                      {card.items.map((language) => (
-                        <div
-                          className="skill-language-item"
-                          key={language.label}
-                        >
-                          <strong>{language.label}</strong>
-                          <span>{language.detail}</span>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="chip-list">
-                      {card.items.map((item) => (
-                        <span key={item}>{item}</span>
-                      ))}
-                    </div>
-                  )}
-                </article>
               ))}
             </div>
           </div>

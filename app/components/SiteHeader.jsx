@@ -36,10 +36,13 @@ export default async function SiteHeader() {
         </button>
 
         <div className="nav-menu" id="nav-menu">
-          <Link href="#experience" data-i18n="navExperience">
+          <Link href="#about" data-i18n="navAbout">
             About
           </Link>
-          <Link href="#about" data-i18n="navAbout">
+          <Link href="#skills" data-i18n="navSkills">
+            Skills
+          </Link>
+          <Link href="#experience" data-i18n="navExperience">
             Experience
           </Link>
           <Link href="#projects" data-i18n="navProjects">
@@ -48,8 +51,8 @@ export default async function SiteHeader() {
           <Link href="#news" data-i18n="navNews">
             News
           </Link>
-          <Link href="#skills" data-i18n="navSkills">
-            Skills
+          <Link href="#achievements" data-i18n="navAchievements">
+            Achievements
           </Link>
           <Link href="#contact" data-i18n="navContact">
             Contact

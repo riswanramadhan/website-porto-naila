@@ -241,7 +241,7 @@ textarea {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 200;
+  z-index: 10000;
   pointer-events: none;
   transform: translate(-50%, -50%);
 }
@@ -668,6 +668,17 @@ svg {
 
 .hero-eyebrow {
   color: var(--ink);
+}
+
+.hero-typing {
+  min-height: 1.4em;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.hero-typing .hero-eyebrow {
+  margin: 0;
 }
 
 .hero-eyebrow.typing {
@@ -1955,6 +1966,7 @@ h3 {
   justify-content: center;
   padding: 24px;
   z-index: 9999;
+  cursor: none;
 }
 
 .lightbox-figure {
@@ -1991,7 +2003,7 @@ h3 {
   border: none;
   color: var(--color-inverse-text);
   font-size: 28px;
-  cursor: pointer;
+  cursor: none;
 }
 
 .certificate-media {

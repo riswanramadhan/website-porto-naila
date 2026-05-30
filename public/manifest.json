@@ -1,0 +1,17 @@
+{
+  "name": "Portofolio Naila Azahra",
+  "short_name": "Portofolio Naila",
+  "description": "Naila Azahra | Psychology, HR & Leadership Portfolio",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "lang": "id-ID",
+  "icons": [
+    {
+      "src": "/logo-unhas.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
