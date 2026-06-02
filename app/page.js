@@ -214,8 +214,8 @@ export default async function Home() {
                       <path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3ZM8 11c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3Zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13Zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5C23 14.17 18.33 13 16 13Z" />
                     </svg>
                   </span>
-                  <strong data-count="87" data-count-suffix="+">
-                    87+
+                  <strong data-count="100" data-count-suffix="+">
+                    100+
                   </strong>
                   <span data-i18n="statCandidates">
                     Talent Applications Evaluated Through Structured Recruitment
@@ -241,8 +241,8 @@ export default async function Home() {
                       <path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10Zm0-2.45c2.05-1.43 5-4.35 5-7.55a2 2 0 0 0-3.55-1.26L12 11.52l-1.45-1.78A2 2 0 0 0 7 11c0 3.2 2.95 6.12 5 7.55Z" />
                     </svg>
                   </span>
-                  <strong data-count="150" data-count-suffix="+">
-                    150+
+                  <strong data-count="200" data-count-suffix="+">
+                    200+
                   </strong>
                   <span data-i18n="statImpact">
                     Beneficiaries Impacted Through Community Programs
