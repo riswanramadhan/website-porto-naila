@@ -20,7 +20,10 @@ The site uses static content from `app/data/portfolio.js` until Supabase is conf
 the admin panel saves and reads these editable sections from Supabase:
 
 - `experiences`
+- `heroStats`
 - `projects`
+- `communityProjects`
+- `editing`
 - `news`
 - `achievements`
 
@@ -54,8 +57,11 @@ using (true);
 
 insert into portfolio_content (section_key, content)
 values
+  ('heroStats', '[]'::jsonb),
   ('experiences', '[]'::jsonb),
   ('projects', '[]'::jsonb),
+  ('communityProjects', '[]'::jsonb),
+  ('editing', '[]'::jsonb),
   ('news', '[]'::jsonb),
   ('achievements', '[]'::jsonb)
 on conflict (section_key) do nothing;
@@ -91,6 +97,19 @@ with check (bucket_id = 'portfolio-assets');
 
 Each admin panel accepts a JSON array.
 
+Hero Stat:
+
+```json
+{
+  "value": 100,
+  "suffix": "+",
+  "label": "Talent Applications Evaluated Through Structured Recruitment & Selection",
+  "labelId": "Lamaran Talenta Dievaluasi Melalui Rekrutmen & Seleksi Terstruktur",
+  "isActive": true,
+  "orderIndex": 1
+}
+```
+
 Experience:
 
 ```json
@@ -110,9 +129,39 @@ Project:
   "title": "Hope & Help",
   "image": { "src": "https://example.com/image.jpg", "alt": "Program photo" },
   "href": "https://example.com/project",
-  "problem": "Young people needed approachable mental health support.",
-  "solution": "Built a structured outreach concept.",
-  "impact": "Strengthened community mental health literacy.",
+  "summary": "A structured outreach concept combining education, peer support, and referral awareness for young people.",
+  "orderIndex": 1
+}
+```
+
+Community Project:
+
+```json
+{
+  "title": "Featured Community Project",
+  "titleId": "Proyek Komunitas Pilihan",
+  "description": "Founded and led a community initiative focused on connecting people, sharing knowledge, and fostering meaningful collaboration.",
+  "descriptionId": "Mendirikan dan memimpin inisiatif komunitas yang berfokus menghubungkan orang, berbagi pengetahuan, dan membangun kolaborasi bermakna.",
+  "buttonLabel": "Website",
+  "buttonLabelId": "Website",
+  "href": "https://growmates.dekatlokal.com/",
+  "image": { "src": "/laptop-growmates.svg", "alt": "Growmates website preview on a laptop" },
+  "isActive": true,
+  "orderIndex": 1
+}
+```
+
+Editing:
+
+```json
+{
+  "type": "gallery",
+  "title": "Editorial layout",
+  "description": "A polished editing composition for digital presentation.",
+  "href": "https://example.com/editing",
+  "instagramName": "@nailaazahrra",
+  "image": { "src": "https://example.com/editing.jpg", "alt": "Editing project" },
+  "isActive": true,
   "orderIndex": 1
 }
 ```

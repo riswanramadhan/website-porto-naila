@@ -1,5 +1,44 @@
 import { achievements } from "./achievements";
 
+export const heroStats = [
+  {
+    id: 1,
+    value: 100,
+    suffix: "+",
+    label: "Talent Applications Evaluated Through Structured Recruitment & Selection",
+    labelId: "Lamaran Talenta Dievaluasi Melalui Rekrutmen & Seleksi Terstruktur",
+    isActive: true,
+    orderIndex: 1,
+  },
+  {
+    id: 2,
+    value: 23,
+    suffix: "+",
+    label: "Team Members Led Across Multiple Organizational Projects",
+    labelId: "Anggota Tim Dipimpin dalam Berbagai Proyek Organisasi",
+    isActive: true,
+    orderIndex: 2,
+  },
+  {
+    id: 3,
+    value: 200,
+    suffix: "+",
+    label: "Beneficiaries Impacted Through Community Programs",
+    labelId: "Penerima Manfaat Terdampak Melalui Program Komunitas",
+    isActive: true,
+    orderIndex: 3,
+  },
+  {
+    id: 4,
+    value: 78,
+    suffix: "%",
+    label: "Performance Improvement Achieved Through Training & Development Programs",
+    labelId: "Peningkatan Performa Dicapai Melalui Program Pelatihan & Pengembangan",
+    isActive: true,
+    orderIndex: 4,
+  },
+];
+
 export const experiences = [
   {
     id: 1,
@@ -62,47 +101,56 @@ export const projects = [
   {
     id: 1,
     title: "Hope & Help",
-    href: "#contact",
     image: {
       src: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=75",
       alt: "Youth learning and community education program",
     },
-    problem: "Young people needed approachable mental health support and credible guidance.",
-    solution:
-      "Built a structured outreach concept combining education, peer support, and referral awareness.",
-    impact:
-      "Improved access to supportive conversations and strengthened community mental health literacy.",
+    summary:
+      "A structured mental health outreach concept combining education, peer support, referral awareness, and approachable guidance for young people.",
     orderIndex: 1,
   },
   {
     id: 2,
     title: "Journey for Self",
-    href: "#contact",
     image: {
       src: "https://images.unsplash.com/photo-1499728603263-13726abce5fd?auto=format&fit=crop&w=900&q=75",
       alt: "Reflective journaling and self development workshop",
     },
-    problem: "Students often lacked guided space to reflect on identity, resilience, and personal growth.",
-    solution:
-      "Created a reflective learning experience with psychology-based prompts and facilitation.",
-    impact:
-      "Helped participants build self-awareness and more intentional personal development habits.",
+    summary:
+      "A reflective learning experience using psychology-based prompts and facilitation to help students build self-awareness, resilience, and personal growth habits.",
     orderIndex: 2,
   },
   {
     id: 3,
     title: "Schoolaship",
-    href: "#contact",
     image: {
       src: "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=900&q=75",
       alt: "Scholarship preparation and student mentoring",
     },
-    problem: "Scholarship information can feel scattered, intimidating, and difficult to act on.",
-    solution:
-      "Organized practical scholarship guidance into clearer steps, resources, and preparation support.",
-    impact:
-      "Made education opportunities easier to understand and pursue for student communities.",
+    summary:
+      "A practical scholarship guidance initiative that organizes information, resources, and preparation support into clearer steps for student communities.",
     orderIndex: 3,
+  },
+];
+
+export const communityProjects = [
+  {
+    id: 1,
+    title: "Featured Community Project",
+    titleId: "Proyek Komunitas Pilihan",
+    description:
+      "Founded and led a community initiative focused on connecting people, sharing knowledge, and fostering meaningful collaboration.",
+    descriptionId:
+      "Mendirikan dan memimpin inisiatif komunitas yang berfokus menghubungkan orang, berbagi pengetahuan, dan membangun kolaborasi bermakna.",
+    buttonLabel: "Website",
+    buttonLabelId: "Website",
+    href: "https://growmates.dekatlokal.com/",
+    image: {
+      src: "/laptop-growmates.svg",
+      alt: "Growmates website preview on a laptop",
+    },
+    isActive: true,
+    orderIndex: 1,
   },
 ];
 
@@ -161,9 +209,79 @@ export const news = [
   },
 ];
 
+export const editing = [
+  {
+    id: 1,
+    type: "phone",
+    title: "Short-form editing showcase",
+    description: "Mobile-first editing sample with clean pacing and visual rhythm.",
+    href: "https://www.instagram.com/nailaazahrra",
+    instagramName: "@nailaazahrra",
+    isActive: true,
+    image: {
+      src: "https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=900&q=75",
+      alt: "Social media editing project preview on phone",
+    },
+    orderIndex: 1,
+  },
+  {
+    id: 2,
+    type: "phone",
+    title: "Campaign edit preview",
+    description: "A compact visual edit prepared for social storytelling.",
+    href: "https://www.instagram.com/nailaazahrra",
+    instagramName: "@nailaazahrra",
+    isActive: true,
+    image: {
+      src: "https://images.unsplash.com/photo-1611162618071-b39a2ec055fb?auto=format&fit=crop&w=900&q=75",
+      alt: "Campaign editing project preview on phone",
+    },
+    orderIndex: 2,
+  },
+  {
+    id: 3,
+    type: "gallery",
+    title: "Editorial layout",
+    description: "A polished editing composition for digital presentation.",
+    isActive: true,
+    image: {
+      src: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1100&q=75",
+      alt: "Editorial editing project composition",
+    },
+    orderIndex: 3,
+  },
+  {
+    id: 4,
+    type: "gallery",
+    title: "Social content system",
+    description: "A visual set designed for consistent social media storytelling.",
+    isActive: true,
+    image: {
+      src: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1100&q=75",
+      alt: "Social media content editing workflow",
+    },
+    orderIndex: 4,
+  },
+  {
+    id: 5,
+    type: "gallery",
+    title: "Creative campaign frame",
+    description: "A refined campaign visual with balanced typography and imagery.",
+    isActive: true,
+    image: {
+      src: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1100&q=75",
+      alt: "Creative campaign editing frame",
+    },
+    orderIndex: 5,
+  },
+];
+
 export const portfolio = {
+  heroStats,
   experiences,
   projects,
+  communityProjects,
+  editing,
   news,
   achievements,
 };

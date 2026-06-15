@@ -8,8 +8,6 @@ export default function GlobalDecor() {
         <span className="magic-line line-one"></span>
         <span className="magic-line line-two"></span>
       </div>
-      <div className="cursor-dot" aria-hidden="true"></div>
-      <div className="cursor-ring" aria-hidden="true"></div>
     </>
   );
 }

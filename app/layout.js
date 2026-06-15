@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { fetchSiteProfile } from "@/lib/portfolio";
+import SplashScreen from "@/components/SplashScreen";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nailaazahra.site";
 const siteName = "Portofolio Naila Azahra";
@@ -25,7 +26,7 @@ export async function generateMetadata() {
   const baseUrl = siteUrl;
 
   return {
-    metadataBase: new URL(baseUrl),
+    metadataBase: new globalThis.URL(baseUrl),
     applicationName: siteName,
     title: {
       default: pageTitle,
@@ -134,6 +135,7 @@ export default function RootLayout({ children }) {
             __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
           }}
         />
+        <SplashScreen />
         {children}
       </body>
     </html>

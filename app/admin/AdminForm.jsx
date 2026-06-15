@@ -9,39 +9,23 @@ import { ChevronDown, ChevronRight, ChevronUp, LogOut, PencilLine, Trash2 } from
 import CropModal from "./CropModal";
 
 const initialState = { status: "idle", message: "" };
-const sectionOrder = ["experiences", "projects", "news", "achievements"];
-const encouragementMessages = [
-  "berpura pura bodoh tu asik banget, bisa liat orang orang yang sok pinter ngomomg",
-  "dan bila hari ini kamu belum bersinar, mungkin Tuhan sedang menyiapkan kilau terbaikmu untuk bersinar lebih indah di hari esok.",
-  "gpp kl km gapilih ak, emg ga semua org seleranya sebagus ak.",
-  "dia ya dia, aku ya aku. jangan pilih dia sambil kangen aku.",
-  "kl km nolongin orang jangan diinget, tp kl km ditologin orang itu harus diinget.",
-  "belum sempat buka hati, eh yang sebelah udh gonta ganti",
-  "jangan terlalu terang, nanti banyak yg ga senang",
-  "gamau berlebihan lagi ah, kecuali DUIT",
-  "'semua cowo sama aja', makanya jangan dicobain satu satu.",
-  "gamau posting ulang, takut asrama ku bubar.",
-  "im not naturally smart but i try hard",
-  "study hard, love will find you later",
-  "study hard girl, remember being a smart student is way more interesting than just being the prettiest one",
-  "the goal is to be pretty with brain, not just pretty",
-  "kita tu ga akan bisa menang, kalau kita ga percaya bahwa kita bisa",
-  "lo pinter bukan karena terlahir pinter. tapi karena lo belajar mati matian",
-  "secukupnya, semampunya, sebisanya",
-  "always remember, studying doesn't suck as much failing",
-  "ayo belajar, bukan untuk jadi hebat. tapi agar ga mudah dibodohi oleh dunia",
-  "ada pohon yang ditakdirkan tidak memiliki bunga yang indah, tapi ia tumbuh diberi akar yang kuat agar tidak tumbang",
-  "harus ada sesuatu yang bikin kamu excited untuk hidup",
-  "awal dari kebijaksanaan adalah menyadari betapa bodohnya dirimu sendiri",
-  "Tuhan tidak menunda, tapi menata",
-  "loving yourself is giving yourself what you want someone else to",
-  "be a kind person even if nothing comes back in return",
-  "be happy, be healty, be confident, be the best version and be proud of your self",
-  "you cannot escape the difficult days, you can only learn to live through them",
-  "magis minoris, felicior. (semakin diremehkan. semaking senang)",
+const sectionOrder = [
+  "heroStats",
+  "experiences",
+  "projects",
+  "communityProjects",
+  "editing",
+  "news",
+  "achievements",
 ];
 
 const sectionConfig = {
+  heroStats: {
+    title: "Hero Stats",
+    description: "Kelola empat angka pencapaian yang tampil di hero section.",
+    addLabel: "Tambah angka hero",
+    emptyLabel: "Belum ada angka hero.",
+  },
   experiences: {
     title: "Pengalaman",
     description: "Kelola riwayat peran, organisasi, dan poin pencapaian.",
@@ -50,9 +34,21 @@ const sectionConfig = {
   },
   projects: {
     title: "Proyek",
-    description: "Kelola cerita proyek, solusi, hasil, dan gambar pendukung.",
+    description: "Kelola ringkasan proyek, tautan, dan gambar pendukung.",
     addLabel: "Tambah proyek",
     emptyLabel: "Belum ada proyek.",
+  },
+  communityProjects: {
+    title: "Community Project",
+    description: "Kelola section Growmates yang tampil setelah proyek.",
+    addLabel: "Tambah community project",
+    emptyLabel: "Belum ada community project.",
+  },
+  editing: {
+    title: "Editing",
+    description: "Kelola mockup iPhone dan galeri editing yang tampil setelah pengalaman.",
+    addLabel: "Tambah editing",
+    emptyLabel: "Belum ada item editing.",
   },
   news: {
     title: "Liputan",
@@ -69,8 +65,11 @@ const sectionConfig = {
 };
 
 const navIcons = {
+  heroStats: "M4 18h16v2H4v-2Zm1-3.5 4.5-4.5 3 3L19 6.5V11h2V3h-8v2h4.5l-5 5-3-3L3.6 12.9 5 14.5Z",
   experiences: "M20 7H4C2.9 7 2 7.9 2 9v10c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zm-9 9H5v-2h6v2zm4-4H5v-2h10v2zm2-4H5V6h12v2z",
   projects: "M3 3h8v8H3zm10 0h8v8h-8zM3 13h8v8H3zm10 0h8v8h-8z",
+  communityProjects: "M4 5h16v10H4V5Zm2 2v6h12V7H6Zm3 11h6v2H9v-2Zm2-3h2v3h-2v-3Z",
+  editing: "M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm2 2v2h6V4H9Zm-2 4v10h10V8H7Zm4 11h2v1h-2v-1Z",
   news: "M4 4h16v2H4V4zm0 4h10v2H4V8zm0 4h16v2H4v-2zm0 4h10v2H4v-2z",
   achievements: "M12 2l3 6.4L22 9.3l-5 5 1.2 7-6.2-3.5L5.8 21.3 7 14.3 2 9.3l7-.9z",
 };
@@ -103,15 +102,48 @@ const createEmptyExperience = (orderIndex = 1) => ({
   orderIndex,
 });
 
+const createEmptyHeroStat = (orderIndex = 1) => ({
+  id: createId(),
+  value: 0,
+  suffix: "",
+  label: "",
+  labelId: "",
+  isActive: true,
+  orderIndex,
+});
+
 const createEmptyProject = (orderIndex = 1) => ({
   id: createId(),
   title: "",
-  href: "",
   isActive: true,
   image: { src: "", alt: "", focus: { x: 50, y: 50 }, cardSrc: "", detailSrc: "" },
-  problem: "",
-  solution: "",
-  impact: "",
+  summary: "",
+  orderIndex,
+});
+
+const createEmptyCommunityProject = (orderIndex = 1) => ({
+  id: createId(),
+  title: "Featured Community Project",
+  titleId: "Proyek Komunitas Pilihan",
+  description: "",
+  descriptionId: "",
+  buttonLabel: "Website",
+  buttonLabelId: "Website",
+  href: "",
+  image: { src: "/laptop-growmates.svg", alt: "Growmates website preview on a laptop" },
+  isActive: true,
+  orderIndex,
+});
+
+const createEmptyEditing = (orderIndex = 1) => ({
+  id: createId(),
+  type: orderIndex <= 2 ? "phone" : "gallery",
+  title: "",
+  description: "",
+  href: "",
+  instagramName: "",
+  isActive: true,
+  image: { src: "", alt: "", focus: { x: 50, y: 50 }, cardSrc: "", detailSrc: "" },
   orderIndex,
 });
 
@@ -146,8 +178,11 @@ const createEmptyAchievement = (orderIndex = 1) => ({
 });
 
 const createDraftPortfolio = (portfolio) => ({
+  heroStats: clone(portfolio.heroStats),
   experiences: clone(portfolio.experiences),
   projects: clone(portfolio.projects),
+  communityProjects: clone(portfolio.communityProjects),
+  editing: clone(portfolio.editing),
   news: clone(portfolio.news),
   achievements: clone(portfolio.achievements),
 });
@@ -156,30 +191,54 @@ const getStatusBadgeClass = (status) => (status === "Active" ? "is-active" : "is
 
 const getRowMeta = (sectionKey, item) => {
   const status = item?.isActive === false ? "Inactive" : "Active";
+  if (sectionKey === "heroStats") {
+    return {
+      title: item.label || "Angka hero tanpa label",
+      subtitle: `${item.value ?? 0}${item.suffix ?? ""}`,
+      status,
+    };
+  }
   if (sectionKey === "experiences") {
     return {
-      title: item.role || "Untitled role",
-      subtitle: item.organization || "No organization",
+      title: item.role || "Peran tanpa judul",
+      subtitle: item.organization || "Organisasi belum diisi",
       status,
     };
   }
   if (sectionKey === "projects") {
     return {
-      title: item.title || "Untitled project",
-      subtitle: item.problem || "No problem statement",
+      title: item.title || "Proyek tanpa judul",
+      subtitle: item.summary || "Ringkasan belum diisi",
+      status,
+    };
+  }
+  if (sectionKey === "communityProjects") {
+    return {
+      title: item.title || "Community project tanpa judul",
+      subtitle: item.href || "Tautan belum diisi",
+      status,
+    };
+  }
+  if (sectionKey === "editing") {
+    return {
+      title: item.title || "Item editing tanpa judul",
+      subtitle:
+        item.type === "phone"
+          ? item.instagramName || "Mockup iPhone"
+          : item.description || "Gambar galeri",
       status,
     };
   }
   if (sectionKey === "news") {
     return {
-      title: item.title || "Untitled news",
-      subtitle: item.source || "No source",
+      title: item.title || "Liputan tanpa judul",
+      subtitle: item.source || "Sumber belum diisi",
       status,
     };
   }
   return {
-    title: item.title || "Untitled achievement",
-    subtitle: item.slug || "No slug",
+    title: item.title || "Pencapaian tanpa judul",
+    subtitle: item.slug || "Slug belum diisi",
     status,
   };
 };
@@ -524,14 +583,12 @@ export default function AdminForm({
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [page, setPage] = useState(1);
-  const [selectedIds, setSelectedIds] = useState([]);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [toastMessage, setToastMessage] = useState("");
   const [toastStatus, setToastStatus] = useState("success");
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const [focusIndex, setFocusIndex] = useState(null);
-  const [encouragement, setEncouragement] = useState("");
   const [cropConfig, setCropConfig] = useState(null);
   const editorRef = useRef(null);
   const profileImage = profile?.image?.src;
@@ -550,11 +607,6 @@ export default function AdminForm({
   }, []);
 
   useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * encouragementMessages.length);
-    setEncouragement(encouragementMessages[randomIndex]);
-  }, []);
-
-  useEffect(() => {
     if (state.message) {
       setToastMessage(state.message);
       setToastStatus(state.status === "success" ? "success" : "error");
@@ -569,7 +621,6 @@ export default function AdminForm({
 
   useEffect(() => {
     setPage(1);
-    setSelectedIds([]);
   }, [activeSection, searchQuery, statusFilter]);
 
   useEffect(() => {
@@ -607,9 +658,6 @@ export default function AdminForm({
   const totalPages = Math.max(1, Math.ceil(sortedRows.length / pageSize));
   const currentPage = Math.min(page, totalPages);
   const paginatedRows = sortedRows.slice((currentPage - 1) * pageSize, currentPage * pageSize);
-  const allVisibleSelected = paginatedRows.length
-    ? paginatedRows.every((row) => selectedIds.includes(row.id))
-    : false;
 
   const reindexSection = (sectionKey, items) =>
     items.map((item, index) => ({
@@ -629,23 +677,6 @@ export default function AdminForm({
         [sectionKey]: reindexSection(sectionKey, items),
       };
     });
-  };
-
-  const toggleSelectAll = () => {
-    if (!paginatedRows.length) return;
-    if (allVisibleSelected) {
-      setSelectedIds((current) => current.filter((id) => !paginatedRows.some((row) => row.id === id)));
-      return;
-    }
-    const nextIds = new Set(selectedIds);
-    paginatedRows.forEach((row) => nextIds.add(row.id));
-    setSelectedIds(Array.from(nextIds));
-  };
-
-  const toggleRowSelection = (rowId) => {
-    setSelectedIds((current) =>
-      current.includes(rowId) ? current.filter((id) => id !== rowId) : [...current, rowId]
-    );
   };
 
   const handleEditRow = (row) => {
@@ -672,8 +703,11 @@ export default function AdminForm({
       const nextOrderIndex = nextItems.length + 1;
 
       const factory = {
+        heroStats: createEmptyHeroStat,
         experiences: createEmptyExperience,
         projects: createEmptyProject,
+        communityProjects: createEmptyCommunityProject,
+        editing: createEmptyEditing,
         news: createEmptyNews,
         achievements: createEmptyAchievement,
       }[sectionKey];
@@ -836,7 +870,7 @@ export default function AdminForm({
   const handleCropSave = async (croppedBlob) => {
     if (!cropConfig || !croppedBlob) return;
     const fileName = `crop-${cropConfig.variant}-${Date.now()}.jpg`;
-    const file = new File([croppedBlob], fileName, {
+    const file = new globalThis.File([croppedBlob], fileName, {
       type: croppedBlob.type || "image/jpeg",
     });
 
@@ -852,11 +886,33 @@ export default function AdminForm({
   };
 
   const hiddenPayload = {
+    heroStats: JSON.stringify(draft.heroStats),
     experiences: JSON.stringify(draft.experiences),
     projects: JSON.stringify(draft.projects),
+    communityProjects: JSON.stringify(draft.communityProjects),
+    editing: JSON.stringify(draft.editing),
     news: JSON.stringify(draft.news),
     achievements: JSON.stringify(draft.achievements),
     siteProfile: JSON.stringify(profile),
+  };
+
+  const downloadDraftData = () => {
+    const payload = {
+      ...draft,
+      siteProfile: profile,
+      exportedAt: new Date().toISOString(),
+    };
+    const blob = new globalThis.Blob([JSON.stringify(payload, null, 2)], {
+      type: "application/json",
+    });
+    const url = globalThis.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `portfolio-content-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    globalThis.URL.revokeObjectURL(url);
   };
 
   const visibleSections = sectionOrder.filter((sectionKey) => sectionKey === activeSection);
@@ -870,22 +926,22 @@ export default function AdminForm({
       <div
         className={`admin-layout ${sidebarCollapsed ? "is-collapsed" : ""} ${sidebarOpen ? "is-open" : ""}`}
       >
-        <aside className="admin-sidebar" aria-label="Sidebar navigation">
+        <aside className="admin-sidebar" aria-label="Navigasi sidebar">
           <div className="admin-sidebar-header">
             <div className="admin-logo">
               <span className={`admin-logo-mark ${profileImage ? "has-image" : ""}`.trim()}>
                 {profileImage ? <img src={profileImage} alt={profileImageAlt} /> : "NA"}
               </span>
               <div>
-                <strong>Admin Panel</strong>
-                <small>Portfolio Suite</small>
+                <strong>Panel Admin</strong>
+                <small>Manajemen Portofolio</small>
               </div>
             </div>
             <button
               className="admin-icon-button admin-close-button"
               type="button"
               onClick={() => setSidebarOpen(false)}
-              aria-label="Close sidebar"
+              aria-label="Tutup sidebar"
             >
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M6 6l12 12M18 6l-12 12" />
@@ -893,9 +949,9 @@ export default function AdminForm({
             </button>
           </div>
 
-          <div className="admin-sidebar-content" aria-label="Sidebar content">
+          <div className="admin-sidebar-content" aria-label="Konten sidebar">
             <div className="admin-nav-section">
-              <p className="admin-nav-label">Dashboard</p>
+              <p className="admin-nav-label">Dasbor</p>
               <button
                 type="button"
                 className={`admin-nav-item ${!utilityPanel && activeSection === "experiences" ? "is-active" : ""}`}
@@ -909,7 +965,7 @@ export default function AdminForm({
                     <path d="M4 4h6v6H4V4Zm10 0h6v4h-6V4ZM4 14h6v6H4v-6Zm10-2h6v8h-6v-8Z" />
                   </svg>
                 </span>
-                <span className="admin-nav-text">Overview</span>
+                <span className="admin-nav-text">Ringkasan</span>
               </button>
             </div>
 
@@ -953,7 +1009,7 @@ export default function AdminForm({
             </div>
 
             <div className="admin-nav-section">
-              <p className="admin-nav-label">Tools</p>
+              <p className="admin-nav-label">Alat</p>
               <button
                 type="button"
                 className={`admin-nav-item ${utilityPanel === "profile" ? "is-active" : ""}`}
@@ -989,7 +1045,7 @@ export default function AdminForm({
               </div>
               <div>
                 <strong>Naila Azahra</strong>
-                <small>Owner website</small>
+                <small>Pemilik website</small>
               </div>
             </div>
           </div>
@@ -1002,13 +1058,13 @@ export default function AdminForm({
                 className="admin-icon-button admin-menu-button"
                 type="button"
                 onClick={() => setSidebarOpen(true)}
-                aria-label="Open sidebar"
+                aria-label="Buka sidebar"
               >
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </button>
-              <span>Dashboard</span>
+              <span>Dasbor</span>
               <span>/</span>
               <strong>
                 {utilityPanel === "profile"
@@ -1019,7 +1075,7 @@ export default function AdminForm({
               </strong>
             </div>
             <div className="admin-topbar-actions">
-              <label className="admin-search" aria-label="Search">
+              <label className="admin-search" aria-label="Cari">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M11 4a7 7 0 1 0 4.47 12.38l3.08 3.08 1.42-1.42-3.08-3.08A7 7 0 0 0 11 4Zm0 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10Z" />
                 </svg>
@@ -1080,7 +1136,7 @@ export default function AdminForm({
                     <p className="eyebrow">Navbar</p>
                     <h2>Foto Navbar</h2>
                     <p className="form-note">
-                      Upload foto yang tampil pada identitas di navbar publik.
+                      Unggah foto yang tampil pada identitas di navbar publik.
                     </p>
                   </div>
                 </div>
@@ -1101,7 +1157,7 @@ export default function AdminForm({
                     })
                   }
                   disabled={!supabaseReady}
-                  previewLabel="Navbar profile preview"
+                  previewLabel="Pratinjau foto navbar"
                   previewClassName="is-square"
                   statusText={uploadStatus["profile-image"]}
                 />
@@ -1109,7 +1165,7 @@ export default function AdminForm({
               <div className="admin-savebar">
                 <div>
                   <strong>{canPublish ? "Siap disimpan" : "Penyimpanan belum tersedia"}</strong>
-                  <p className="form-note">Simpan untuk memperbarui foto profile pada halaman publik.</p>
+                  <p className="form-note">Simpan untuk memperbarui foto profil pada halaman publik.</p>
                 </div>
                 <SubmitButton disabled={!canPublish} />
               </div>
@@ -1121,7 +1177,7 @@ export default function AdminForm({
               <section className="admin-editor-panel admin-inbox">
                 <div className="admin-panel-heading">
                   <div>
-                    <p className="eyebrow">Contact</p>
+                    <p className="eyebrow">Kontak</p>
                     <h2>Pesan Masuk</h2>
                       <p className="form-note">Pesan terbaru yang dikirim melalui formulir kontak.</p>
                   </div>
@@ -1163,19 +1219,22 @@ export default function AdminForm({
                 >
                   Tambah baru
                 </button>
-                <button className="button button-secondary" type="button">
-                  Unduh data
+                <button className="button button-secondary" type="button" onClick={downloadDraftData}>
+                  Ekspor JSON
                 </button>
               </div>
             </div>
 
             <section className="admin-metrics" aria-label="Ringkasan konten">
               {(isReady ? [
+                { label: "Hero Stats", value: draft.heroStats.length },
                 { label: "Pengalaman", value: draft.experiences.length },
                 { label: "Proyek", value: draft.projects.length },
+                { label: "Community", value: draft.communityProjects.length },
+                { label: "Editing", value: draft.editing.length },
                 { label: "Liputan", value: draft.news.length },
                 { label: "Pencapaian", value: draft.achievements.length },
-              ] : Array.from({ length: 4 })).map((metric, index) => (
+              ] : Array.from({ length: 7 })).map((metric, index) => (
                 <article className={`admin-metric-card ${isReady ? "is-ready" : "is-skeleton"}`} key={index}>
                   {isReady ? (
                     <>
@@ -1193,8 +1252,11 @@ export default function AdminForm({
             </section>
 
             <section className="admin-encouragement" aria-live="polite">
-              <strong>pesan ini dibaca baik-baik dekkk</strong>
-              <p>{encouragement}</p>
+              <strong>Panduan singkat</strong>
+              <p>
+                Gunakan tabel untuk mencari, mengurutkan, mengedit, atau menyembunyikan konten.
+                Simpan perubahan setelah semua item siap ditampilkan.
+              </p>
             </section>
 
             <section className="admin-table-card" aria-label="Daftar konten">
@@ -1227,14 +1289,6 @@ export default function AdminForm({
                 <table className="admin-table">
                   <thead>
                     <tr>
-                      <th>
-                        <input
-                          type="checkbox"
-                          aria-label="Select all"
-                          checked={allVisibleSelected}
-                          onChange={toggleSelectAll}
-                        />
-                      </th>
                        <th>Judul</th>
                        <th>Detail</th>
                        <th>Status</th>
@@ -1245,7 +1299,7 @@ export default function AdminForm({
                     {!isReady
                       ? Array.from({ length: 4 }).map((_, index) => (
                           <tr className="admin-skeleton-row" key={index}>
-                            <td colSpan={6}></td>
+                            <td colSpan={4}></td>
                           </tr>
                         ))
                       : paginatedRows.map((row) => (
@@ -1253,14 +1307,6 @@ export default function AdminForm({
                             key={row.id}
                             className={`admin-table-row ${row.isActive ? "" : "is-inactive"}`}
                           >
-                            <td>
-                              <input
-                                type="checkbox"
-                                aria-label={`Select ${row.title}`}
-                                checked={selectedIds.includes(row.id)}
-                                onChange={() => toggleRowSelection(row.id)}
-                              />
-                            </td>
                             <td>
                               <div className="admin-table-title">
                                 <strong>{row.title}</strong>
@@ -1352,6 +1398,80 @@ export default function AdminForm({
                     <div className="admin-item-list">
                       {draft[sectionKey].map((item, index) => {
                         const imageStatusKey = `${sectionKey}-${index}-image`;
+
+                        if (sectionKey === "heroStats") {
+                          return (
+                            <article className="admin-item-card" key={item.id ?? index}>
+                              <ItemToolbar
+                                disabled={!supabaseReady}
+                                sectionLabel="angka hero"
+                                isActive={item.isActive !== false}
+                                onStatusChange={(value) =>
+                                  updateSectionItem(sectionKey, index, (currentItem) => ({
+                                    ...currentItem,
+                                    isActive: value,
+                                  }))
+                                }
+                                onRemove={() => removeItem(sectionKey, index)}
+                              />
+                              <div className="admin-grid-2">
+                                <Field label="Angka">
+                                  <input
+                                    type="number"
+                                    value={item.value ?? 0}
+                                    onChange={(event) =>
+                                      updateSectionItem(sectionKey, index, (currentItem) => ({
+                                        ...currentItem,
+                                        value: Number(event.target.value),
+                                      }))
+                                    }
+                                    disabled={!supabaseReady}
+                                  />
+                                </Field>
+                                <Field label="Suffix">
+                                  <input
+                                    type="text"
+                                    value={item.suffix ?? ""}
+                                    onChange={(event) =>
+                                      updateSectionItem(sectionKey, index, (currentItem) => ({
+                                        ...currentItem,
+                                        suffix: event.target.value,
+                                      }))
+                                    }
+                                    placeholder="+, %, atau kosong"
+                                    disabled={!supabaseReady}
+                                  />
+                                </Field>
+                              </div>
+                              <Field label="Label kartu (English)">
+                                <textarea
+                                  rows={3}
+                                  value={item.label ?? ""}
+                                  onChange={(event) =>
+                                    updateSectionItem(sectionKey, index, (currentItem) => ({
+                                      ...currentItem,
+                                      label: event.target.value,
+                                    }))
+                                  }
+                                  disabled={!supabaseReady}
+                                />
+                              </Field>
+                              <Field label="Label kartu (Indonesia)">
+                                <textarea
+                                  rows={3}
+                                  value={item.labelId ?? ""}
+                                  onChange={(event) =>
+                                    updateSectionItem(sectionKey, index, (currentItem) => ({
+                                      ...currentItem,
+                                      labelId: event.target.value,
+                                    }))
+                                  }
+                                  disabled={!supabaseReady}
+                                />
+                              </Field>
+                            </article>
+                          );
+                        }
 
                         if (sectionKey === "experiences") {
                       return (
@@ -1473,6 +1593,156 @@ export default function AdminForm({
                       );
                     }
 
+                    if (sectionKey === "communityProjects") {
+                      const image = item.image ?? {};
+                      return (
+                        <article className="admin-item-card" key={item.id ?? index}>
+                          <ItemToolbar
+                            disabled={!supabaseReady}
+                            sectionLabel="community project"
+                            isActive={item.isActive !== false}
+                            onStatusChange={(value) =>
+                              updateSectionItem(sectionKey, index, (currentItem) => ({
+                                ...currentItem,
+                                isActive: value,
+                              }))
+                            }
+                            onRemove={() => removeItem(sectionKey, index)}
+                          />
+                          <div className="admin-grid-2">
+                            <Field label="Judul (English)">
+                              <input
+                                type="text"
+                                value={item.title ?? ""}
+                                onChange={(event) =>
+                                  updateSectionItem(sectionKey, index, (currentItem) => ({
+                                    ...currentItem,
+                                    title: event.target.value,
+                                  }))
+                                }
+                                disabled={!supabaseReady}
+                              />
+                            </Field>
+                            <Field label="Judul (Indonesia)">
+                              <input
+                                type="text"
+                                value={item.titleId ?? ""}
+                                onChange={(event) =>
+                                  updateSectionItem(sectionKey, index, (currentItem) => ({
+                                    ...currentItem,
+                                    titleId: event.target.value,
+                                  }))
+                                }
+                                disabled={!supabaseReady}
+                              />
+                            </Field>
+                          </div>
+                          <div className="admin-grid-2">
+                            <Field label="Teks tombol (English)">
+                              <input
+                                type="text"
+                                value={item.buttonLabel ?? ""}
+                                onChange={(event) =>
+                                  updateSectionItem(sectionKey, index, (currentItem) => ({
+                                    ...currentItem,
+                                    buttonLabel: event.target.value,
+                                  }))
+                                }
+                                disabled={!supabaseReady}
+                              />
+                            </Field>
+                            <Field label="Teks tombol (Indonesia)">
+                              <input
+                                type="text"
+                                value={item.buttonLabelId ?? ""}
+                                onChange={(event) =>
+                                  updateSectionItem(sectionKey, index, (currentItem) => ({
+                                    ...currentItem,
+                                    buttonLabelId: event.target.value,
+                                  }))
+                                }
+                                disabled={!supabaseReady}
+                              />
+                            </Field>
+                          </div>
+                          <Field label="Deskripsi (English)">
+                            <textarea
+                              rows={4}
+                              value={item.description ?? ""}
+                              onChange={(event) =>
+                                updateSectionItem(sectionKey, index, (currentItem) => ({
+                                  ...currentItem,
+                                  description: event.target.value,
+                                }))
+                              }
+                              disabled={!supabaseReady}
+                            />
+                          </Field>
+                          <Field label="Deskripsi (Indonesia)">
+                            <textarea
+                              rows={4}
+                              value={item.descriptionId ?? ""}
+                              onChange={(event) =>
+                                updateSectionItem(sectionKey, index, (currentItem) => ({
+                                  ...currentItem,
+                                  descriptionId: event.target.value,
+                                }))
+                              }
+                              disabled={!supabaseReady}
+                            />
+                          </Field>
+                          <Field label="Tautan website">
+                            <input
+                              type="url"
+                              value={item.href ?? ""}
+                              onChange={(event) =>
+                                updateSectionItem(sectionKey, index, (currentItem) => ({
+                                  ...currentItem,
+                                  href: event.target.value,
+                                }))
+                              }
+                              placeholder="https://..."
+                              disabled={!supabaseReady}
+                            />
+                          </Field>
+                          <div className="admin-grid-2">
+                            <Field label="Gambar laptop">
+                              <input
+                                type="text"
+                                value={image.src ?? ""}
+                                onChange={(event) =>
+                                  updateSectionItem(sectionKey, index, (currentItem) => ({
+                                    ...currentItem,
+                                    image: {
+                                      ...(currentItem.image ?? {}),
+                                      src: event.target.value,
+                                    },
+                                  }))
+                                }
+                                disabled={!supabaseReady}
+                              />
+                            </Field>
+                            <Field label="Deskripsi gambar">
+                              <input
+                                type="text"
+                                value={image.alt ?? ""}
+                                onChange={(event) =>
+                                  updateSectionItem(sectionKey, index, (currentItem) => ({
+                                    ...currentItem,
+                                    image: {
+                                      ...(currentItem.image ?? {}),
+                                      alt: event.target.value,
+                                    },
+                                  }))
+                                }
+                                disabled={!supabaseReady}
+                              />
+                            </Field>
+                          </div>
+                        </article>
+                      );
+                    }
+
                     if (sectionKey === "projects") {
                       const image = item.image ?? {};
                       const focus = {
@@ -1507,7 +1777,7 @@ export default function AdminForm({
                             />
                           </Field>
                           <ImageField
-                            label="Project image"
+                            label="Gambar proyek"
                             help="Unggah gambar utama proyek dari perangkat."
                             value={image.src ?? ""}
                             altValue={image.alt ?? ""}
@@ -1594,62 +1864,194 @@ export default function AdminForm({
                               })
                             }
                             disabled={!supabaseReady}
-                            previewLabel="Project image preview"
+                            previewLabel="Pratinjau gambar proyek"
                             statusText={uploadStatus[imageStatusKey]}
                           />
-                          <Field label="Tautan proyek" help="Tambahkan link untuk tombol read more pada kartu proyek.">
+                          <Field
+                            label="Ringkasan proyek"
+                            help="Tuliskan deskripsi singkat yang akan tampil di kartu project."
+                          >
+                            <textarea
+                              rows={5}
+                              value={item.summary ?? ""}
+                              onChange={(event) =>
+                                updateSectionItem(sectionKey, index, (currentItem) => ({
+                                  ...currentItem,
+                                  summary: event.target.value,
+                                }))
+                              }
+                              disabled={!supabaseReady}
+                            />
+                          </Field>
+                        </article>
+                      );
+                    }
+
+                    if (sectionKey === "editing") {
+                      const image = item.image ?? {};
+                      const focus = {
+                        x: Number.isFinite(image.focus?.x) ? image.focus.x : 50,
+                        y: Number.isFinite(image.focus?.y) ? image.focus.y : 50,
+                      };
+
+                      return (
+                        <article className="admin-item-card" key={item.id ?? index}>
+                          <ItemToolbar
+                            disabled={!supabaseReady}
+                            sectionLabel="editing"
+                            isActive={item.isActive !== false}
+                            onStatusChange={(value) =>
+                              updateSectionItem(sectionKey, index, (currentItem) => ({
+                                ...currentItem,
+                                isActive: value,
+                              }))
+                            }
+                            onRemove={() => removeItem(sectionKey, index)}
+                          />
+
+                          <div className="admin-grid-2">
+                            <Field
+                              label="Tipe tampilan"
+                              help="Mockup iPhone tampil pada dua pratinjau kiri. Galeri tampil di kontainer kanan."
+                            >
+                              <select
+                                value={item.type ?? "gallery"}
+                                onChange={(event) =>
+                                  updateSectionItem(sectionKey, index, (currentItem) => ({
+                                    ...currentItem,
+                                    type: event.target.value,
+                                  }))
+                                }
+                                disabled={!supabaseReady}
+                              >
+                                <option value="phone">Mockup iPhone</option>
+                                <option value="gallery">Galeri scroll</option>
+                              </select>
+                            </Field>
+                            <Field
+                              label="Tautan Instagram"
+                              help="Untuk item Phone, tautan ini dipakai oleh tombol Instagram di bawah mockup."
+                            >
+                              <input
+                                type="url"
+                                value={item.href ?? ""}
+                                onChange={(event) =>
+                                  updateSectionItem(sectionKey, index, (currentItem) => ({
+                                    ...currentItem,
+                                    href: event.target.value,
+                                  }))
+                                }
+                                placeholder="https://..."
+                                disabled={!supabaseReady}
+                              />
+                            </Field>
+                            <Field
+                              label="Nama Instagram"
+                              help="Teks tombol di bawah mockup iPhone, contoh: @nailaazahrra."
+                            >
+                              <input
+                                type="text"
+                                value={item.instagramName ?? ""}
+                                onChange={(event) =>
+                                  updateSectionItem(sectionKey, index, (currentItem) => ({
+                                    ...currentItem,
+                                    instagramName: event.target.value,
+                                  }))
+                                }
+                                placeholder="@username"
+                                disabled={!supabaseReady}
+                              />
+                            </Field>
+                          </div>
+
+                          <Field label="Judul">
                             <input
-                              type="url"
-                              value={item.href ?? ""}
+                              type="text"
+                              value={item.title ?? ""}
                               onChange={(event) =>
                                 updateSectionItem(sectionKey, index, (currentItem) => ({
                                   ...currentItem,
-                                  href: event.target.value,
+                                  title: event.target.value,
                                 }))
                               }
-                              placeholder="https://..."
                               disabled={!supabaseReady}
                             />
                           </Field>
-                          <Field label="Masalah">
+
+                          <Field label="Deskripsi">
                             <textarea
                               rows={3}
-                              value={item.problem ?? ""}
+                              value={item.description ?? ""}
                               onChange={(event) =>
                                 updateSectionItem(sectionKey, index, (currentItem) => ({
                                   ...currentItem,
-                                  problem: event.target.value,
+                                  description: event.target.value,
                                 }))
                               }
                               disabled={!supabaseReady}
                             />
                           </Field>
-                          <Field label="Solusi">
-                            <textarea
-                              rows={3}
-                              value={item.solution ?? ""}
-                              onChange={(event) =>
-                                updateSectionItem(sectionKey, index, (currentItem) => ({
-                                  ...currentItem,
-                                  solution: event.target.value,
-                                }))
-                              }
-                              disabled={!supabaseReady}
-                            />
-                          </Field>
-                          <Field label="Hasil">
-                            <textarea
-                              rows={3}
-                              value={item.impact ?? ""}
-                              onChange={(event) =>
-                                updateSectionItem(sectionKey, index, (currentItem) => ({
-                                  ...currentItem,
-                                  impact: event.target.value,
-                                }))
-                              }
-                              disabled={!supabaseReady}
-                            />
-                          </Field>
+
+                          <ImageField
+                            label="Gambar editing"
+                            help="Unggah gambar untuk mockup iPhone atau galeri scroll."
+                            value={image.src ?? ""}
+                            altValue={image.alt ?? ""}
+                            onChange={(nextValue) =>
+                              updateSectionItem(sectionKey, index, (currentItem) => ({
+                                ...currentItem,
+                                image: {
+                                  ...(currentItem.image ?? {}),
+                                  src: nextValue,
+                                },
+                              }))
+                            }
+                            onClear={() =>
+                              updateSectionItem(sectionKey, index, (currentItem) => ({
+                                ...currentItem,
+                                image: {
+                                  ...(currentItem.image ?? {}),
+                                  src: "",
+                                  cardSrc: "",
+                                  detailSrc: "",
+                                },
+                              }))
+                            }
+                            onAltChange={(nextValue) =>
+                              updateSectionItem(sectionKey, index, (currentItem) => ({
+                                ...currentItem,
+                                image: {
+                                  ...(currentItem.image ?? {}),
+                                  alt: nextValue,
+                                },
+                              }))
+                            }
+                            onUpload={(event) =>
+                              uploadImage({
+                                file: event.target.files?.[0],
+                                sectionKey,
+                                itemIndex: index,
+                                target: "image",
+                                prefix: item.type === "phone" ? "phone" : "gallery",
+                              }).finally(() => {
+                                event.target.value = "";
+                              })
+                            }
+                            focusValue={focus}
+                            onFocusChange={(nextFocus) =>
+                              updateSectionItem(sectionKey, index, (currentItem) => ({
+                                ...currentItem,
+                                image: {
+                                  ...(currentItem.image ?? {}),
+                                  focus: nextFocus,
+                                },
+                              }))
+                            }
+                            disabled={!supabaseReady}
+                            previewLabel="Pratinjau gambar editing"
+                            previewClassName={item.type === "phone" ? "is-phone" : "is-golden"}
+                            statusText={uploadStatus[imageStatusKey]}
+                          />
                         </article>
                       );
                     }
@@ -1816,7 +2218,7 @@ export default function AdminForm({
                               })
                             }
                             disabled={!supabaseReady}
-                            previewLabel="News image preview"
+                            previewLabel="Pratinjau gambar liputan"
                             previewClassName="is-square"
                             statusText={uploadStatus[imageStatusKey]}
                           />

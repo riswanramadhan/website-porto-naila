@@ -42,8 +42,8 @@ export default function CropModal({
       }
       onSave?.(croppedImageBlob);
     } catch (e) {
-      console.error(e);
-      alert("Gagal memproses crop");
+      globalThis.console.error(e);
+      globalThis.alert("Gagal memproses crop");
     }
   };
 

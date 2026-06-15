@@ -9,6 +9,7 @@ const translations = {
     navExperience: "Experience",
     navProof: "Proof",
     navProjects: "Projects",
+    navEditing: "Editing",
     navNews: "News",
     navSkills: "Skills",
     navAchievements: "Achievements",
@@ -50,14 +51,18 @@ const translations = {
     projectsTitle: "Projects Driven by People, Purpose, and Social Impact.",
     projectsBody:
       "A showcase of initiatives designed to create meaningful change through collaboration, community-centered solutions, and measurable impact.",
-    projectProblem: "Problem",
-    projectSolution: "Solution",
-    projectImpact: "Impact",
-    projectReadMore: "Read more about this project",
+    projectReadMore: "See more",
+    projectReadLess: "Back",
+    projectDescription: "Description",
+    editingEyebrow: "Editing",
+    editingTitle: "Featured Editing Projects",
+    editingBody:
+      "A selection of editing projects showcasing my editing expertise and creative approach.",
     newsEyebrow: "News",
     newsTitle: "Featured News & Media Coverage of leadership, education, and community impact.",
     newsBody:
       "Selected articles covering Naila's achievements, Growmates initiatives, education programs, and social collaboration projects.",
+    newsVisit: "Visit",
     newsPhoto: "News Photo",
     newsOne:
       "A profile story about Naila's confidence in English communication and the achievements she built through learning experiences.",
@@ -67,13 +72,14 @@ const translations = {
       "A report on Hope & Help, a Growmates program encouraging children's learning motivation through education and community support.",
     newsFour:
       "Coverage of a Ramadan collaboration inviting public participation in sharing Lebaran parcels through a community-driven program.",
-    readArticle: "Read article",
     skillsEyebrow: "Skills",
     skillsTitle: "A balanced toolkit for talent, analysis, and creative communication.",
     skillsSoftSkills: "Soft Skills",
     skillsAnalytics: "Analytics",
     skillsCreative: "Creative",
     skillsLanguage: "Language",
+    skillsBahasaNative: "Native",
+    skillsEnglishProfessional: "Professional Working Proficiency",
     skillsHrTools: "HR Tools",
     achievementsEyebrow: "Achievements & Activities",
     achievementsTitle: "Recognition across leadership, research, and communication.",
@@ -103,6 +109,7 @@ const translations = {
     navExperience: "Pengalaman",
     navProof: "Bukti",
     navProjects: "Proyek",
+    navEditing: "Editing",
     navNews: "Berita",
     navSkills: "Keahlian",
     navAchievements: "Pencapaian",
@@ -144,14 +151,18 @@ const translations = {
     projectsTitle: "Proyek digerakkan oleh manusia, tujuan, dan dampak sosial.",
     projectsBody:
       "Rangkaian inisiatif yang dirancang untuk menciptakan perubahan melalui kolaborasi, solusi berbasis komunitas, dan dampak terukur.",
-    projectProblem: "Masalah",
-    projectSolution: "Solusi",
-    projectImpact: "Dampak",
-    projectReadMore: "Baca lebih lanjut tentang proyek ini",
+    projectReadMore: "Selengkapnya",
+    projectReadLess: "Kembali",
+    projectDescription: "Deskripsi",
+    editingEyebrow: "Penyuntingan",
+    editingTitle: "Proyek Penyuntingan Pilihan",
+    editingBody:
+      "Pilihan proyek penyuntingan yang menampilkan keahlian editing dan pendekatan kreatif saya.",
     newsEyebrow: "Berita",
     newsTitle: "Berita dan liputan media tentang kepemimpinan, pendidikan, dan dampak komunitas.",
     newsBody:
       "Artikel pilihan yang meliput prestasi Naila, inisiatif Growmates, program pendidikan, dan proyek kolaborasi sosial.",
+    newsVisit: "Kunjungi",
     newsPhoto: "Foto Berita",
     newsOne:
       "Profil tentang kepercayaan diri Naila dalam komunikasi bahasa Inggris dan berbagai prestasi yang dibangun melalui pengalaman belajar.",
@@ -161,13 +172,14 @@ const translations = {
       "Laporan tentang Hope & Help, program Growmates yang mendorong minat belajar anak melalui edukasi dan dukungan komunitas.",
     newsFour:
       "Liputan kolaborasi Ramadan yang mengajak masyarakat berbagi parsel Lebaran melalui program berbasis komunitas.",
-    readArticle: "Baca artikel",
     skillsEyebrow: "Keahlian",
     skillsTitle: "Toolkit seimbang untuk talenta, analisis, dan komunikasi kreatif.",
     skillsSoftSkills: "Soft Skills",
     skillsAnalytics: "Analitik",
     skillsCreative: "Kreatif",
     skillsLanguage: "Bahasa",
+    skillsBahasaNative: "Bahasa ibu",
+    skillsEnglishProfessional: "Kemampuan kerja profesional",
     skillsHrTools: "Perangkat HR",
     achievementsEyebrow: "Pencapaian & Aktivitas",
     achievementsTitle: "Pengakuan dalam kepemimpinan, riset, dan komunikasi.",
@@ -206,12 +218,14 @@ export default function ClientInteractions() {
     const navToggle = document.querySelector(".nav-toggle");
     const navMenu = document.querySelector(".nav-menu");
     const navLinks = Array.from(document.querySelectorAll(".nav-menu a"));
+    const hashLinks = Array.from(document.querySelectorAll("a[href^='#'], a[href^='/#']"));
     const timelineTriggers = Array.from(document.querySelectorAll(".timeline-trigger"));
+    const projectToggles = Array.from(document.querySelectorAll(".project-flip-toggle"));
+    const newsGrid = document.querySelector(".news-grid");
+    const newsDots = Array.from(document.querySelectorAll("[data-news-dot]"));
     const revealItems = Array.from(document.querySelectorAll(".reveal"));
     const themeToggles = Array.from(document.querySelectorAll(".theme-toggle"));
     const languageToggles = Array.from(document.querySelectorAll(".language-toggle"));
-    const cursorDot = document.querySelector(".cursor-dot");
-    const cursorRing = document.querySelector(".cursor-ring");
     const ambientItems = Array.from(document.querySelectorAll(".ambient-orb, .magic-line"));
     const typingTarget = document.querySelector("[data-typing='hero'] .typing-text");
     const statCounters = Array.from(document.querySelectorAll("[data-count]"));
@@ -263,9 +277,9 @@ export default function ClientInteractions() {
     const syncTimelineHeights = () => {
       timelineTriggers.forEach((trigger) => {
         const content = trigger.nextElementSibling;
-        if (!(content instanceof HTMLElement)) return;
+        if (!(content instanceof globalThis.HTMLElement)) return;
         if (trigger.getAttribute("aria-expanded") === "true") {
-          content.style.maxHeight = `${content.scrollHeight}px`;
+          content.style.maxHeight = "none";
         } else {
           content.style.maxHeight = "0px";
         }
@@ -330,7 +344,7 @@ export default function ClientInteractions() {
       const target = Number.isFinite(raw) ? raw : 0;
       const suffix = element.dataset.countSuffix || "";
       const duration = Number(element.dataset.countDuration) || 1200;
-      const start = performance.now();
+      const start = globalThis.performance.now();
       const easeOut = (t) => 1 - Math.pow(1 - t, 3);
 
       const step = (now) => {
@@ -371,6 +385,13 @@ export default function ClientInteractions() {
         }
       });
 
+      document.querySelectorAll("[data-lang-en][data-lang-id]").forEach((element) => {
+        const text = language === "id" ? element.dataset.langId : element.dataset.langEn;
+        if (text) {
+          element.textContent = text;
+        }
+      });
+
       languageToggles.forEach((toggle) => {
         const nextLanguage = language === "en" ? "Indonesian" : "English";
         toggle.setAttribute("aria-label", `Switch language to ${nextLanguage}`);
@@ -383,21 +404,72 @@ export default function ClientInteractions() {
       syncTimelineHeights();
     };
 
+    let menuCloseTimer;
     const closeMobileMenu = () => {
+      if (!navToggle || !navMenu) return;
+      if (menuCloseTimer) {
+        globalThis.clearTimeout(menuCloseTimer);
+        menuCloseTimer = null;
+      }
+      navToggle.setAttribute("aria-expanded", "false");
+      if (!navMenu.classList.contains("is-open")) {
+        document.body.classList.remove("menu-open");
+        return;
+      }
       navToggle?.setAttribute("aria-expanded", "false");
-      navMenu?.classList.remove("is-open");
-      document.body.classList.remove("menu-open");
+      navMenu.classList.remove("is-open");
+      navMenu.classList.add("is-closing");
+      menuCloseTimer = globalThis.setTimeout(() => {
+        navMenu.classList.remove("is-closing");
+        document.body.classList.remove("menu-open");
+        menuCloseTimer = null;
+      }, prefersReducedMotion ? 0 : 280);
     };
 
     const handleNavToggle = () => {
-      if (!navToggle) return;
+      if (!navToggle || !navMenu) return;
       const isOpen = navToggle.getAttribute("aria-expanded") === "true";
-      navToggle.setAttribute("aria-expanded", String(!isOpen));
-      navMenu?.classList.toggle("is-open", !isOpen);
-      document.body.classList.toggle("menu-open", !isOpen);
+      if (isOpen) {
+        closeMobileMenu();
+        return;
+      }
+      if (menuCloseTimer) {
+        globalThis.clearTimeout(menuCloseTimer);
+        menuCloseTimer = null;
+      }
+      navMenu.classList.remove("is-closing");
+      navToggle.setAttribute("aria-expanded", "true");
+      navMenu.classList.add("is-open");
+      document.body.classList.add("menu-open");
     };
 
-    const handleNavLinkClick = () => {
+    const getHashFromHref = (href) => {
+      if (!href) return "";
+      if (href.startsWith("#")) return href.slice(1);
+      if (href.startsWith("/#")) return href.slice(2);
+      return "";
+    };
+
+    const scrollToSectionWithoutHash = (href) => {
+      const targetId = getHashFromHref(href);
+      if (!targetId) return false;
+      if (href.startsWith("/#") && window.location.pathname !== "/") return false;
+
+      const target = document.getElementById(targetId);
+      if (!target) return false;
+      target.scrollIntoView({
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+        block: "start",
+      });
+      window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+      return true;
+    };
+
+    const handleHashLinkClick = (event) => {
+      const href = event.currentTarget.getAttribute("href") || "";
+      if (scrollToSectionWithoutHash(href)) {
+        event.preventDefault();
+      }
       closeMobileMenu();
     };
 
@@ -418,8 +490,50 @@ export default function ClientInteractions() {
       syncTimelineHeights();
     };
 
+    const projectToggleHandlers = new Map();
+    const handleProjectToggle = (button) => () => {
+      const card = button.closest(".case-card");
+      if (!card) return;
+      const isExpanded = card.classList.contains("is-flipped");
+      const nextExpanded = !isExpanded;
+      card.classList.toggle("is-flipped", nextExpanded);
+      card.querySelectorAll(".project-flip-toggle").forEach((toggle) => {
+        toggle.setAttribute("aria-expanded", String(nextExpanded));
+      });
+      const front = card.querySelector(".case-card-front");
+      const back = card.querySelector(".case-card-back");
+      front?.setAttribute("aria-hidden", String(nextExpanded));
+      back?.setAttribute("aria-hidden", String(!nextExpanded));
+    };
+
+    const updateNewsDots = () => {
+      if (!newsGrid || !newsDots.length) return;
+      const cards = Array.from(newsGrid.querySelectorAll(".news-card"));
+      if (!cards.length) return;
+      const gridRect = newsGrid.getBoundingClientRect();
+      const activeIndex = cards.reduce(
+        (closest, card, index) => {
+          const rect = card.getBoundingClientRect();
+          const distance = Math.abs(rect.left - gridRect.left);
+          return distance < closest.distance ? { index, distance } : closest;
+        },
+        { index: 0, distance: Number.POSITIVE_INFINITY }
+      ).index;
+      newsDots.forEach((dot, index) => dot.classList.toggle("is-active", index === activeIndex));
+    };
+
+    const handleNewsDotClick = (dot) => () => {
+      if (!newsGrid) return;
+      const index = Number(dot.dataset.newsDot);
+      const cards = Array.from(newsGrid.querySelectorAll(".news-card"));
+      const target = cards[index];
+      target?.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", inline: "start", block: "nearest" });
+    };
+
+    const newsDotHandlers = new Map();
+
     navToggle?.addEventListener("click", handleNavToggle);
-    navLinks.forEach((link) => link.addEventListener("click", handleNavLinkClick));
+    hashLinks.forEach((link) => link.addEventListener("click", handleHashLinkClick));
     themeToggles.forEach((toggle) => toggle.addEventListener("click", handleThemeToggle));
     languageToggles.forEach((toggle) => toggle.addEventListener("click", handleLanguageToggle));
     timelineTriggers.forEach((trigger) => {
@@ -427,9 +541,20 @@ export default function ClientInteractions() {
       timelineHandlers.set(trigger, handler);
       trigger.addEventListener("click", handler);
     });
+    projectToggles.forEach((button) => {
+      const handler = handleProjectToggle(button);
+      projectToggleHandlers.set(button, handler);
+      button.addEventListener("click", handler);
+    });
+    newsDots.forEach((dot) => {
+      const handler = handleNewsDotClick(dot);
+      newsDotHandlers.set(dot, handler);
+      dot.addEventListener("click", handler);
+    });
+    newsGrid?.addEventListener("scroll", updateNewsDots, { passive: true });
 
     revealItems.forEach((item, index) => {
-      const variant = ["up", "left", "right", "zoom"][index % 4];
+      const variant = item.dataset.anim || ["up", "left", "right", "zoom"][index % 4];
       item.dataset.anim = variant;
       item.style.setProperty("--reveal-delay", `${Math.min((index % 5) * 80, 320)}ms`);
     });
@@ -499,39 +624,6 @@ export default function ClientInteractions() {
       });
     };
 
-    let cursorX = 0;
-    let cursorY = 0;
-    let ringX = 0;
-    let ringY = 0;
-    let cursorFrame;
-
-    const moveCursor = () => {
-      ringX += (cursorX - ringX) * 0.18;
-      ringY += (cursorY - ringY) * 0.18;
-      if (cursorDot) {
-        cursorDot.style.transform = `translate(${cursorX}px, ${cursorY}px) translate(-50%, -50%)`;
-      }
-      if (cursorRing) {
-        cursorRing.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
-      }
-      cursorFrame = requestAnimationFrame(moveCursor);
-    };
-
-    const handleMouseMove = (event) => {
-      cursorX = event.clientX;
-      cursorY = event.clientY;
-    };
-
-    const hoverTargets = Array.from(document.querySelectorAll("a, button, input, textarea"));
-    const handleHover = () => document.body.classList.add("cursor-active");
-    const handleLeave = () => document.body.classList.remove("cursor-active");
-
-    hoverTargets.forEach((element) => {
-      element.addEventListener("mouseenter", handleHover);
-      element.addEventListener("mouseleave", handleLeave);
-    });
-
-    window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("scroll", animateAmbient, { passive: true });
     window.addEventListener("resize", syncTimelineHeights);
 
@@ -539,31 +631,37 @@ export default function ClientInteractions() {
     setLanguage(currentLanguage);
     updateTimelineCues();
     syncTimelineHeights();
+    updateNewsDots();
     animateAmbient();
-    moveCursor();
+    if (window.location.pathname === "/" && window.location.hash) {
+      const initialHash = window.location.hash;
+      window.requestAnimationFrame(() => {
+        scrollToSectionWithoutHash(initialHash);
+      });
+    }
 
     return () => {
       navToggle?.removeEventListener("click", handleNavToggle);
-      navLinks.forEach((link) => link.removeEventListener("click", handleNavLinkClick));
+      hashLinks.forEach((link) => link.removeEventListener("click", handleHashLinkClick));
       themeToggles.forEach((toggle) => toggle.removeEventListener("click", handleThemeToggle));
       languageToggles.forEach((toggle) => toggle.removeEventListener("click", handleLanguageToggle));
       timelineHandlers.forEach((handler, trigger) => {
         trigger.removeEventListener("click", handler);
       });
+      projectToggleHandlers.forEach((handler, button) => {
+        button.removeEventListener("click", handler);
+      });
+      newsDotHandlers.forEach((handler, dot) => {
+        dot.removeEventListener("click", handler);
+      });
+      newsGrid?.removeEventListener("scroll", updateNewsDots);
       revealObserver.disconnect();
       sectionObserver.disconnect();
       countObserver.disconnect();
       countAnimations.forEach((frameId) => cancelAnimationFrame(frameId));
-      window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("scroll", animateAmbient);
       window.removeEventListener("resize", syncTimelineHeights);
-      hoverTargets.forEach((element) => {
-        element.removeEventListener("mouseenter", handleHover);
-        element.removeEventListener("mouseleave", handleLeave);
-      });
-      if (cursorFrame) {
-        cancelAnimationFrame(cursorFrame);
-      }
+      if (menuCloseTimer) globalThis.clearTimeout(menuCloseTimer);
       stopTyping();
     };
   }, [pathname]);

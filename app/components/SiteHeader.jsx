@@ -33,6 +33,7 @@ export default async function SiteHeader() {
           <span className="sr-only">Open menu</span>
           <span></span>
           <span></span>
+          <span></span>
         </button>
 
         <div className="nav-menu" id="nav-menu">
@@ -44,6 +45,9 @@ export default async function SiteHeader() {
           </Link>
           <Link href="#experience" data-i18n="navExperience">
             Experience
+          </Link>
+          <Link href="#editing" data-i18n="navEditing">
+            Editing
           </Link>
           <Link href="#projects" data-i18n="navProjects">
             Projects

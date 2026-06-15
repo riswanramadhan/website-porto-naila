@@ -3,7 +3,9 @@ import GlobalDecor from "@/components/GlobalDecor";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import ContactForm from "@/components/ContactForm";
+import { Lightbox } from "@/components/Lightbox";
 import { fetchPortfolio } from "@/lib/portfolio";
+import { ExternalLink } from "lucide-react";
 
 const resumeHref =
   "https://drive.google.com/file/d/1-aVSbUSbd0Av9BdEgq4_A1mqF72xQeaU/view?usp=sharing";
@@ -15,6 +17,20 @@ const imageLogoBrands = new Set([
   "canva",
 ]);
 const heroImageSrc = "/naila-hero.png";
+const heroStatIcons = [
+  <svg viewBox="0 0 24 24" aria-hidden="true" key="people">
+    <path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3ZM8 11c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3Zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13Zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5C23 14.17 18.33 13 16 13Z" />
+  </svg>,
+  <svg viewBox="0 0 24 24" aria-hidden="true" key="team">
+    <path d="M12 2 3 6.5v11L12 22l9-4.5v-11L12 2Zm0 2.2 5.76 2.88L12 9.96 6.24 7.08 12 4.2Zm-7 4.5 6 3v7.8l-6-3V8.7Zm8 10.8v-7.8l6-3v7.8l-6 3Z" />
+  </svg>,
+  <svg viewBox="0 0 24 24" aria-hidden="true" key="heart">
+    <path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10Zm0-2.45c2.05-1.43 5-4.35 5-7.55a2 2 0 0 0-3.55-1.26L12 11.52l-1.45-1.78A2 2 0 0 0 7 11c0 3.2 2.95 6.12 5 7.55Z" />
+  </svg>,
+  <svg viewBox="0 0 24 24" aria-hidden="true" key="growth">
+    <path d="M4 18h16v2H4v-2Zm1-3.5 4.5-4.5 3 3L19 6.5V11h2V3h-8v2h4.5l-5 5-3-3L3.6 12.9 5 14.5Z" />
+  </svg>,
+];
 
 const getMediaStyle = (image = {}) => {
   const focus = image.focus ?? {};
@@ -32,6 +48,26 @@ const getMediaStyle = (image = {}) => {
 };
 
 const getCardImageSrc = (image = {}) => image.cardSrc || image.src;
+const getProjectSummary = (project = {}) =>
+  project.summary ||
+  [project.problem, project.solution, project.impact].filter(Boolean).join(" ");
+const getProjectSummaryPreview = (project = {}) => {
+  const summary = getProjectSummary(project).trim();
+  const words = summary.split(/\s+/).filter(Boolean);
+  return {
+    full: summary,
+    isLong: words.length > 16,
+    preview: words.length > 16 ? `${words.slice(0, 16).join(" ")}...` : summary,
+  };
+};
+
+function InstagramIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.25-2.7a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4Z" />
+    </svg>
+  );
+}
 
 function SkillLogo({ brand }) {
   const imageLogos = {
@@ -65,14 +101,29 @@ function SkillLogo({ brand }) {
 }
 
 export default async function Home() {
-  const { achievements, experiences, news, projects } = await fetchPortfolio();
+  const { achievements, communityProjects, editing, experiences, heroStats, news, projects } =
+    await fetchPortfolio();
+  const activeHeroStats = heroStats
+    .filter((item) => item.isActive !== false)
+    .slice(0, 4);
   const activeExperiences = experiences.filter(
     (item) => item.isActive !== false,
   );
   const activeProjects = projects.filter((item) => item.isActive !== false);
+  const activeCommunityProjects = communityProjects.filter(
+    (item) => item.isActive !== false,
+  );
+  const featuredCommunityProject = activeCommunityProjects[0];
+  const activeEditing = editing.filter((item) => item.isActive !== false);
   const activeNews = news.filter((item) => item.isActive !== false);
   const activeAchievements = achievements.filter(
     (item) => item.isActive !== false,
+  );
+  const phoneEditingItems = activeEditing
+    .filter((item) => item.type === "phone")
+    .slice(0, 2);
+  const galleryEditingItems = activeEditing.filter(
+    (item) => item.type !== "phone",
   );
   const skillCards = [
     {
@@ -124,8 +175,12 @@ export default async function Home() {
         </svg>
       ),
       items: [
-        { label: "Bahasa Indonesia", detail: "Native" },
-        { label: "English", detail: "Professional Working Proficiency" },
+        { label: "Bahasa Indonesia", detail: "Native", detailKey: "skillsBahasaNative" },
+        {
+          label: "English",
+          detail: "Professional Working Proficiency",
+          detailKey: "skillsEnglishProfessional",
+        },
       ],
       type: "languages",
     },
@@ -208,60 +263,32 @@ export default async function Home() {
                 className="hero-metrics"
                 aria-label="Portfolio impact statistics"
               >
-                <article className="stat-card hero-stat hero-stat-1">
-                  <span className="stat-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3ZM8 11c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3Zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13Zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5C23 14.17 18.33 13 16 13Z" />
-                    </svg>
-                  </span>
-                  <strong data-count="100" data-count-suffix="+">
-                    100+
-                  </strong>
-                  <span data-i18n="statCandidates">
-                    Talent Applications Evaluated Through Structured Recruitment
-                    & Selection
-                  </span>
-                </article>
-                <article className="stat-card hero-stat hero-stat-2">
-                  <span className="stat-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M12 2 3 6.5v11L12 22l9-4.5v-11L12 2Zm0 2.2 5.76 2.88L12 9.96 6.24 7.08 12 4.2Zm-7 4.5 6 3v7.8l-6-3V8.7Zm8 10.8v-7.8l6-3v7.8l-6 3Z" />
-                    </svg>
-                  </span>
-                  <strong data-count="23" data-count-suffix="+">
-                    23+
-                  </strong>
-                  <span data-i18n="statTeam">
-                    Team Members Led Across Multiple Organizational Projects
-                  </span>
-                </article>
-                <article className="stat-card hero-stat hero-stat-3">
-                  <span className="stat-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10Zm0-2.45c2.05-1.43 5-4.35 5-7.55a2 2 0 0 0-3.55-1.26L12 11.52l-1.45-1.78A2 2 0 0 0 7 11c0 3.2 2.95 6.12 5 7.55Z" />
-                    </svg>
-                  </span>
-                  <strong data-count="200" data-count-suffix="+">
-                    200+
-                  </strong>
-                  <span data-i18n="statImpact">
-                    Beneficiaries Impacted Through Community Programs
-                  </span>
-                </article>
-                <article className="stat-card hero-stat hero-stat-4">
-                  <span className="stat-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M4 18h16v2H4v-2Zm1-3.5 4.5-4.5 3 3L19 6.5V11h2V3h-8v2h4.5l-5 5-3-3L3.6 12.9 5 14.5Z" />
-                    </svg>
-                  </span>
-                  <strong data-count="78" data-count-suffix="%">
-                    78%
-                  </strong>
-                  <span data-i18n="statGrowth">
-                    Performance Improvement Achieved Through Training &
-                    Development Programs
-                  </span>
-                </article>
+                {activeHeroStats.map((stat, index) => {
+                  const numericValue = Number(stat.value);
+                  const countValue = Number.isFinite(numericValue) ? numericValue : 0;
+                  const suffix = stat.suffix ?? "";
+
+                  return (
+                    <article
+                      className={`stat-card hero-stat hero-stat-${index + 1}`}
+                      key={stat.id ?? `${stat.label}-${index}`}
+                    >
+                      <span className="stat-icon">
+                        {heroStatIcons[index] ?? heroStatIcons[0]}
+                      </span>
+                      <strong data-count={countValue} data-count-suffix={suffix}>
+                        {countValue}
+                        {suffix}
+                      </strong>
+                      <span
+                        data-lang-en={stat.label}
+                        data-lang-id={stat.labelId || stat.label}
+                      >
+                        {stat.label}
+                      </span>
+                    </article>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -371,7 +398,7 @@ export default async function Home() {
                           key={language.label}
                         >
                           <strong>{language.label}</strong>
-                          <span>{language.detail}</span>
+                          <span data-i18n={language.detailKey}>{language.detail}</span>
                         </div>
                       ))}
                     </div>
@@ -448,6 +475,99 @@ export default async function Home() {
           </div>
         </section>
 
+        <section className="section editing-section" id="editing">
+          <div className="container">
+            <div className="section-heading reveal">
+              <p className="eyebrow" data-i18n="editingEyebrow">
+                Editing
+              </p>
+              <h2 data-i18n="editingTitle">Featured Editing Projects</h2>
+              <p data-i18n="editingBody">
+                A selection of editing projects showcasing my editing expertise
+                and creative approach.
+              </p>
+            </div>
+
+            <div className="editing-layout">
+              <div
+                className="editing-phone-row reveal"
+                data-anim="left"
+                aria-label="Featured mobile editing previews"
+              >
+                {phoneEditingItems.map((item, index) => (
+                  <article
+                    className="editing-phone-card"
+                    style={{ "--phone-enter-delay": `${index * 120}ms` }}
+                    key={item.id ?? `${item.title}-${index}`}
+                  >
+                    <div className="iphone-mockup">
+                      <div className="iphone-side-button iphone-side-button-left" aria-hidden="true"></div>
+                      <div className="iphone-side-button iphone-side-button-right" aria-hidden="true"></div>
+                      <div className="iphone-screen">
+                        <span className="iphone-island" aria-hidden="true"></span>
+                        <span className="iphone-speaker" aria-hidden="true"></span>
+                        <span className="iphone-home-indicator" aria-hidden="true"></span>
+                        {item.image?.src ? (
+                          <img
+                            src={getCardImageSrc(item.image)}
+                            alt={item.image.alt || item.title}
+                            loading="lazy"
+                          />
+                        ) : null}
+                      </div>
+                    </div>
+                    {item.href ? (
+                      <a
+                        className="editing-instagram-button"
+                        href={item.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={`Open ${item.instagramName || item.title || "Instagram"} on Instagram`}
+                      >
+                        <InstagramIcon />
+                        <span>{item.instagramName || item.title || "Instagram"}</span>
+                      </a>
+                      ) : null}
+                  </article>
+                ))}
+              </div>
+
+              <div
+                className="editing-gallery-shell reveal"
+                data-anim="right"
+                aria-label="Scrollable editing project gallery"
+                tabIndex={0}
+              >
+                <div className="editing-gallery-track">
+                  {galleryEditingItems.map((item, index) => {
+                    const imageContent = item.image?.src ? (
+                      <img
+                        className="editing-gallery-image"
+                        src={getCardImageSrc(item.image)}
+                        alt={item.image.alt || item.title}
+                        loading="lazy"
+                      />
+                    ) : null;
+
+                    return (
+                      <figure className="editing-gallery-item" key={item.id ?? `${item.title}-${index}`}>
+                        {imageContent ? (
+                          <Lightbox
+                            src={getCardImageSrc(item.image)}
+                            alt={item.image.alt || item.title}
+                          >
+                            {imageContent}
+                          </Lightbox>
+                        ) : null}
+                      </figure>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="section" id="projects">
           <div className="container">
             <div className="section-heading reveal">
@@ -465,47 +585,122 @@ export default async function Home() {
             </div>
 
             <div className="project-grid">
-              {activeProjects.map((project) => (
-                <article
-                  className="case-card reveal"
-                  key={project.id ?? project.title}
-                >
-                  <div className="case-topline">
-                    <h3>{project.title}</h3>
-                    {project.image ? (
-                      <img
-                        className="case-image"
-                        src={getCardImageSrc(project.image)}
-                        alt={project.image.alt}
-                        style={getMediaStyle(project.image)}
-                      />
-                    ) : null}
-                  </div>
-                  <dl>
-                    <dt data-i18n="projectProblem">Problem</dt>
-                    <dd>{project.problem}</dd>
-                    <dt data-i18n="projectSolution">Solution</dt>
-                    <dd>{project.solution}</dd>
-                    <dt data-i18n="projectImpact">Impact</dt>
-                    <dd>{project.impact}</dd>
-                  </dl>
-                  <a
-                    className="project-readmore"
-                    href={
-                      project.href && project.href.trim()
-                        ? project.href
-                        : "#contact"
-                    }
+              {activeProjects.map((project) => {
+                const summary = getProjectSummaryPreview(project);
+
+                return (
+                  <article
+                    className="case-card reveal"
+                    key={project.id ?? project.title}
                   >
-                    <span data-i18n="projectReadMore">
-                      Read more about this project
-                    </span>
-                  </a>
-                </article>
-              ))}
+                    <div className="case-card-inner">
+                      <div className="case-card-face case-card-front">
+                        <div className="case-topline">
+                          <h3>{project.title}</h3>
+                          {project.image ? (
+                            <img
+                              className="case-image"
+                              src={getCardImageSrc(project.image)}
+                              alt={project.image.alt}
+                              style={getMediaStyle(project.image)}
+                            />
+                          ) : null}
+                        </div>
+                        <p className="case-summary">{summary.preview}</p>
+                        {summary.full ? (
+                          <button
+                            className="project-readmore project-flip-toggle"
+                            type="button"
+                            aria-expanded="false"
+                          >
+                            <span data-i18n="projectReadMore">See more</span>
+                          </button>
+                        ) : null}
+                      </div>
+                      <div className="case-card-face case-card-back" aria-hidden="true">
+                        <div className="case-back-header">
+                          <span className="case-back-label" data-i18n="projectDescription">
+                            Description
+                          </span>
+                          <h3>{project.title}</h3>
+                        </div>
+                        <div className="case-back-scroll">
+                          <p>{summary.full}</p>
+                        </div>
+                        <button
+                          className="project-readmore project-flip-toggle"
+                          type="button"
+                          aria-expanded="false"
+                        >
+                          <span data-i18n="projectReadLess">Back</span>
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>
+
+        {featuredCommunityProject ? (
+          <section className="section community-project-section" id="community-project">
+            <div className="container community-project-layout">
+              <div className="community-project-media reveal" data-anim="left">
+                {featuredCommunityProject.image?.src ? (
+                  <img
+                    src={featuredCommunityProject.image.src}
+                    alt={
+                      featuredCommunityProject.image.alt ||
+                      featuredCommunityProject.title
+                    }
+                    loading="lazy"
+                  />
+                ) : null}
+              </div>
+              <div className="community-project-copy reveal" data-anim="right">
+                <h2
+                  data-lang-en={featuredCommunityProject.title}
+                  data-lang-id={
+                    featuredCommunityProject.titleId ||
+                    featuredCommunityProject.title
+                  }
+                >
+                  {featuredCommunityProject.title}
+                </h2>
+                <p
+                  data-lang-en={featuredCommunityProject.description}
+                  data-lang-id={
+                    featuredCommunityProject.descriptionId ||
+                    featuredCommunityProject.description
+                  }
+                >
+                  {featuredCommunityProject.description}
+                </p>
+                {featuredCommunityProject.href ? (
+                  <a
+                    className="button button-primary"
+                    href={featuredCommunityProject.href}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <ExternalLink aria-hidden="true" />
+                    <span
+                      data-lang-en={featuredCommunityProject.buttonLabel || "Website"}
+                      data-lang-id={
+                        featuredCommunityProject.buttonLabelId ||
+                        featuredCommunityProject.buttonLabel ||
+                        "Website"
+                      }
+                    >
+                      {featuredCommunityProject.buttonLabel || "Website"}
+                    </span>
+                  </a>
+                ) : null}
+              </div>
+            </div>
+          </section>
+        ) : null}
 
         <section className="section news-section" id="news">
           <div className="container">
@@ -540,15 +735,29 @@ export default async function Home() {
                         alt={article.image.alt}
                         style={getMediaStyle(article.image)}
                       />
+                      <span className="news-open-indicator" aria-hidden="true">
+                        <ExternalLink />
+                        <span data-i18n="newsVisit">Visit</span>
+                      </span>
                     </div>
                   ) : null}
                   <div className="news-copy">
                     <span className="news-source">{article.source}</span>
                     <h3>{article.title}</h3>
-                    <p>{article.summary}</p>
-                    <strong data-i18n="readArticle">Read article</strong>
+                    <p className="news-summary">{article.summary}</p>
                   </div>
                 </a>
+              ))}
+            </div>
+            <div className="news-carousel-dots" aria-hidden="true">
+              {activeNews.map((article, index) => (
+                <button
+                  type="button"
+                  className={index === 0 ? "is-active" : ""}
+                  data-news-dot={index}
+                  key={article.id ?? article.href ?? index}
+                  tabIndex={-1}
+                ></button>
               ))}
             </div>
           </div>
@@ -620,7 +829,7 @@ export default async function Home() {
               </p>
               <div className="contact-links">
                 <a
-                  href="https://www.linkedin.com/naila-azahra-73060a245"
+                  href="https://www.linkedin.com/in/naila-azahra-73060a245"
                   target="_blank"
                   rel="noreferrer"
                 >

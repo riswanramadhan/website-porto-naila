@@ -6,6 +6,25 @@ const sortByOrder = (items) =>
     ? [...items].sort((a, b) => (a?.orderIndex ?? 999) - (b?.orderIndex ?? 999))
     : [];
 
+const compactText = (items) =>
+  items
+    .map((item) => String(item ?? "").trim())
+    .filter(Boolean)
+    .join(" ");
+
+const getProjectSummary = (project = {}) =>
+  String(project.summary ?? "").trim() ||
+  compactText([project.problem, project.solution, project.impact]);
+
+const normalizeProjects = (items) =>
+  sortByOrder(items).map((project) => {
+    const { problem, solution, impact, ...rest } = project ?? {};
+    return {
+      ...rest,
+      summary: getProjectSummary(project),
+    };
+  });
+
 const getSupabaseUrl = () => process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
 const getSupabaseServiceKey = () => process.env.SUPABASE_SERVICE_ROLE_KEY;
 const getSupabasePublishableKey = () =>
@@ -46,8 +65,11 @@ export const isSupabaseConfigured = () => {
 };
 
 export const normalizePortfolio = (payload = {}) => ({
+  heroStats: sortByOrder(payload.heroStats ?? staticPortfolio.heroStats),
   experiences: sortByOrder(payload.experiences ?? staticPortfolio.experiences),
-  projects: sortByOrder(payload.projects ?? staticPortfolio.projects),
+  projects: normalizeProjects(payload.projects ?? staticPortfolio.projects),
+  communityProjects: sortByOrder(payload.communityProjects ?? staticPortfolio.communityProjects),
+  editing: sortByOrder(payload.editing ?? staticPortfolio.editing),
   news: sortByOrder(payload.news ?? staticPortfolio.news),
   achievements: sortByOrder(payload.achievements ?? staticPortfolio.achievements),
 });
@@ -59,7 +81,15 @@ export const fetchPortfolio = async () => {
   const { data, error } = await supabase
     .from("portfolio_content")
     .select("section_key, content")
-    .in("section_key", ["experiences", "projects", "news", "achievements"]);
+    .in("section_key", [
+      "heroStats",
+      "experiences",
+      "projects",
+      "communityProjects",
+      "editing",
+      "news",
+      "achievements",
+    ]);
 
   if (error || !data?.length) return normalizePortfolio(staticPortfolio);
 

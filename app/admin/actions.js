@@ -5,7 +5,15 @@ import { redirect } from "next/navigation";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { getSupabaseKeyMode, replacePortfolio, replaceSiteProfile } from "@/lib/portfolio";
 
-const sectionKeys = ["experiences", "projects", "news", "achievements"];
+const sectionKeys = [
+  "heroStats",
+  "experiences",
+  "projects",
+  "communityProjects",
+  "editing",
+  "news",
+  "achievements",
+];
 const formatError = (message) => ({ status: "error", message });
 const formatRlsError = () =>
   formatError(
