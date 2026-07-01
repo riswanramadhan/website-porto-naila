@@ -4,8 +4,12 @@ import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import ContactForm from "@/components/ContactForm";
 import { Lightbox } from "@/components/Lightbox";
+import NewsCarousel from "@/components/NewsCarousel";
+import ProjectCard from "@/components/ProjectCard";
 import { fetchPortfolio } from "@/lib/portfolio";
-import { ExternalLink } from "lucide-react";
+import { optimizedImageProps } from "@/lib/image";
+import Image from "next/image";
+import { ArrowUpRight, Mail } from "lucide-react";
 
 const resumeHref =
   "https://drive.google.com/file/d/1-aVSbUSbd0Av9BdEgq4_A1mqF72xQeaU/view?usp=sharing";
@@ -16,7 +20,7 @@ const imageLogoBrands = new Set([
   "photoshop",
   "canva",
 ]);
-const heroImageSrc = "/naila-hero.png";
+const heroImageSrc = "/naila-hero.webp";
 const heroStatIcons = [
   <svg viewBox="0 0 24 24" aria-hidden="true" key="people">
     <path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3ZM8 11c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3Zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13Zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5C23 14.17 18.33 13 16 13Z" />
@@ -69,22 +73,33 @@ function InstagramIcon() {
   );
 }
 
+function LinkedInIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M6.94 8.98H3.96V20h2.98V8.98ZM5.45 4a1.73 1.73 0 1 0 0 3.46 1.73 1.73 0 0 0 0-3.46Zm5.24 4.98H7.84V20h2.98v-5.45c0-1.44.27-2.83 2.05-2.83 1.76 0 1.78 1.64 1.78 2.92V20h2.98v-6.04c0-2.96-.64-5.24-4.1-5.24a3.59 3.59 0 0 0-3.23 1.78h-.04l.43-1.52Z" />
+    </svg>
+  );
+}
+
 function SkillLogo({ brand }) {
   const imageLogos = {
-    spss: "/logo-spss.png",
-    rstudio: "/logo-r studio.png",
-    figma: "/logo-figma.png",
-    photoshop: "/logo-photoshop.png",
-    canva: "/logo-canva.png",
+    spss: "/logo-spss.webp",
+    rstudio: "/logo-rstudio.webp",
+    figma: "/logo-figma.webp",
+    photoshop: "/logo-photoshop.webp",
+    canva: "/logo-canva.webp",
   };
   const imageSrc = imageLogos[brand];
   if (imageSrc) {
     return (
-      <img
+      <Image
         className="skill-logo-image"
         src={imageSrc}
         alt={`${brand} logo`}
-        loading="lazy"
+        width={128}
+        height={128}
+        sizes="64px"
+        {...optimizedImageProps}
       />
     );
   }
@@ -252,11 +267,15 @@ export default async function Home() {
               aria-label="Portrait and impact metrics"
             >
               <div className="hero-image-frame">
-                <img
+                <Image
                   className="hero-image"
                   src={heroImageSrc}
                   alt="Naila Azahra portrait"
-                  loading="eager"
+                  width={900}
+                  height={1350}
+                  sizes="(max-width: 960px) 600px, 40vw"
+                  preload
+                  {...optimizedImageProps}
                 />
               </div>
               <div
@@ -316,7 +335,7 @@ export default async function Home() {
             <div className="education-grid">
               <article className="card reveal">
                 <span className="edu-logo">
-                  <img src="/logo-unhas.png" alt="Hasanuddin University logo" />
+                  <Image src="/logo-unhas.webp" alt="Hasanuddin University logo" width={256} height={256} sizes="72px" {...optimizedImageProps} />
                 </span>
                 <h3>Hasanuddin University</h3>
                 <p data-i18n="eduHasanuddin">
@@ -327,9 +346,13 @@ export default async function Home() {
               </article>
               <article className="card reveal">
                 <span className="edu-logo">
-                  <img
-                    src="/logo-ions.png"
+                  <Image
+                    src="/logo-ions.webp"
                     alt="IONs International Education logo"
+                    width={256}
+                    height={256}
+                    sizes="72px"
+                    {...optimizedImageProps}
                   />
                 </span>
                 <h3>IONs International Education</h3>
@@ -341,9 +364,13 @@ export default async function Home() {
               </article>
               <article className="card reveal">
                 <span className="edu-logo edu-logo-wide">
-                  <img
-                    src="/logo al abidin.png"
+                  <Image
+                    src="/logo-al-abidin.webp"
                     alt="Al-Abidin Bilingual Boarding School logo"
+                    width={512}
+                    height={256}
+                    sizes="188px"
+                    {...optimizedImageProps}
                   />
                 </span>
                 <h3>Al-Abidin Bilingual Boarding School</h3>
@@ -444,9 +471,13 @@ export default async function Home() {
                     <span className="timeline-title">
                       {experience.logo?.src ? (
                         <span className="timeline-logo">
-                          <img
+                          <Image
                             src={experience.logo.src}
                             alt={experience.logo.alt || experience.role}
+                            width={96}
+                            height={96}
+                            sizes="48px"
+                            {...optimizedImageProps}
                           />
                         </span>
                       ) : null}
@@ -508,10 +539,12 @@ export default async function Home() {
                         <span className="iphone-speaker" aria-hidden="true"></span>
                         <span className="iphone-home-indicator" aria-hidden="true"></span>
                         {item.image?.src ? (
-                          <img
+                          <Image
                             src={getCardImageSrc(item.image)}
                             alt={item.image.alt || item.title}
-                            loading="lazy"
+                            fill
+                            sizes="(max-width: 640px) 45vw, 220px"
+                            {...optimizedImageProps}
                           />
                         ) : null}
                       </div>
@@ -525,7 +558,9 @@ export default async function Home() {
                         aria-label={`Open ${item.instagramName || item.title || "Instagram"} on Instagram`}
                       >
                         <InstagramIcon />
-                        <span>{item.instagramName || item.title || "Instagram"}</span>
+                        <span title={item.instagramName || item.title || "Instagram"}>
+                          {item.instagramName || item.title || "Instagram"}
+                        </span>
                       </a>
                       ) : null}
                   </article>
@@ -541,11 +576,13 @@ export default async function Home() {
                 <div className="editing-gallery-track">
                   {galleryEditingItems.map((item, index) => {
                     const imageContent = item.image?.src ? (
-                      <img
+                      <Image
                         className="editing-gallery-image"
                         src={getCardImageSrc(item.image)}
                         alt={item.image.alt || item.title}
-                        loading="lazy"
+                        fill
+                        sizes="(max-width: 640px) 30vw, 18vw"
+                        {...optimizedImageProps}
                       />
                     ) : null;
 
@@ -589,54 +626,12 @@ export default async function Home() {
                 const summary = getProjectSummaryPreview(project);
 
                 return (
-                  <article
-                    className="case-card reveal"
+                  <ProjectCard
                     key={project.id ?? project.title}
-                  >
-                    <div className="case-card-inner">
-                      <div className="case-card-face case-card-front">
-                        <div className="case-topline">
-                          <h3>{project.title}</h3>
-                          {project.image ? (
-                            <img
-                              className="case-image"
-                              src={getCardImageSrc(project.image)}
-                              alt={project.image.alt}
-                              style={getMediaStyle(project.image)}
-                            />
-                          ) : null}
-                        </div>
-                        <p className="case-summary">{summary.preview}</p>
-                        {summary.full ? (
-                          <button
-                            className="project-readmore project-flip-toggle"
-                            type="button"
-                            aria-expanded="false"
-                          >
-                            <span data-i18n="projectReadMore">See more</span>
-                          </button>
-                        ) : null}
-                      </div>
-                      <div className="case-card-face case-card-back" aria-hidden="true">
-                        <div className="case-back-header">
-                          <span className="case-back-label" data-i18n="projectDescription">
-                            Description
-                          </span>
-                          <h3>{project.title}</h3>
-                        </div>
-                        <div className="case-back-scroll">
-                          <p>{summary.full}</p>
-                        </div>
-                        <button
-                          className="project-readmore project-flip-toggle"
-                          type="button"
-                          aria-expanded="false"
-                        >
-                          <span data-i18n="projectReadLess">Back</span>
-                        </button>
-                      </div>
-                    </div>
-                  </article>
+                    project={project}
+                    summary={summary}
+                    mediaStyle={getMediaStyle(project.image)}
+                  />
                 );
               })}
             </div>
@@ -648,13 +643,16 @@ export default async function Home() {
             <div className="container community-project-layout">
               <div className="community-project-media reveal" data-anim="left">
                 {featuredCommunityProject.image?.src ? (
-                  <img
+                  <Image
                     src={featuredCommunityProject.image.src}
                     alt={
                       featuredCommunityProject.image.alt ||
                       featuredCommunityProject.title
                     }
-                    loading="lazy"
+                    width={1400}
+                    height={900}
+                    sizes="(max-width: 960px) calc(100vw - 48px), 58vw"
+                    {...optimizedImageProps}
                   />
                 ) : null}
               </div>
@@ -684,7 +682,7 @@ export default async function Home() {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <ExternalLink aria-hidden="true" />
+                    <ArrowUpRight aria-hidden="true" />
                     <span
                       data-lang-en={featuredCommunityProject.buttonLabel || "Website"}
                       data-lang-id={
@@ -719,47 +717,7 @@ export default async function Home() {
               </p>
             </div>
 
-            <div className="news-grid">
-              {activeNews.map((article) => (
-                <a
-                  className="news-card reveal"
-                  href={article.href}
-                  key={article.id ?? article.href}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {article.image ? (
-                    <div className="news-photo">
-                      <img
-                        src={getCardImageSrc(article.image)}
-                        alt={article.image.alt}
-                        style={getMediaStyle(article.image)}
-                      />
-                      <span className="news-open-indicator" aria-hidden="true">
-                        <ExternalLink />
-                        <span data-i18n="newsVisit">Visit</span>
-                      </span>
-                    </div>
-                  ) : null}
-                  <div className="news-copy">
-                    <span className="news-source">{article.source}</span>
-                    <h3>{article.title}</h3>
-                    <p className="news-summary">{article.summary}</p>
-                  </div>
-                </a>
-              ))}
-            </div>
-            <div className="news-carousel-dots" aria-hidden="true">
-              {activeNews.map((article, index) => (
-                <button
-                  type="button"
-                  className={index === 0 ? "is-active" : ""}
-                  data-news-dot={index}
-                  key={article.id ?? article.href ?? index}
-                  tabIndex={-1}
-                ></button>
-              ))}
-            </div>
+            <NewsCarousel articles={activeNews} />
           </div>
         </section>
 
@@ -784,11 +742,14 @@ export default async function Home() {
                 >
                   <div className="award-media">
                     {achievement.image ? (
-                      <img
+                      <Image
                         className="award-image"
                         src={getCardImageSrc(achievement.image)}
                         alt={achievement.image.alt}
                         style={getMediaStyle(achievement.image)}
+                        fill
+                        sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 960px) 50vw, 25vw"
+                        {...optimizedImageProps}
                       />
                     ) : null}
                   </div>
@@ -829,29 +790,25 @@ export default async function Home() {
               </p>
               <div className="contact-links">
                 <a
+                  className="social-link social-link-linkedin"
                   href="https://www.linkedin.com/in/naila-azahra-73060a245"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M6.94 8.98H3.96V20h2.98V8.98ZM5.45 4a1.73 1.73 0 1 0 0 3.46 1.73 1.73 0 0 0 0-3.46Zm5.24 4.98H7.84V20h2.98v-5.45c0-1.44.27-2.83 2.05-2.83 1.76 0 1.78 1.64 1.78 2.92V20h2.98v-6.04c0-2.96-.64-5.24-4.1-5.24a3.59 3.59 0 0 0-3.23 1.78h-.04l.43-1.52Z" />
-                  </svg>
+                  <LinkedInIcon />
                   LinkedIn
                 </a>
-                <a href="mailto:nailaazahra93@gmail.com">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M4 6h16v12H4V6Zm2.2 2 5.8 4.35L17.8 8H6.2Zm11.8 8V9.9l-6 4.5-6-4.5V16h12Z" />
-                  </svg>
+                <a className="social-link social-link-email" href="mailto:nailaazahra93@gmail.com">
+                  <Mail aria-hidden="true" />
                   Email
                 </a>
                 <a
+                  className="social-link social-link-instagram"
                   href="https://www.instagram.com/nailaazahrra"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.25-2.7a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4Z" />
-                  </svg>
+                  <InstagramIcon />
                   Instagram
                 </a>
               </div>

@@ -63,6 +63,7 @@ const translations = {
     newsBody:
       "Selected articles covering Naila's achievements, Growmates initiatives, education programs, and social collaboration projects.",
     newsVisit: "Visit",
+    newsSwipeHint: "Swipe to see more",
     newsPhoto: "News Photo",
     newsOne:
       "A profile story about Naila's confidence in English communication and the achievements she built through learning experiences.",
@@ -163,6 +164,7 @@ const translations = {
     newsBody:
       "Artikel pilihan yang meliput prestasi Naila, inisiatif Growmates, program pendidikan, dan proyek kolaborasi sosial.",
     newsVisit: "Kunjungi",
+    newsSwipeHint: "Geser untuk melihat liputan lain",
     newsPhoto: "Foto Berita",
     newsOne:
       "Profil tentang kepercayaan diri Naila dalam komunikasi bahasa Inggris dan berbagai prestasi yang dibangun melalui pengalaman belajar.",
@@ -220,13 +222,9 @@ export default function ClientInteractions() {
     const navLinks = Array.from(document.querySelectorAll(".nav-menu a"));
     const hashLinks = Array.from(document.querySelectorAll("a[href^='#'], a[href^='/#']"));
     const timelineTriggers = Array.from(document.querySelectorAll(".timeline-trigger"));
-    const projectToggles = Array.from(document.querySelectorAll(".project-flip-toggle"));
-    const newsGrid = document.querySelector(".news-grid");
-    const newsDots = Array.from(document.querySelectorAll("[data-news-dot]"));
     const revealItems = Array.from(document.querySelectorAll(".reveal"));
     const themeToggles = Array.from(document.querySelectorAll(".theme-toggle"));
     const languageToggles = Array.from(document.querySelectorAll(".language-toggle"));
-    const ambientItems = Array.from(document.querySelectorAll(".ambient-orb, .magic-line"));
     const typingTarget = document.querySelector("[data-typing='hero'] .typing-text");
     const statCounters = Array.from(document.querySelectorAll("[data-count]"));
     const prefersReducedMotion =
@@ -490,48 +488,6 @@ export default function ClientInteractions() {
       syncTimelineHeights();
     };
 
-    const projectToggleHandlers = new Map();
-    const handleProjectToggle = (button) => () => {
-      const card = button.closest(".case-card");
-      if (!card) return;
-      const isExpanded = card.classList.contains("is-flipped");
-      const nextExpanded = !isExpanded;
-      card.classList.toggle("is-flipped", nextExpanded);
-      card.querySelectorAll(".project-flip-toggle").forEach((toggle) => {
-        toggle.setAttribute("aria-expanded", String(nextExpanded));
-      });
-      const front = card.querySelector(".case-card-front");
-      const back = card.querySelector(".case-card-back");
-      front?.setAttribute("aria-hidden", String(nextExpanded));
-      back?.setAttribute("aria-hidden", String(!nextExpanded));
-    };
-
-    const updateNewsDots = () => {
-      if (!newsGrid || !newsDots.length) return;
-      const cards = Array.from(newsGrid.querySelectorAll(".news-card"));
-      if (!cards.length) return;
-      const gridRect = newsGrid.getBoundingClientRect();
-      const activeIndex = cards.reduce(
-        (closest, card, index) => {
-          const rect = card.getBoundingClientRect();
-          const distance = Math.abs(rect.left - gridRect.left);
-          return distance < closest.distance ? { index, distance } : closest;
-        },
-        { index: 0, distance: Number.POSITIVE_INFINITY }
-      ).index;
-      newsDots.forEach((dot, index) => dot.classList.toggle("is-active", index === activeIndex));
-    };
-
-    const handleNewsDotClick = (dot) => () => {
-      if (!newsGrid) return;
-      const index = Number(dot.dataset.newsDot);
-      const cards = Array.from(newsGrid.querySelectorAll(".news-card"));
-      const target = cards[index];
-      target?.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", inline: "start", block: "nearest" });
-    };
-
-    const newsDotHandlers = new Map();
-
     navToggle?.addEventListener("click", handleNavToggle);
     hashLinks.forEach((link) => link.addEventListener("click", handleHashLinkClick));
     themeToggles.forEach((toggle) => toggle.addEventListener("click", handleThemeToggle));
@@ -541,37 +497,56 @@ export default function ClientInteractions() {
       timelineHandlers.set(trigger, handler);
       trigger.addEventListener("click", handler);
     });
-    projectToggles.forEach((button) => {
-      const handler = handleProjectToggle(button);
-      projectToggleHandlers.set(button, handler);
-      button.addEventListener("click", handler);
-    });
-    newsDots.forEach((dot) => {
-      const handler = handleNewsDotClick(dot);
-      newsDotHandlers.set(dot, handler);
-      dot.addEventListener("click", handler);
-    });
-    newsGrid?.addEventListener("scroll", updateNewsDots, { passive: true });
 
-    revealItems.forEach((item, index) => {
-      const variant = item.dataset.anim || ["up", "left", "right", "zoom"][index % 4];
-      item.dataset.anim = variant;
-      item.style.setProperty("--reveal-delay", `${Math.min((index % 5) * 80, 320)}ms`);
+    const revealSettleHandlers = new Map();
+
+    const showRevealItem = (item, delay = 0) => {
+      item.style.setProperty("--reveal-delay", `${delay}ms`);
+      item.classList.add("is-visible");
+
+      const handleRevealSettled = (event) => {
+        if (event.target !== item || event.propertyName !== "transform") return;
+        item.classList.remove("is-reveal-ready");
+        item.style.removeProperty("--reveal-delay");
+        item.removeEventListener("transitionend", handleRevealSettled);
+        revealSettleHandlers.delete(item);
+      };
+
+      revealSettleHandlers.set(item, handleRevealSettled);
+      item.addEventListener("transitionend", handleRevealSettled);
+    };
+
+    revealItems.forEach((item) => {
+      item.dataset.anim ||= "up";
+      if (!prefersReducedMotion) item.classList.add("is-reveal-ready");
     });
 
-    const revealObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            revealObserver.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.14, rootMargin: "0px 0px -8% 0px" }
-    );
+    const revealObserver =
+      !prefersReducedMotion && "IntersectionObserver" in window
+        ? new IntersectionObserver(
+            (entries) => {
+              entries
+                .filter((entry) => entry.isIntersecting)
+                .sort((a, b) => {
+                  const rowDifference = a.boundingClientRect.top - b.boundingClientRect.top;
+                  return Math.abs(rowDifference) > 24
+                    ? rowDifference
+                    : a.boundingClientRect.left - b.boundingClientRect.left;
+                })
+                .forEach((entry, index) => {
+                  showRevealItem(entry.target, Math.min(index * 70, 210));
+                  revealObserver.unobserve(entry.target);
+                });
+            },
+            { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
+          )
+        : null;
 
-    revealItems.forEach((item) => revealObserver.observe(item));
+    if (revealObserver) {
+      revealItems.forEach((item) => revealObserver.observe(item));
+    } else {
+      revealItems.forEach((item) => item.classList.add("is-visible"));
+    }
 
     const sectionObserver = new IntersectionObserver(
       (entries) => {
@@ -613,26 +588,12 @@ export default function ClientInteractions() {
       countObserver.observe(element);
     });
 
-    const animateAmbient = () => {
-      const scrollRatio =
-        window.scrollY / Math.max(document.body.scrollHeight - window.innerHeight, 1);
-      ambientItems.forEach((item, index) => {
-        const direction = index % 2 === 0 ? 1 : -1;
-        const y = scrollRatio * 180 * direction;
-        const x = Math.sin(scrollRatio * Math.PI * 2 + index) * 34;
-        item.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${direction * scrollRatio * 18}deg)`;
-      });
-    };
-
-    window.addEventListener("scroll", animateAmbient, { passive: true });
     window.addEventListener("resize", syncTimelineHeights);
 
     setTheme(currentTheme);
     setLanguage(currentLanguage);
     updateTimelineCues();
     syncTimelineHeights();
-    updateNewsDots();
-    animateAmbient();
     if (window.location.pathname === "/" && window.location.hash) {
       const initialHash = window.location.hash;
       window.requestAnimationFrame(() => {
@@ -648,18 +609,13 @@ export default function ClientInteractions() {
       timelineHandlers.forEach((handler, trigger) => {
         trigger.removeEventListener("click", handler);
       });
-      projectToggleHandlers.forEach((handler, button) => {
-        button.removeEventListener("click", handler);
+      revealObserver?.disconnect();
+      revealSettleHandlers.forEach((handler, item) => {
+        item.removeEventListener("transitionend", handler);
       });
-      newsDotHandlers.forEach((handler, dot) => {
-        dot.removeEventListener("click", handler);
-      });
-      newsGrid?.removeEventListener("scroll", updateNewsDots);
-      revealObserver.disconnect();
       sectionObserver.disconnect();
       countObserver.disconnect();
       countAnimations.forEach((frameId) => cancelAnimationFrame(frameId));
-      window.removeEventListener("scroll", animateAmbient);
       window.removeEventListener("resize", syncTimelineHeights);
       if (menuCloseTimer) globalThis.clearTimeout(menuCloseTimer);
       stopTyping();

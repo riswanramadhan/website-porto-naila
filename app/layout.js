@@ -50,9 +50,9 @@ export async function generateMetadata() {
     },
     manifest: "/manifest.json",
     icons: {
-      icon: "/logo-unhas.png",
-      apple: "/logo-unhas.png",
-      shortcut: "/logo-unhas.png",
+      icon: "/icon.png",
+      apple: "/icon.png",
+      shortcut: "/icon.png",
     },
     verification: {
       google: "RnssxGQ8CbQhVWsYIQjzn6znRvUMUhq7svJ54Gu4bTc",
@@ -64,7 +64,7 @@ export async function generateMetadata() {
       siteName,
       images: [
         {
-          url: profile?.image?.src || "/logo-unhas.png",
+          url: profile?.image?.src || "/logo-unhas.webp",
           width: 800,
           height: 600,
           alt: siteName,
@@ -77,7 +77,7 @@ export async function generateMetadata() {
       card: "summary_large_image",
       title: pageTitle,
       description,
-      images: [profile?.image?.src || "/logo-unhas.png"],
+      images: [profile?.image?.src || "/logo-unhas.webp"],
     },
     robots: {
       index: true,
@@ -136,7 +136,7 @@ export default function RootLayout({ children }) {
           }}
         />
         <SplashScreen />
-        {children}
+        <div id="app-shell">{children}</div>
       </body>
     </html>
   );

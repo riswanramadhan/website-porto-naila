@@ -115,6 +115,7 @@ const createEmptyHeroStat = (orderIndex = 1) => ({
 const createEmptyProject = (orderIndex = 1) => ({
   id: createId(),
   title: "",
+  href: "",
   isActive: true,
   image: { src: "", alt: "", focus: { x: 50, y: 50 }, cardSrc: "", detailSrc: "" },
   summary: "",
@@ -130,7 +131,7 @@ const createEmptyCommunityProject = (orderIndex = 1) => ({
   buttonLabel: "Website",
   buttonLabelId: "Website",
   href: "",
-  image: { src: "/laptop-growmates.svg", alt: "Growmates website preview on a laptop" },
+  image: { src: "/laptop-growmates.webp", alt: "Growmates website preview on a laptop" },
   isActive: true,
   orderIndex,
 });
@@ -726,7 +727,7 @@ export default function AdminForm({
     }));
   };
 
-  const uploadImage = async ({ file, sectionKey, itemIndex, target, prefix }) => {
+  const uploadImage = async ({ file, sectionKey, itemIndex, target, prefix, purpose }) => {
     if (!file) return;
 
     const statusKey = `${sectionKey}-${itemIndex}-${target}`;
@@ -736,6 +737,18 @@ export default function AdminForm({
     formData.append("file", file);
     formData.append("folder", `admin/${sectionKey}`);
     formData.append("prefix", prefix);
+    const inferredPurpose =
+      purpose ||
+      (typeof target === "number" || String(target).startsWith("certificate")
+        ? "documentation"
+        : sectionKey === "editing"
+          ? draft.editing[itemIndex]?.type === "phone"
+            ? "phone"
+            : "gallery"
+          : target === "image-detail"
+            ? "documentation"
+            : "card");
+    formData.append("purpose", inferredPurpose);
 
     try {
       const response = await globalThis.fetch("/api/upload", {
@@ -845,6 +858,7 @@ export default function AdminForm({
     formData.append("folder", "navbar-profile");
     formData.append("prefix", "profile-photo");
     formData.append("bucket", "profile");
+    formData.append("purpose", "profile");
 
     try {
       const response = await globalThis.fetch("/api/upload", { method: "POST", body: formData });
@@ -869,9 +883,9 @@ export default function AdminForm({
 
   const handleCropSave = async (croppedBlob) => {
     if (!cropConfig || !croppedBlob) return;
-    const fileName = `crop-${cropConfig.variant}-${Date.now()}.jpg`;
+    const fileName = `crop-${cropConfig.variant}-${Date.now()}.webp`;
     const file = new globalThis.File([croppedBlob], fileName, {
-      type: croppedBlob.type || "image/jpeg",
+      type: croppedBlob.type || "image/webp",
     });
 
     await uploadImage({
@@ -1773,6 +1787,23 @@ export default function AdminForm({
                                   title: event.target.value,
                                 }))
                               }
+                              disabled={!supabaseReady}
+                            />
+                          </Field>
+                          <Field
+                            label="Tautan website"
+                            help="Opsional. Tombol website tampil di sisi belakang kartu jika diisi."
+                          >
+                            <input
+                              type="url"
+                              value={item.href ?? ""}
+                              onChange={(event) =>
+                                updateSectionItem(sectionKey, index, (currentItem) => ({
+                                  ...currentItem,
+                                  href: event.target.value,
+                                }))
+                              }
+                              placeholder="https://..."
                               disabled={!supabaseReady}
                             />
                           </Field>

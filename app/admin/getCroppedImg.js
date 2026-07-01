@@ -10,7 +10,7 @@ export const createImage = (url) =>
 export default async function getCroppedImg(imageSrc, pixelCrop, options = {}) {
 	if (!pixelCrop) return null;
 
-	const { fileType = "image/jpeg", quality = 0.9 } = options;
+	const { fileType = "image/webp", quality = 0.84 } = options;
 	const image = await createImage(imageSrc);
 	const canvas = document.createElement("canvas");
 	const ctx = canvas.getContext("2d");

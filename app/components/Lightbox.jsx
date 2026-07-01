@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import Image from "next/image";
+import { X } from "lucide-react";
+import { optimizedImageProps } from "@/lib/image";
 
 export function Lightbox({ src, alt, caption, children }) {
   const [open, setOpen] = useState(false);
@@ -25,11 +28,19 @@ export function Lightbox({ src, alt, caption, children }) {
   const overlay = open ? (
     <div className="lightbox-overlay" role="dialog" aria-modal="true" onClick={() => setOpen(false)}>
       <figure className="lightbox-figure" onClick={(event) => event.stopPropagation()}>
-        <img className="lightbox-img" src={src} alt={alt || "Achievement media"} />
+        <Image
+          className="lightbox-img"
+          src={src}
+          alt={alt || "Achievement media"}
+          width={1800}
+          height={1350}
+          sizes="95vw"
+          {...optimizedImageProps}
+        />
         {caption ? <figcaption className="lightbox-caption">{caption}</figcaption> : null}
       </figure>
       <button className="lightbox-close" type="button" onClick={() => setOpen(false)} aria-label="Close">
-        ✕
+        <X aria-hidden="true" />
       </button>
     </div>
   ) : null;

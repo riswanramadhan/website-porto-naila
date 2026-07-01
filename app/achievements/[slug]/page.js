@@ -5,6 +5,8 @@ import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import AchievementMediaGallery from "@/components/AchievementMediaGallery";
 import { fetchAchievementBySlug } from "@/lib/achievements";
+import { optimizedImageProps } from "@/lib/image";
+import Image from "next/image";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -67,9 +69,13 @@ export default async function AchievementPage({ params }) {
             </div>
             <div className="achievement-hero-media reveal">
               {achievement.image ? (
-                <img
+                <Image
                   src={achievement.image.detailSrc ?? achievement.image.src}
                   alt={achievement.image.alt}
+                  width={1600}
+                  height={1200}
+                  sizes="(max-width: 960px) calc(100vw - 48px), 50vw"
+                  {...optimizedImageProps}
                 />
               ) : null}
             </div>

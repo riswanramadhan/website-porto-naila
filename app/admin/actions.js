@@ -1,9 +1,15 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
-import { getSupabaseKeyMode, replacePortfolio, replaceSiteProfile } from "@/lib/portfolio";
+import {
+  getSupabaseKeyMode,
+  PORTFOLIO_CACHE_TAG,
+  PROFILE_CACHE_TAG,
+  replacePortfolio,
+  replaceSiteProfile,
+} from "@/lib/portfolio";
 
 const sectionKeys = [
   "heroStats",
@@ -70,6 +76,8 @@ export async function updatePortfolio(previousState, formData) {
     return formatError(profileResult.error || "Gagal menyimpan profile navbar.");
   }
 
+  updateTag(PORTFOLIO_CACHE_TAG);
+  updateTag(PROFILE_CACHE_TAG);
   revalidatePath("/");
   revalidatePath("/admin");
   revalidatePath("/achievements/[slug]", "page");

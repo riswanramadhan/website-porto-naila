@@ -7,7 +7,11 @@
     "dev:turbo": "next dev",
     "lint": "eslint app eslint.config.mjs next.config.mjs",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "optimize:assets": "node scripts/optimize-local-assets.mjs",
+    "migrate:images": "node scripts/migrate-supabase-images.mjs",
+    "recover:image-manifest": "node scripts/recover-image-migration.mjs",
+    "audit:ui": "node scripts/audit-ui.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.106.1",
@@ -15,7 +19,8 @@
     "next": "16.2.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "react-easy-crop": "^5.5.7"
+    "react-easy-crop": "^5.5.7",
+    "sharp": "^0.34.5"
   },
   "devDependencies": {
     "eslint": "^9.39.4",

@@ -34,8 +34,8 @@ export default function CropModal({
   const handleSave = async () => {
     try {
       const croppedImageBlob = await getCroppedImg(imageSrc, croppedAreaPixels, {
-        fileType: "image/jpeg",
-        quality: 0.9,
+        fileType: "image/webp",
+        quality: 0.84,
       });
       if (!croppedImageBlob) {
         throw new Error("Gagal memproses crop");

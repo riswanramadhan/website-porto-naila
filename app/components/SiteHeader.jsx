@@ -1,5 +1,7 @@
 import Link from "next/link";
+import Image from "next/image";
 import { fetchSiteProfile } from "@/lib/portfolio";
+import { optimizedImageProps } from "@/lib/image";
 
 export default async function SiteHeader() {
   const profile = await fetchSiteProfile();
@@ -13,9 +15,13 @@ export default async function SiteHeader() {
             className={`brand-mark ${profileImage ? "has-image" : ""}`.trim()}
           >
             {profileImage ? (
-              <img
+              <Image
                 src={profileImage}
                 alt={profile.image.alt || "Naila Azahra profile"}
+                width={96}
+                height={96}
+                sizes="40px"
+                {...optimizedImageProps}
               />
             ) : (
               "NA"

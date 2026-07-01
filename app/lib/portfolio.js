@@ -1,5 +1,9 @@
 import { createClient } from "@supabase/supabase-js";
+import { unstable_cache } from "next/cache";
 import { portfolio as staticPortfolio } from "@/data/portfolio";
+
+export const PORTFOLIO_CACHE_TAG = "portfolio-content";
+export const PROFILE_CACHE_TAG = "site-profile";
 
 const sortByOrder = (items) =>
   Array.isArray(items)
@@ -74,7 +78,7 @@ export const normalizePortfolio = (payload = {}) => ({
   achievements: sortByOrder(payload.achievements ?? staticPortfolio.achievements),
 });
 
-export const fetchPortfolio = async () => {
+const fetchPortfolioUncached = async () => {
   const supabase = getSupabaseAdminClient();
   if (!supabase) return normalizePortfolio(staticPortfolio);
 
@@ -104,7 +108,13 @@ export const fetchPortfolio = async () => {
   return normalizePortfolio(payload);
 };
 
-export const fetchSiteProfile = async () => {
+export const fetchPortfolio = unstable_cache(
+  fetchPortfolioUncached,
+  ["portfolio-content-v1"],
+  { revalidate: 3600, tags: [PORTFOLIO_CACHE_TAG] }
+);
+
+const fetchSiteProfileUncached = async () => {
   const defaultProfile = { image: { src: "", alt: "Naila Azahra profile photo" } };
   const supabase = getSupabaseAdminClient();
   if (!supabase) return defaultProfile;
@@ -122,6 +132,12 @@ export const fetchSiteProfile = async () => {
     image: { ...defaultProfile.image, ...(data.content.image ?? {}) },
   };
 };
+
+export const fetchSiteProfile = unstable_cache(
+  fetchSiteProfileUncached,
+  ["site-profile-v1"],
+  { revalidate: 3600, tags: [PROFILE_CACHE_TAG] }
+);
 
 export const fetchContactMessages = async () => {
   const supabase = getSupabaseAdminClient();

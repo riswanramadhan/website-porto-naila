@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
+import { CircleCheckBig, X } from "lucide-react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { submitContactMessage } from "@/actions";
 
@@ -21,13 +22,18 @@ function ContactSubmitButton() {
 
 export default function ContactForm() {
   const [state, formAction] = useActionState(submitContactMessage, initialState);
+  const [showSuccess, setShowSuccess] = useState(false);
   const formRef = useRef(null);
 
   useEffect(() => {
     if (state.status === "success") {
       formRef.current?.reset();
+      setShowSuccess(true);
+      const timer = globalThis.setTimeout(() => setShowSuccess(false), 3200);
+      return () => globalThis.clearTimeout(timer);
     }
-  }, [state.status]);
+    return undefined;
+  }, [state]);
 
   return (
     <form ref={formRef} className="contact-form reveal" action={formAction}>
@@ -69,8 +75,22 @@ export default function ContactForm() {
 
       <ContactSubmitButton />
       <p className={`form-note contact-feedback is-${state.status}`} aria-live="polite">
-        {state.message}
+        {state.status === "error" ? state.message : ""}
       </p>
+      {showSuccess ? (
+        <div className="contact-success-popup" role="status" aria-live="assertive">
+          <span className="contact-success-icon" aria-hidden="true">
+            <CircleCheckBig />
+          </span>
+          <span>
+            <strong>Pesan berhasil dikirim</strong>
+            <small>Terima kasih. Pesan Anda sudah kami terima.</small>
+          </span>
+          <button type="button" onClick={() => setShowSuccess(false)} aria-label="Tutup notifikasi">
+            <X aria-hidden="true" />
+          </button>
+        </div>
+      ) : null}
     </form>
   );
 }

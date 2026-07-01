@@ -146,7 +146,7 @@ export const communityProjects = [
     buttonLabelId: "Website",
     href: "https://growmates.dekatlokal.com/",
     image: {
-      src: "/laptop-growmates.svg",
+      src: "/laptop-growmates.webp",
       alt: "Growmates website preview on a laptop",
     },
     isActive: true,

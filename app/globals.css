@@ -85,6 +85,8 @@ html {
   scroll-behavior: smooth;
   scrollbar-color: color-mix(in srgb, var(--ink) 26%, transparent) transparent;
   scrollbar-width: thin;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 ::-webkit-scrollbar {
@@ -140,6 +142,21 @@ body {
   font-feature-settings: "ss01", "ss02";
   line-height: 1.5;
   transition: background 260ms ease, color 260ms ease;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+html.splash-active,
+html.splash-active body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+
+html.splash-active #app-shell {
+  pointer-events: none;
+  user-select: none;
 }
 
 body.menu-open {
@@ -184,7 +201,6 @@ textarea {
 .magic-line {
   position: absolute;
   display: block;
-  will-change: transform;
 }
 
 .ambient-orb {
@@ -239,6 +255,11 @@ svg {
   stroke: currentColor;
 }
 
+svg.lucide {
+  fill: none;
+  stroke: currentColor;
+}
+
 .container {
   width: min(100% - 48px, var(--container));
   margin-inline: auto;
@@ -265,11 +286,16 @@ svg {
   inset: 0;
   z-index: 100000;
   display: grid;
+  width: 100vw;
+  min-height: 100vh;
+  min-height: 100dvh;
   place-items: center;
   background: var(--canvas);
   color: var(--ink);
   transform: translateY(0);
-  transition: transform 1050ms cubic-bezier(0.76, 0, 0.24, 1);
+  overscroll-behavior: none;
+  touch-action: none;
+  transition: transform 280ms cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 .splash-screen.is-exiting {
@@ -732,6 +758,7 @@ svg {
 
 .hero-glow {
   animation: gradientBreath 9s ease-in-out infinite alternate;
+  transform-origin: 50% 20%;
 }
 
 .hero::after {
@@ -991,6 +1018,7 @@ h3 {
 .control-button:focus-visible,
 .nav-cta:focus-visible,
 .project-readmore:focus-visible,
+.project-website-link:focus-visible,
 .award-readmore:focus-visible,
 .editing-instagram-button:focus-visible,
 .contact-links a:focus-visible {
@@ -1399,11 +1427,12 @@ h3 {
 .editing-phone-card {
   display: grid;
   width: min(48%, 238px);
+  min-width: 0;
+  grid-template-rows: auto 42px;
   gap: 14px;
   justify-items: center;
   opacity: 0;
-  transform: translateX(-58px) rotate(-4deg) scale(0.96);
-  will-change: transform, opacity;
+  transform: translateY(20px) scale(0.98);
 }
 
 .iphone-mockup {
@@ -1477,7 +1506,9 @@ h3 {
   height: 100%;
   overflow: hidden;
   border-radius: 39px;
-  background: #050505;
+  background: linear-gradient(100deg, #141414 18%, #303030 42%, #141414 66%);
+  background-size: 220% 100%;
+  animation: shimmerSweep 1.35s ease-in-out infinite;
   box-shadow:
     inset 0 0 0 1px rgb(255 255 255 / 12%),
     inset 0 0 0 3px #050505;
@@ -1549,14 +1580,22 @@ h3 {
 .editing-instagram-button svg {
   width: 18px;
   height: 18px;
+  flex: 0 0 auto;
+}
+
+.editing-instagram-button span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .editing-instagram-button:hover {
-  border-color: var(--hairline-strong);
-  background: var(--ink);
-  color: var(--canvas);
+  border-color: transparent;
+  background: linear-gradient(115deg, #f9ce34, #ee2a7b 48%, #6228d7);
+  color: #ffffff;
   transform: translateY(-2px);
-  box-shadow: var(--shadow-float);
+  box-shadow: 0 12px 26px -16px rgb(131 58 180 / 78%);
 }
 
 .editing-gallery-shell {
@@ -1604,7 +1643,9 @@ h3 {
   overflow: hidden;
   border: 1px solid var(--hairline);
   border-radius: var(--radius-md);
-  background: var(--canvas-soft);
+  background: linear-gradient(100deg, var(--canvas-soft) 18%, var(--canvas-soft-2) 42%, var(--canvas-soft) 66%);
+  background-size: 220% 100%;
+  animation: shimmerSweep 1.35s ease-in-out infinite;
   aspect-ratio: 4 / 5;
   transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 }
@@ -1616,6 +1657,7 @@ h3 {
 }
 
 .editing-gallery-item .lightbox-trigger {
+  position: relative;
   display: block;
   width: 100%;
   height: 100%;
@@ -1773,17 +1815,33 @@ h3 {
 .case-card {
   min-height: 100%;
   height: 100%;
-  overflow: hidden;
+  overflow: visible;
   padding: 0;
-  perspective: 1200px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  perspective: 1400px;
+}
+
+.case-card:hover {
+  border-color: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+.case-card:focus-within {
+  border-color: transparent;
+  box-shadow: none;
 }
 
 .case-card-inner {
   position: relative;
-  min-height: 100%;
   display: grid;
+  height: 100%;
+  min-height: 100%;
+  border-radius: inherit;
   transform-style: preserve-3d;
-  transition: transform 620ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 680ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .case-card.is-flipped .case-card-inner {
@@ -1796,8 +1854,37 @@ h3 {
   min-height: 100%;
   flex-direction: column;
   padding: 24px;
+  border: 1px solid var(--hairline);
+  border-radius: inherit;
   background: var(--canvas);
+  box-shadow: var(--shadow-soft);
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition: border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.case-card:hover .case-card-face {
+  border-color: #d8d8d8;
+  box-shadow: var(--shadow-float);
+}
+
+.case-card:focus-within .case-card-face {
+  border-color: var(--hairline-strong);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ink) 14%, transparent), var(--shadow-float);
+}
+
+.project-flip-surface {
+  width: 100%;
+  appearance: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.project-flip-surface:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--ink) 18%, transparent);
+  outline-offset: -3px;
 }
 
 .case-card-front {
@@ -1811,17 +1898,15 @@ h3 {
   z-index: 2;
   pointer-events: none;
   transform: rotateY(180deg);
-  visibility: hidden;
+  color: var(--ink);
 }
 
 .case-card.is-flipped .case-card-front {
   pointer-events: none;
-  visibility: hidden;
 }
 
 .case-card.is-flipped .case-card-back {
   pointer-events: auto;
-  visibility: visible;
 }
 
 .case-image,
@@ -1836,7 +1921,26 @@ h3 {
 }
 
 .case-image {
+  height: 100%;
+  border: 0;
+  border-radius: 0;
   aspect-ratio: 16 / 10;
+}
+
+.case-image-wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid #ebebeb;
+  border-radius: var(--radius-md);
+  aspect-ratio: 16 / 10;
+  background: #f5f5f5;
+}
+
+.case-topline h3 {
+  margin: 0;
+  color: var(--ink);
 }
 
 .case-card dl {
@@ -1930,18 +2034,57 @@ h3 {
   transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
 }
 
-.case-card:hover .project-readmore {
+.project-website-link svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+}
+
+.case-back-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.case-back-actions > :only-child {
+  grid-column: 1 / -1;
+}
+
+.project-website-link {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-pill);
+  background: var(--ink);
+  color: var(--canvas);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.project-website-link:hover {
+  background: color-mix(in srgb, var(--ink) 86%, var(--canvas));
+  transform: translateY(-1px);
+}
+
+.project-flip-surface:hover .project-readmore,
+.project-readmore:hover {
   border-color: var(--hairline-strong);
   background: var(--canvas);
-  color: var(--link);
+  color: var(--ink);
   box-shadow: var(--shadow-soft);
   transform: translateY(-1px);
 }
 
 .case-card.is-flipped .project-readmore {
-  border-color: var(--hairline-strong);
-  background: var(--ink);
-  color: var(--canvas);
+  border-color: var(--hairline);
+  background: var(--canvas);
+  color: var(--ink);
 }
 
 .community-project-section {
@@ -2107,6 +2250,10 @@ h3 {
 }
 
 .news-carousel-dots {
+  display: none;
+}
+
+.news-swipe-hint {
   display: none;
 }
 
@@ -2491,6 +2638,7 @@ h3 {
 }
 
 .lightbox-trigger {
+  position: relative;
   display: block;
   width: 100%;
   padding: 0;
@@ -2498,9 +2646,13 @@ h3 {
   background: transparent;
 }
 
+.achievement-media .lightbox-trigger {
+  aspect-ratio: 4 / 3;
+}
+
 .achievement-media img {
   width: 100%;
-  height: auto;
+  height: 100%;
   max-width: 100%;
   display: block;
 }
@@ -2522,7 +2674,7 @@ h3 {
 }
 
 .certificate-grid .lightbox-trigger {
-  height: auto;
+  aspect-ratio: 16 / 11;
 }
 
 .achievement-media-caption {
@@ -2664,11 +2816,32 @@ h3 {
   font-size: 14px;
   font-weight: 500;
   padding: 0 15px;
-  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease;
 }
 
 .contact-links a:hover {
   transform: translateY(-2px);
+}
+
+.contact-links .social-link-linkedin:hover {
+  border-color: #0a66c2;
+  background: #0a66c2;
+  color: #ffffff;
+  box-shadow: 0 10px 24px -16px rgb(10 102 194 / 82%);
+}
+
+.contact-links .social-link-email:hover {
+  border-color: #d93025;
+  background: #d93025;
+  color: #ffffff;
+  box-shadow: 0 10px 24px -16px rgb(217 48 37 / 82%);
+}
+
+.contact-links .social-link-instagram:hover {
+  border-color: transparent;
+  background: linear-gradient(115deg, #f9ce34, #ee2a7b 48%, #6228d7);
+  color: #ffffff;
+  box-shadow: 0 10px 24px -16px rgb(131 58 180 / 82%);
 }
 
 .contact-form {
@@ -2720,6 +2893,74 @@ h3 {
 
 .contact-feedback.is-error {
   color: var(--color-danger);
+}
+
+.contact-success-popup {
+  position: fixed;
+  left: 50%;
+  bottom: max(24px, env(safe-area-inset-bottom));
+  z-index: 1000;
+  display: grid;
+  width: min(430px, calc(100vw - 32px));
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid color-mix(in srgb, var(--color-success) 36%, var(--hairline));
+  border-radius: var(--radius-md);
+  background: var(--canvas);
+  color: var(--ink);
+  padding: 15px;
+  box-shadow: 0 22px 60px -22px rgb(0 0 0 / 45%);
+  transform: translateX(-50%);
+  animation: contactPopupIn 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.contact-success-popup > span:nth-child(2) {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.contact-success-popup strong {
+  font-size: 14px;
+}
+
+.contact-success-popup small {
+  color: var(--body);
+  font-size: 12px;
+}
+
+.contact-success-icon {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-success-soft);
+  color: var(--color-success);
+  animation: successCheckIn 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.contact-success-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.contact-success-popup button {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--canvas-soft-2);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.contact-success-popup button svg {
+  width: 17px;
+  height: 17px;
 }
 .footer {
   background: var(--canvas);
@@ -2789,45 +3030,77 @@ h3 {
 }
 
 .reveal {
+  --reveal-x: 0px;
+  --reveal-y: 30px;
+  --reveal-scale: 0.985;
+  --reveal-origin: 50% 50%;
+}
+
+.reveal.is-reveal-ready {
   opacity: 0;
-  transform: translateY(28px) scale(0.98);
-  filter: blur(12px);
-  transition: opacity 720ms ease, transform 720ms cubic-bezier(.16,1,.3,1), filter 720ms ease;
+  filter: blur(8px);
+  transform: translate3d(var(--reveal-x), var(--reveal-y), 0) scale(var(--reveal-scale));
+  transform-origin: var(--reveal-origin);
+  transition:
+    opacity 680ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 760ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 820ms cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: var(--reveal-delay, 0ms);
-  will-change: transform, opacity, filter;
+  will-change: opacity, filter, transform;
 }
 
-.reveal.is-visible {
+.reveal.is-reveal-ready[data-anim="left"] {
+  --reveal-x: -32px;
+  --reveal-y: 12px;
+  --reveal-origin: 0% 50%;
+}
+
+.reveal.is-reveal-ready[data-anim="right"] {
+  --reveal-x: 32px;
+  --reveal-y: 12px;
+  --reveal-origin: 100% 50%;
+}
+
+.reveal.is-reveal-ready[data-anim="zoom"] {
+  --reveal-y: 12px;
+  --reveal-scale: 0.94;
+}
+
+.reveal.is-reveal-ready.is-visible {
   opacity: 1;
-  transform: translateY(0);
   filter: blur(0);
-}
-
-.reveal[data-anim="left"] {
-  transform: translateX(-24px);
-}
-
-.reveal[data-anim="right"] {
-  transform: translateX(24px);
-}
-
-.reveal[data-anim="zoom"] {
-  transform: scale(0.94);
-}
-
-.reveal[data-anim="left"].is-visible,
-.reveal[data-anim="right"].is-visible,
-.reveal[data-anim="zoom"].is-visible {
-  transform: translateX(0) scale(1);
+  transform: translate3d(0, 0, 0) scale(1);
 }
 
 @keyframes gradientBreath {
   from {
-    transform: scale(1) translateY(0);
+    transform: translate3d(-1.5%, 0, 0) scale(1);
   }
 
   to {
-    transform: scale(1.08) translateY(18px);
+    transform: translate3d(1.5%, 16px, 0) scale(1.06);
+  }
+}
+
+@keyframes contactPopupIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 18px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+@keyframes successCheckIn {
+  from {
+    opacity: 0;
+    transform: scale(0.45) rotate(-18deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0);
   }
 }
 
@@ -2887,14 +3160,14 @@ h3 {
 @keyframes iphoneSlideIn {
   0% {
     opacity: 0;
-    transform: translateX(-58px) rotate(-4deg) scale(0.96);
+    transform: translateY(20px) scale(0.98);
   }
   60% {
     opacity: 1;
   }
   100% {
     opacity: 1;
-    transform: translateX(0) rotate(0deg) scale(1);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -3057,14 +3330,7 @@ h3 {
   }
 
   .hero-image-frame {
-    position: absolute;
-    top: -88%;
-    right: -304%;
-    width: clamp(600, 75vw, 600px);
-    height: clamp(450, 85vh, 600px);
-    opacity: 0.3;
-    z-index: 0;
-    pointer-events: none;
+    display: none;
   }
 
   .hero-metrics {
@@ -3165,6 +3431,8 @@ h3 {
     margin-inline: -16px;
     overflow-x: auto;
     padding: 0 16px 10px;
+    overscroll-behavior-inline: contain;
+    scroll-behavior: auto;
     scroll-padding-inline: 16px;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
@@ -3175,9 +3443,41 @@ h3 {
   }
 
   .news-card {
-    flex: 0 0 min(82vw, 330px);
+    flex: 0 0 min(calc(100vw - 56px), 330px);
     scroll-snap-align: start;
     scroll-snap-stop: always;
+    transition: none;
+  }
+
+  .news-card:hover,
+  .news-card:focus-visible {
+    transform: none;
+  }
+
+  .news-card:hover .news-photo img,
+  .news-card:focus-visible .news-photo img {
+    filter: none;
+    transform: none;
+  }
+
+  .news-open-indicator,
+  .news-photo::after {
+    display: none;
+  }
+
+  .news-swipe-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: -20px 0 14px;
+    color: var(--mute);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+
+  .news-swipe-hint svg {
+    width: 16px;
+    height: 16px;
   }
 
   .news-carousel-dots {
@@ -3195,7 +3495,7 @@ h3 {
     border-radius: 999px;
     background: color-mix(in srgb, var(--ink) 22%, transparent);
     cursor: pointer;
-    transition: width 220ms ease, background 220ms ease;
+    transition: none;
   }
 
   .news-carousel-dots button.is-active {
@@ -3208,8 +3508,11 @@ h3 {
   }
 
   .editing-phone-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     min-height: 420px;
     gap: 12px;
+    align-items: start;
   }
 
   .iphone-mockup {
@@ -3218,7 +3521,24 @@ h3 {
   }
 
   .editing-phone-card {
-    width: min(49%, 180px);
+    width: 100%;
+    max-width: 180px;
+    min-width: 0;
+    justify-self: center;
+  }
+
+  .editing-instagram-button {
+    min-width: 0;
+    padding-inline: 9px;
+    font-size: 11px;
+  }
+
+  .reveal.is-reveal-ready[data-anim="left"],
+  .reveal.is-reveal-ready[data-anim="right"],
+  .reveal.is-reveal-ready[data-anim="zoom"] {
+    --reveal-x: 0px;
+    --reveal-y: 18px;
+    --reveal-origin: 50% 50%;
   }
 
   .iphone-screen {
