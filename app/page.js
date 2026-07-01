@@ -649,9 +649,9 @@ export default async function Home() {
                       featuredCommunityProject.image.alt ||
                       featuredCommunityProject.title
                     }
-                    width={1400}
-                    height={900}
-                    sizes="(max-width: 960px) calc(100vw - 48px), 58vw"
+                    width={1600}
+                    height={1388}
+                    sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 960px) calc(100vw - 48px), 58vw"
                     {...optimizedImageProps}
                   />
                 ) : null}

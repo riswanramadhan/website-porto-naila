@@ -195,6 +195,9 @@ textarea {
   background:
     linear-gradient(115deg, transparent 0 65%, var(--spotlight) 65% 66%, transparent 66%),
     radial-gradient(circle at 50% 120%, var(--sparkle), transparent 30%);
+  background-position: 48% 45%, 50% 110%;
+  background-size: 135% 135%, 120% 120%;
+  animation: ambientGradientDrift 30s ease-in-out infinite;
 }
 
 .ambient-orb,
@@ -204,49 +207,83 @@ textarea {
 }
 
 .ambient-orb {
+  --orb-x: 36px;
+  --orb-y: -24px;
+  --orb-scale: 1.06;
   width: 360px;
   height: 360px;
   border-radius: 999px;
   filter: blur(40px);
   opacity: 0.28;
+  animation: ambientOrbFloat 24s ease-in-out infinite alternate;
+  will-change: transform;
 }
 
 .orb-one {
+  --orb-x: 44px;
+  --orb-y: -28px;
   top: 12%;
   left: -120px;
   background: #007cf0;
+  animation-duration: 26s;
+  animation-delay: -8s;
 }
 
 .orb-two {
+  --orb-x: -48px;
+  --orb-y: 34px;
+  --orb-scale: 1.08;
   top: 42%;
   right: -140px;
   background: #ff0080;
+  animation-duration: 30s;
+  animation-delay: -17s;
 }
 
 .orb-three {
+  --orb-x: 32px;
+  --orb-y: -38px;
+  --orb-scale: 1.04;
   bottom: -120px;
   left: 38%;
   background: #f9cb28;
+  animation-duration: 28s;
+  animation-delay: -11s;
 }
 
 .magic-line {
+  --line-rotation: 0deg;
+  --line-tilt: 2deg;
+  --line-x: 24px;
+  --line-y: -16px;
   width: 340px;
   height: 120px;
   border-top: 1px solid color-mix(in srgb, var(--ink) 18%, transparent);
   border-radius: 50%;
   opacity: 0.35;
+  transform: rotate(var(--line-rotation));
+  animation: magicLineFloat 26s ease-in-out infinite;
+  will-change: transform;
 }
 
 .line-one {
+  --line-rotation: -14deg;
+  --line-x: -30px;
+  --line-y: 20px;
   top: 28%;
   right: 12%;
-  transform: rotate(-14deg);
+  animation-delay: -9s;
 }
 
 .line-two {
+  --line-rotation: 18deg;
+  --line-tilt: -2deg;
+  --line-x: 34px;
+  --line-y: -22px;
   bottom: 18%;
   left: 8%;
-  transform: rotate(18deg);
+  animation-duration: 31s;
+  animation-delay: -19s;
 }
 
 svg {
@@ -757,8 +794,9 @@ svg.lucide {
 }
 
 .hero-glow {
-  animation: gradientBreath 9s ease-in-out infinite alternate;
+  animation: gradientBreath 20s ease-in-out infinite;
   transform-origin: 50% 20%;
+  will-change: transform;
 }
 
 .hero::after {
@@ -1591,8 +1629,10 @@ h3 {
 }
 
 .editing-instagram-button:hover {
-  border-color: transparent;
-  background: linear-gradient(115deg, #f9ce34, #ee2a7b 48%, #6228d7);
+  border-color: #c13584;
+  background: linear-gradient(115deg, #feda75 0%, #fa7e1e 24%, #d62976 50%, #962fbf 72%, #4f5bd5 100%);
+  background-clip: border-box;
+  background-origin: border-box;
   color: #ffffff;
   transform: translateY(-2px);
   box-shadow: 0 12px 26px -16px rgb(131 58 180 / 78%);
@@ -2106,6 +2146,7 @@ h3 {
 .community-project-media img {
   display: block;
   width: min(100%, 760px);
+  height: auto;
   margin-inline: auto;
   filter: drop-shadow(0 30px 52px color-mix(in srgb, var(--ink) 18%, transparent));
 }
@@ -2838,8 +2879,10 @@ h3 {
 }
 
 .contact-links .social-link-instagram:hover {
-  border-color: transparent;
-  background: linear-gradient(115deg, #f9ce34, #ee2a7b 48%, #6228d7);
+  border-color: #c13584;
+  background: linear-gradient(115deg, #feda75 0%, #fa7e1e 24%, #d62976 50%, #962fbf 72%, #4f5bd5 100%);
+  background-clip: border-box;
+  background-origin: border-box;
   color: #ffffff;
   box-shadow: 0 10px 24px -16px rgb(131 58 180 / 82%);
 }
@@ -3073,12 +3116,50 @@ h3 {
 }
 
 @keyframes gradientBreath {
-  from {
+  0%,
+  100% {
     transform: translate3d(-1.5%, 0, 0) scale(1);
   }
 
+  38% {
+    transform: translate3d(1.8%, 12px, 0) scale(1.045);
+  }
+
+  72% {
+    transform: translate3d(-0.4%, 22px, 0) scale(1.07);
+  }
+}
+
+@keyframes ambientGradientDrift {
+  0%,
+  100% {
+    background-position: 44% 42%, 50% 112%;
+  }
+
+  50% {
+    background-position: 57% 58%, 43% 104%;
+  }
+}
+
+@keyframes ambientOrbFloat {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
   to {
-    transform: translate3d(1.5%, 16px, 0) scale(1.06);
+    transform: translate3d(var(--orb-x), var(--orb-y), 0) scale(var(--orb-scale));
+  }
+}
+
+@keyframes magicLineFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--line-rotation));
+  }
+
+  50% {
+    transform: translate3d(var(--line-x), var(--line-y), 0)
+      rotate(calc(var(--line-rotation) + var(--line-tilt)));
   }
 }
 
@@ -3386,6 +3467,10 @@ h3 {
     justify-items: center;
     text-align: center;
   }
+
+  .community-project-layout {
+    gap: 18px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -3557,7 +3642,7 @@ h3 {
   }
 
   .community-project-layout {
-    gap: 28px;
+    gap: 12px;
   }
 
   .community-project-copy,
