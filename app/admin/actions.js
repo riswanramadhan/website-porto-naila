@@ -11,7 +11,7 @@ import {
   replaceSiteProfile,
 } from "@/lib/portfolio";
 
-const sectionKeys = [
+const arraySectionKeys = [
   "heroStats",
   "experiences",
   "projects",
@@ -20,6 +20,7 @@ const sectionKeys = [
   "news",
   "achievements",
 ];
+const sectionKeys = ["hero", ...arraySectionKeys];
 const formatError = (message) => ({ status: "error", message });
 const formatRlsError = () =>
   formatError(
@@ -51,7 +52,17 @@ export async function updatePortfolio(previousState, formData) {
       return formatError(`Format data ${sectionKey} tidak valid. Periksa kembali isian Anda.`);
     }
 
-    if (!Array.isArray(payload[sectionKey])) {
+    if (sectionKey === "hero") {
+      if (!payload.hero || Array.isArray(payload.hero) || typeof payload.hero !== "object") {
+        return formatError("Format pengaturan hero tidak sesuai.");
+      }
+
+      const resumeUrl = String(payload.hero.resumeUrl ?? "").trim();
+      if (!/^https?:\/\/[^\s]+$/i.test(resumeUrl)) {
+        return formatError("Link CV harus berupa URL lengkap yang diawali http:// atau https://.");
+      }
+      payload.hero = { resumeUrl };
+    } else if (!Array.isArray(payload[sectionKey])) {
       return formatError(`Format data ${sectionKey} tidak sesuai.`);
     }
   }

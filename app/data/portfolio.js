@@ -1,5 +1,10 @@
 import { achievements } from "./achievements";
 
+export const hero = {
+  resumeUrl:
+    "https://drive.google.com/file/d/1-aVSbUSbd0Av9BdEgq4_A1mqF72xQeaU/view?usp=sharing",
+};
+
 export const heroStats = [
   {
     id: 1,
@@ -277,6 +282,7 @@ export const editing = [
 ];
 
 export const portfolio = {
+  hero,
   heroStats,
   experiences,
   projects,

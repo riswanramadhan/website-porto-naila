@@ -11,8 +11,6 @@ import { optimizedImageProps } from "@/lib/image";
 import Image from "next/image";
 import { ArrowUpRight, Mail } from "lucide-react";
 
-const resumeHref =
-  "https://drive.google.com/file/d/1-aVSbUSbd0Av9BdEgq4_A1mqF72xQeaU/view?usp=sharing";
 const imageLogoBrands = new Set([
   "spss",
   "rstudio",
@@ -116,7 +114,7 @@ function SkillLogo({ brand }) {
 }
 
 export default async function Home() {
-  const { achievements, communityProjects, editing, experiences, heroStats, news, projects } =
+  const { achievements, communityProjects, editing, experiences, hero, heroStats, news, projects } =
     await fetchPortfolio();
   const activeHeroStats = heroStats
     .filter((item) => item.isActive !== false)
@@ -243,9 +241,9 @@ export default async function Home() {
               <div className="hero-actions" aria-label="Primary actions">
                 <a
                   className="button button-primary"
-                  href={resumeHref}
+                  href={hero.resumeUrl}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   aria-label="View Naila Azahra resume"
                 >
                   <svg viewBox="0 0 24 24" aria-hidden="true">

@@ -179,6 +179,7 @@ const createEmptyAchievement = (orderIndex = 1) => ({
 });
 
 const createDraftPortfolio = (portfolio) => ({
+  hero: clone(portfolio.hero),
   heroStats: clone(portfolio.heroStats),
   experiences: clone(portfolio.experiences),
   projects: clone(portfolio.projects),
@@ -900,6 +901,7 @@ export default function AdminForm({
   };
 
   const hiddenPayload = {
+    hero: JSON.stringify(draft.hero),
     heroStats: JSON.stringify(draft.heroStats),
     experiences: JSON.stringify(draft.experiences),
     projects: JSON.stringify(draft.projects),
@@ -933,6 +935,7 @@ export default function AdminForm({
 
   return (
     <form className="admin-dashboard" action={formAction}>
+      <input type="hidden" name="hero" value={hiddenPayload.hero} />
       {sectionOrder.map((sectionKey) => (
         <input key={sectionKey} type="hidden" name={sectionKey} value={hiddenPayload[sectionKey]} />
       ))}
@@ -1407,6 +1410,50 @@ export default function AdminForm({
                       {sectionConfig[sectionKey].addLabel}
                     </button>
                   </div>
+
+                  {sectionKey === "heroStats" ? (
+                    <article className="admin-item-card">
+                      <div className="admin-subheading-row">
+                        <div>
+                          <h3>Button CV</h3>
+                          <p className="form-note">
+                            Atur link yang dibuka saat pengunjung menekan tombol View Resume.
+                          </p>
+                        </div>
+                        {isUrlValue(draft.hero.resumeUrl) ? (
+                          <a
+                            className="button button-secondary"
+                            href={draft.hero.resumeUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Coba link
+                          </a>
+                        ) : null}
+                      </div>
+                      <Field
+                        label="Link tombol CV"
+                        help="Gunakan link lengkap, misalnya link Google Drive yang diawali https://."
+                      >
+                        <input
+                          type="url"
+                          value={draft.hero.resumeUrl ?? ""}
+                          onChange={(event) =>
+                            setDraft((currentDraft) => ({
+                              ...currentDraft,
+                              hero: {
+                                ...currentDraft.hero,
+                                resumeUrl: event.target.value,
+                              },
+                            }))
+                          }
+                          placeholder="https://drive.google.com/..."
+                          required
+                          disabled={!supabaseReady}
+                        />
+                      </Field>
+                    </article>
+                  ) : null}
 
                   {draft[sectionKey].length ? (
                     <div className="admin-item-list">

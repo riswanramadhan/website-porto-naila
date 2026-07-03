@@ -29,6 +29,15 @@ const normalizeProjects = (items) =>
     };
   });
 
+const normalizeHero = (hero = {}) => {
+  const fallbackResumeUrl = String(staticPortfolio.hero?.resumeUrl ?? "").trim();
+  const resumeUrl = String(hero?.resumeUrl ?? fallbackResumeUrl).trim();
+
+  return {
+    resumeUrl: /^https?:\/\//i.test(resumeUrl) ? resumeUrl : fallbackResumeUrl,
+  };
+};
+
 const getSupabaseUrl = () => process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
 const getSupabaseServiceKey = () => process.env.SUPABASE_SERVICE_ROLE_KEY;
 const getSupabasePublishableKey = () =>
@@ -69,6 +78,7 @@ export const isSupabaseConfigured = () => {
 };
 
 export const normalizePortfolio = (payload = {}) => ({
+  hero: normalizeHero(payload.hero ?? staticPortfolio.hero),
   heroStats: sortByOrder(payload.heroStats ?? staticPortfolio.heroStats),
   experiences: sortByOrder(payload.experiences ?? staticPortfolio.experiences),
   projects: normalizeProjects(payload.projects ?? staticPortfolio.projects),
@@ -86,6 +96,7 @@ const fetchPortfolioUncached = async () => {
     .from("portfolio_content")
     .select("section_key, content")
     .in("section_key", [
+      "hero",
       "heroStats",
       "experiences",
       "projects",
